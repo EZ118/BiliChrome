@@ -45,7 +45,28 @@
 				</tr>
 			</table>
 		</div>
-		<script src="./include/home.js"></script>
+		<!--  -->
+		<div id="dlg_container" style="display:none;">
+			<table class="dlg_container_real">
+				<tr height="40px">
+					<td align="left">
+						<b id="dlg_title">[窗口标题]</b>
+					</td>
+					<td align="right" width="280px">
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_openNewBtn">open_in_new_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_closeBtn">close_rounded</i>
+					</td>
+				</tr>
+				<tr>
+					<td align="left" colspan="2" valign="top">
+						<div id="dlg_content"><!-- 此处显示内容 --></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<script src="./include/dlg.js"></script>
 		<script src="./include/player.js"></script>
+		<script src="./include/home.js"></script>
 	</body>
 </html>
