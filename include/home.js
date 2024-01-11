@@ -29,7 +29,7 @@ function getSearchResult(wd){
 						 	<a href="#aid_` + card.aid + `">
 						 		<div class="wide_singlebox_vt">` + card.title + `</div>
 						 	</a>
-							<a href="https://space.bilibili.com/` + card.mid + `" target='_blank'>
+							<a href="#uid_` + card.mid + `">
 							 	<div class="wide_singlebox_un">🔘&nbsp;` + card.author + `</div>
 							</a>
 						 </div>
@@ -55,7 +55,7 @@ function getRecommendedVideos(){
 								 <img src='` + tjlist.data.item[i].pic + `@412w_232h_1c.webp'><br>
 								 <div class="dynamic_singlebox_vt">` + tjlist.data.item[i].title + `</div>
 							 </a>
-							 <a href="https://space.bilibili.com/` + tjlist.data.item[i].owner.mid + `" target='_blank'>
+							 <a href="#uid_` + tjlist.data.item[i].owner.mid + `">
 							 	<div class="dynamic_singlebox_un">🔘&nbsp;` + tjlist.data.item[i].owner.name + `</div>
 							 </a>
 						 </div>
@@ -82,7 +82,7 @@ function getHotVideos(){
 						 	<a href="#bvid_` + tjlist.data.list[i].bvid + `">
 						 		<div class="wide_singlebox_vt">` + tjlist.data.list[i].title + `</div>
 						 	</a>
-							<a href="https://space.bilibili.com/` + tjlist.data.list[i].owner.mid + `" target='_blank'>
+							<a href="#uid_` + tjlist.data.list[i].owner.mid + `">
 							 	<div class="wide_singlebox_un">🔘&nbsp;` + tjlist.data.list[i].owner.name + `</div>
 							</a>
 						 </div>
@@ -109,7 +109,7 @@ function getSubscribedVideos(){
 						 	<a href="#aid_` + card.aid + `">
 						 		<div class="wide_singlebox_vt">` + card.title + `</div>
 						 	</a>
-							<a href="https://space.bilibili.com/` + card.owner.mid + `" target='_blank'>
+							<a href="#uid_` + card.owner.mid + `">
 							 	<div class="wide_singlebox_un">🔘&nbsp;` + card.owner.name + `</div>
 							</a>
 						 </div>
@@ -118,6 +118,62 @@ function getSubscribedVideos(){
 		}
 		document.getElementById("item_container").innerHTML = WebList;
 		document.getElementById("dynamic_loader").style.display = "none";
+	});
+}
+
+function getUserSpace(uid){
+	var WebList = "";
+	ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function(result2){
+		FeedJson = JSON.parse(result2);
+
+		for(var i = 0; i < FeedJson.data.cards.length; i++){
+			itm = FeedJson.data.cards[i];
+			
+			var ImgUrl = "";
+			var VidDesc = "";
+			var LinkUrl = "default";
+			var card_json = JSON.parse(itm.card);
+			try{ VidDesc = card_json.item.content; } catch(e){}
+			try{//视频卡片
+				VidDesc = card_json.title;
+				if (card_json.pic){
+					ImgUrl = '<img class="videopic" src="' + card_json.pic + '@240w_135h_1c.jpg" onerror="this.remove()">';
+				}
+				LinkUrl = "aid_" + card_json.aid;
+			}catch(e){}
+			
+			try{ if (card_json.item.pictures_count != null){
+					//带图片的卡片
+					VidDesc = card_json.item.description;
+					for (var j = 0; j < card_json.item.pictures.length; j++){
+						d = card_json.item.pictures[j];
+						ImgUrl += '<a href="#img-' + encodeURI(d.img_src) + '"><img class="dailypic" src="' + d.img_src + '@256w_256h_1e_1c_!web-dynamic.jpg" onerror="this.remove()"></a>';
+						if(p % 3 == 0) {ImgUrl += "<br/>";}
+					}
+				} 
+			}catch(e){}
+			
+			if (VidDesc == null) {VidDesc = "";}
+			if (LinkUrl == null) {LinkUrl = "default";}
+			
+			if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")){}
+			else{
+				WebList += `
+					<div class='space_singlebox' align='left'>
+						<a>
+							<div class="space_singlebox_un">
+								<img class="userpic" src='` + itm.desc.user_profile.info.face + `'>
+								<label>&nbsp;` + itm.desc.user_profile.info.uname + `</label>
+							</div>
+						</a>
+			      		<a href='#` + LinkUrl + `'>
+							<div class='space_singlebox_vt'>` + VidDesc + `</div>
+							` + ImgUrl + `
+						</a>
+				</div>`;
+			}
+		}
+		openDlg("用户空间 (" + uid + ")", WebList, "https://space.bilibili.com/" + uid);
 	});
 }
 
@@ -150,74 +206,14 @@ function getMySpace(){
 					</td>
 				</tr>
 			</table>
+			<br>
+			<div class="myspace_dynamicSection">
+				<p align="left">最近动态</p>
+				<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
+			</div>
 		`;
-		ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function(result2){
-			FeedJson = JSON.parse(result2);
-			/*WebList += `<div class='dynamic_singlebox'>
-						 <a href="#bvid_` + tjlist.data.item[i].bvid + `">
-							 <img src='` + tjlist.data.item[i].pic + `@412w_232h_1c.webp'><br>
-							 <div class="dynamic_singlebox_vt">` + tjlist.data.item[i].title + `</div>
-						 </a>
-						 <a href="https://space.bilibili.com/` + tjlist.data.item[i].owner.mid + `" target='_blank'>
-						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + tjlist.data.item[i].owner.name + `</div>
-						 </a>
-					 </div>
-				`;*/
-			for(var i = 0; i < FeedJson.data.cards.length; i++){
-				itm = FeedJson.data.cards[i];
-				
-				var ImgUrl = "";
-				var VidDesc = "";
-				var LinkUrl = "default";
-				var card_json = JSON.parse(itm.card);
-				try{ VidDesc = card_json.item.content; } catch(e){}
-				try{
-					//视频卡片
-					VidDesc = card_json.title;
-					if (card_json.pic){
-						ImgUrl = '<img class="videopic" src="' + card_json.pic + '@240w_135h_1c.jpg" onerror="this.remove()">';
-					}
-					LinkUrl = card_json.short_link_v2.split("/")[4];
-				}catch(e){}
-				
-				try{
-					if (card_json.item.pictures_count != null){
-						//带图片的卡片
-						VidDesc = card_json.item.description;
-						for (var j = 0; j < card_json.item.pictures.length; j++){
-							d = card_json.item.pictures[j];
-							ImgUrl += '<a href="#img_' + encodeURI(d.img_src) + '"><img class="dailypic" src="' + d.img_src + '@256w_256h_1e_1c_!web-dynamic.jpg" onerror="this.remove()"></a>';
-							if(p % 3 == 0) {ImgUrl += "<br/>";}
-						}
-						
-					} 
-				}catch(e){}
-				
-				if (VidDesc == null) {VidDesc = "";}
-				if (LinkUrl == null) {LinkUrl = "default";}
-				
-				if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")){}
-				else{
-					WebList += `
-						<div class='space_singlebox' align='left'>
-							<a>
-								<div class="space_singlebox_un">
-									<img class="userpic" src='` + itm.desc.user_profile.info.face + `'>
-									<label>&nbsp;` + itm.desc.user_profile.info.uname + `</label>
-								</div>
-							</a>
-		        				<a href='#` + LinkUrl + `'>
-		        					<div class='space_singlebox_vt'>` + VidDesc + `</div>
-								` + ImgUrl + `
-							</a>
-						</div>`;
-				}
-			}
-
-			document.getElementById("item_container").innerHTML = WebList;
-			document.getElementById("dynamic_loader").style.display = "none";
-		});
 		document.getElementById("item_container").innerHTML = WebList;
+		document.getElementById("dynamic_loader").style.display = "none";
 	});
 }
 
@@ -231,6 +227,10 @@ window.onload = function(){
 		data = location.href.split("#")[1];
 		if(data[0] == "b" || data[0] == "a"){
 			openPlayer(data.split("_")[1]);
+		} else if(data[0] == "u"){
+			getUserSpace(data.split("_")[1]);
+		} else if(data[0] == "i"){
+			openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
 		} else if(data[0] == "n"){
 			let tab = data.split("_")[1];
 			/*if(tab == currentTab){return;}

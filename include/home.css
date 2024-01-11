@@ -43,19 +43,27 @@ html{
 .sidenavItem:hover{ color:#f25d8e; }
 
 /* 播放器 */
-#player_container{ position:fixed; top:0px; left:80px; width:calc(100% - 80px); height:100%; background:#1e2022; }
+#player_container{ position:fixed; top:0px; left:80px; z-index: 103; width:calc(100% - 80px); height:100%; background:#1e2022; }
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none;background:#000; }
 #player_title{ margin-left:15px; font-size:18px; }
 #player_descArea{ user-select:text; height:100%; font-size: 16px; color:#DDD;overflow-y:auto; }
+
+/* 自定义对话框 */
+#dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100%; height:100%; background: rgba(0,0,0,0.4); }
+.dlg_container_real{ position:fixed; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#1e2022; border-radius:8px; }
+#dlg_content{ width:100%; height:100%; background:#17181a; overflow-y:auto; overflow-x:hidden; }
+#dlg_title{ margin-left:15px; font-size:18px; }
 
 /* 用户个人空间 */
 .myspace_topInfoBox{ margin:10px; padding:10px; width:calc(100% - 40px); height:120px; background:#1e2022; border-radius:20px; display:inline-flex; }
 .myspace_topInfoBox img{height:100px; width:100px; border-radius: 14px; margin-right:10px;}
 .myspace_topInfoBox .usrName{font-size: 25px;}
 .myspace_topInfoBox .usrNums{font-size: 18px;}
+.myspace_dynamicSection {width:100%; display: flex;}
+.myspace_dynamicSection p{width:calc(50% - 20px); margin:10px; font-size: 16px;}
 
 /* 用户空间动态 */
-.space_singlebox{width:450px;overflow:hidden;background:#18181c;border-radius:12px;margin:15px;padding:5px;transition:all 0.2s;cursor:pointer}
+.space_singlebox{margin-left:20%;margin-top:20px;width:60%;font-size:16px;overflow:hidden;background:#18181c;border-radius:12px;padding:5px;transition:all 0.2s;cursor:pointer}
 .space_singlebox:hover{background:#3b3b3b}
 .space_singlebox .videopic{width:100%;border-radius:10px;-webkit-user-drag:none}
 .space_singlebox .dailypic{width:100px;height:100px;object-fit:contain;border-radius:5px;-webkit-user-drag:none;margin:5px}
