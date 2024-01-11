@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>哔哩哔哩</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+		<meta name="referrer" content="no-referrer-when-downgrade">
+		<link rel="stylesheet" type="text/css" href="https://fonts.googlefonts.cn/icon?family=Material+Icons">
+		<link rel="stylesheet" type="text/css" href="./include/home.css">
+	</head>
+	<body>
+		<!-- 左侧菜单栏 -->
+		<div class="sidenavBar" align="center">
+			<a href="#nav_search"><div class="sidenavItem"><i class="material-icons">search_rounded</i></div></a>
+			<a href="#nav_home"><div class="sidenavItem"><i class="material-icons">home_rounded</i></div></a>
+			<a href="#nav_hot"><div class="sidenavItem"><i class="material-icons">whatshot_rounded</i></div></a>
+			<a href="#nav_subscriptions"><div class="sidenavItem"><i class="material-icons">subscriptions_rounded</i></div></a>
+			<a href="#nav_space"><div class="sidenavItem"><i class="material-icons">account_circle_rounded</i></div></a>
+		</div>
+
+		<!-- 页面主要部分 -->
+		<div id="RefreshBtn" title="刷新"><i class="material-icons">refresh_rounded</i></div>
+		<i id="dynamic_loader" style="display:block;" class="material-icons">hourglass_empty_rounded</i>
+		<div id="item_container"></div>
+
+		<!-- 播放器 -->
+		<div id="player_container" style="display:none;">
+			<table style="width:100%; height:100%;">
+				<tr height="40px">
+					<td align="left">
+						<b id="player_title">[视频标题]</b>
+					</td>
+					<td align="right" width="380px">
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_openNewBtn">open_in_new_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_closeBtn">close_rounded</i>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<video src="" id="player_videoContainer" controls></video>
+					</td>
+					<td align="left">
+						<div id="player_descArea">暂无</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<script src="./include/home.js"></script>
+		<script src="./include/player.js"></script>
+	</body>
+</html>
