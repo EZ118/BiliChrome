@@ -12,6 +12,27 @@ function ajaxGet(url, callback) {
 	xhr.send();
 }
 
+function parseComments(comments) {
+    let result = '';
+
+    comments.forEach(comment => {
+        const { member, content, replies, ctime } = comment;
+        const timeString = new Date(ctime * 1000).toLocaleString();
+
+        result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
+        result += `<div class="content">${content.message}</div>`;
+        result += `<i>时间：${timeString}</i></div><hr>`;
+
+        if (replies && replies.length > 0) {
+            result += `<div class="moreReply">回复：<br>`;
+            result += parseComments(replies);
+            result += `</div>`;
+        }
+    });
+
+    return result;
+}
+
 function openPlayer(bvid){
 	playerContainer = document.getElementById("player_container");
 	videoContainer = document.getElementById("player_videoContainer");
@@ -40,13 +61,10 @@ function openPlayer(bvid){
 			bvidPlayingNow = bvid;
 		});
 		ajaxGet("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function(result){
+			//console.log(result);
 			ReplyInfo = JSON.parse(result);
-			let textAll = "";
-			for (let i = 0; i < ReplyInfo.data.replies.length; i ++){
-				singleReply = ReplyInfo.data.replies[i];
-				textAll += "【" + singleReply.member.uname + "】 " + singleReply.content.message + "<br>";
-			}
-			videoDesc.innerHTML += "<hr><b>评论：</b><br>" + textAll;
+			textAll = parseComments(ReplyInfo.data.replies);
+			videoDesc.innerHTML += "<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll;
 		});
 	});
 }
