@@ -47,6 +47,11 @@ html{
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none;background:#000; }
 #player_title{ margin-left:15px; font-size:18px; }
 #player_descArea{ user-select:text; height:100%; font-size: 16px; color:#DDD;overflow-y:auto; }
+#player_descArea hr{margin:1px; color:#888; border:none; border-bottom:1px solid #848484;}
+#player_descArea .moreReply{padding:5px;margin:10px;border:1px dashed #646464;border-radius: 8px;}
+#player_descArea .reply{margin-bottom:5px;}
+#player_descArea .reply .content{color:#EEE; margin-left:15px;}
+#player_descArea .reply i{color:#888; margin-left: 20px;}
 
 /* 自定义对话框 */
 #dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100%; height:100%; background: rgba(0,0,0,0.4); }
