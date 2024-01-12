@@ -148,7 +148,7 @@ function getUserSpace(uid){
 					for (var j = 0; j < card_json.item.pictures.length; j++){
 						d = card_json.item.pictures[j];
 						ImgUrl += '<a href="#img-' + encodeURI(d.img_src) + '"><img class="dailypic" src="' + d.img_src + '@256w_256h_1e_1c_!web-dynamic.jpg" onerror="this.remove()"></a>';
-						if(p % 3 == 0) {ImgUrl += "<br/>";}
+						if(j % 3 == 2) {ImgUrl += "<br/>";}
 					}
 				} 
 			}catch(e){}
