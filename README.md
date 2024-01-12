@@ -19,8 +19,7 @@ chrome插件管理，打开开发者模式，加载已解压的扩展，选择�
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 
 ## 截图
-![shot1](https://github.com/EZ118/BiliChrome/assets/79049368/19bfa44c-e82f-44e0-9efc-fd43ef6a13bb)   
-![shot2](https://github.com/EZ118/BiliChrome/assets/79049368/d18e2213-64b6-45de-a5f3-c7c60e263133)   
-![shot3](https://github.com/EZ118/BiliChrome/assets/79049368/d4e48d90-167f-4797-af47-98c9a0650f28)   
-
+![首页](https://github.com/EZ118/BiliChrome/assets/79049368/b0b71b0c-d4c8-47eb-87ea-c935a1a63c1f)   
+![动态](https://github.com/EZ118/BiliChrome/assets/79049368/74c3ced4-6f3d-4cb1-ab3e-1bcab31358d6)   
+![视频播放](https://github.com/EZ118/BiliChrome/assets/79049368/d45a25fa-d500-48ce-b22f-85b8e9681811)    
 
