@@ -17,6 +17,12 @@ html{
 /* 右侧列表通用容器 */
 #item_container{ width:calc(100% - 85px);margin-left:85px; margin-top:10px; }
 
+/* 当前其他设备正在播放提示框 */
+.continuation_alertBox{ overflow: hidden; height:225px; background:#333; border-radius: 10px; width:240px; padding:10px; position:fixed; top:20px; right:20px; z-index:2; }
+.continuation_alertBox img{ width:240px; border-radius: 6px;}
+.continuation_alertBox p{width:100%;margin:8px 0px;}
+.continuation_alertBox b{font-size: 14px; }
+
 /* 窄型视频列表框 */
 .dynamic_singlebox{ height:220px;width:250px;font-size:15px;float:left;background:#18181c;overflow:hidden;border-radius:10px;margin:8px;padding:5px;transition:all 0.3s;cursor:pointer;z-index:1; }
 .dynamic_singlebox:hover{ transform:scale(1.05,1.05);transform-origin:center center;background:#3b3b3b; }
