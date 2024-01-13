@@ -139,15 +139,20 @@ function getUserSpace(uid){
 				if (card_json.pic){
 					ImgUrl = '<img class="videopic" src="' + card_json.pic + '@240w_135h_1c.jpg" onerror="this.remove()">';
 				}
-				LinkUrl = "aid_" + card_json.aid;
+				if(card_json.aid){LinkUrl = "aid_" + card_json.aid;}
+				
 			}catch(e){}
 			
-			try{ if (card_json.item.pictures_count != null){
+			try{
+				if (card_json.item.pictures_count != null){
 					//带图片的卡片
 					VidDesc = card_json.item.description;
 					for (var j = 0; j < card_json.item.pictures.length; j++){
 						d = card_json.item.pictures[j];
-						ImgUrl += '<a href="#img-' + encodeURI(d.img_src) + '"><img class="dailypic" src="' + d.img_src + '@256w_256h_1e_1c_!web-dynamic.jpg" onerror="this.remove()"></a>';
+						ImgUrl += `
+							<a href="#img-` + encodeURI(d.img_src) + `">
+								<img class="dailypic" src="` + d.img_src + `@256w_256h_1e_1c_!web-dynamic.jpg">
+							</a>`;
 						if(j % 3 == 2) {ImgUrl += "<br/>";}
 					}
 				} 
@@ -158,6 +163,7 @@ function getUserSpace(uid){
 			
 			if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")){}
 			else{
+				VidDesc = VidDesc.split("\n").join("<br>")
 				WebList += `
 					<div class='space_singlebox' align='left'>
 						<a>
@@ -217,10 +223,32 @@ function getMySpace(){
 	});
 }
 
+function getVidPlayingNow(){
+	// 当前其他设备正在播放提示框
+	ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function(result){
+		vidInfo = JSON.parse(result);
+		if(vidInfo.data != null){
+			container = document.createElement("a");
+			container.href = "#bvid_" + vidInfo.data.history.bvid;
+			container.innerHTML = `<div class="continuation_alertBox">
+					<img src="` + vidInfo.data.cover + `@240w_135h_1c.jpg">
+					<b>` + vidInfo.data.title + `</b><br>
+					<p>🔘&nbsp;` + vidInfo.data.author_name + `</p>
+					<i>（4秒后自动关闭）</i>
+				</div>`;
+			document.body.appendChild(container);
+			setTimeout(function(){
+				container.remove();
+			}, 4000);
+		}
+	});
+}
+
 
 window.onload = function(){
 	document.referrer="https://www.bilibili.com/";
 	getRecommendedVideos();
+	getVidPlayingNow();
 
 	window.addEventListener('popstate', function(event) {
 		/* 通过URL变化，替代点击事件 */
