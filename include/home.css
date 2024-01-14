@@ -58,6 +58,7 @@ html{
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{color:#EEE; margin-left:15px;}
 #player_descArea .reply i{color:#888; margin-left: 20px;}
+#player_scrComment{ width:80%; position:fixed; top:50px; left:85px; z-index:104; font-size:16px; color:#EEE; }
 
 /* 自定义对话框 */
 #dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100%; height:100%; background: rgba(0,0,0,0.4); }
