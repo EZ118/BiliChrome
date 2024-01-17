@@ -13,6 +13,7 @@ function ajaxGet(url, callback) {
 }
 
 function getSearchResult(wd){
+	/* 获取搜索结果 */
 	if(!wd){return;}
 	document.getElementById("item_container").innerHTML = "";
 	document.getElementById("dynamic_loader").style.display = "block";
@@ -42,6 +43,7 @@ function getSearchResult(wd){
 }
 
 function getRecommendedVideos(){
+	/* 获取推荐视频列表 */
 	document.getElementById("item_container").innerHTML = "";
 	document.getElementById("dynamic_loader").style.display = "block";
 	for(let i = 1; i <= 2; i ++) {
@@ -68,6 +70,7 @@ function getRecommendedVideos(){
 }
 
 function getHotVideos(){
+	/* 获取最热视频 */
 	document.getElementById("item_container").innerHTML = "";
 	document.getElementById("dynamic_loader").style.display = "block";
 	ajaxGet("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function(result){
@@ -94,6 +97,7 @@ function getHotVideos(){
 	});
 }
 function getSubscribedVideos(){
+	/* 获取关注up主的视频更新 */
 	document.getElementById("item_container").innerHTML = "";
 	document.getElementById("dynamic_loader").style.display = "block";
 	ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function(result){
@@ -122,6 +126,7 @@ function getSubscribedVideos(){
 }
 
 function getUserSpace(uid){
+	/* 获取指定用户动态 */
 	var WebList = "";
 	ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function(result2){
 		FeedJson = JSON.parse(result2);
@@ -183,7 +188,30 @@ function getUserSpace(uid){
 	});
 }
 
+function getUserHistory(){
+	/* [用户个人] 获取个人视频播放历史 */
+	ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function(result){
+		var tjlist = JSON.parse(result);
+		var WebList = "";
+		for(var i = 0; i < tjlist.data.list.length; i++){
+			let item = tjlist.data.list[i];
+			WebList += `<div class='dynamic_singlebox'>
+						<a href="#bvid_` + item.history.bvid + `">
+							<img src='` + item.cover + `@412w_232h_1c.webp'><br>
+							<div class="dynamic_singlebox_vt">` + item.title + `</div>
+						</a>
+						<a href="#uid_` + item.author_mid + `">
+						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + item.author_name + `</div>
+						</a>
+					</div>
+				`;
+		}
+		openDlg("观看历史（近30条）", WebList, "https://www.bilibili.com/account/history");
+	});
+}
+
 function getMySpace(){
+	/* [用户个人] 获取当前用户空间 */
 	document.getElementById("item_container").innerHTML = "";
 	document.getElementById("dynamic_loader").style.display = "block";
 	ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function(result){
@@ -193,7 +221,7 @@ function getMySpace(){
 			<br>
 			<table class="myspace_topInfoBox" cellpadding="0" cellspacing="0">
 				<tr>
-					<td><img src="` + usrInfo.data.profile.face +`"></td>
+					<td><img src="` + usrInfo.data.profile.face +`@256w_256h_1c.webp"></td>
 					<td width="10px"></td>
 					<td>
 						<b class="usrName">` + usrInfo.data.profile.name + `</b>&nbsp;&nbsp;<i>` + usrInfo.data.profile.sex + `</i><br>
@@ -213,9 +241,15 @@ function getMySpace(){
 				</tr>
 			</table>
 			<br>
-			<div class="myspace_dynamicSection">
-				<p align="left">最近动态</p>
-				<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
+			<div style="width:100%;display:flex;">
+				<div class="myspace_dynamicSection">
+					<p align="left">最近动态</p>
+					<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
+				</div>
+				<div class="myspace_historySection">
+					<p align="left">历史记录</p>
+					<p align="right"><a href="#history_default">[查看]</a></p>
+				</div>
 			</div>
 		`;
 		document.getElementById("item_container").innerHTML = WebList;
@@ -224,7 +258,7 @@ function getMySpace(){
 }
 
 function getVidPlayingNow(){
-	// 当前其他设备正在播放提示框
+	/* 当前其他设备正在播放提示框 */
 	ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function(result){
 		vidInfo = JSON.parse(result);
 		if(vidInfo.data != null){
@@ -252,7 +286,7 @@ window.onload = function(){
 
 	window.addEventListener('popstate', function(event) {
 		/* 通过URL变化，替代点击事件 */
-		data = location.href.split("#")[1];
+		var data = window.location.href.split("#")[1];
 		if(data[0] == "b" || data[0] == "a"){
 			openPlayer(data.split("_")[1]);
 		} else if(data[0] == "u"){
@@ -268,6 +302,8 @@ window.onload = function(){
 			else if(tab == "space"){getMySpace();}
 			else if(tab == "search"){getSearchResult( prompt("[搜索] 输入关键字搜索") );}
 			currentTab = tab;
+		} else if(data[0] == "h"){
+			getUserHistory();
 		}
 	});
 }
