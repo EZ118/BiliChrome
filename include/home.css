@@ -67,12 +67,14 @@ html{
 #dlg_title{ margin-left:15px; font-size:18px; }
 
 /* 用户个人空间 */
-.myspace_topInfoBox{ margin:10px; padding:10px; width:calc(100% - 40px); height:120px; background:#1e2022; border-radius:20px; display:inline-flex; }
+.myspace_topInfoBox{ margin:10px; padding:10px; width:calc(100% - 40px); height:120px; background:#1e2022; border-radius:20px; display:inline-flex; border:1px solid #333; }
 .myspace_topInfoBox img{height:100px; width:100px; border-radius: 14px; margin-right:10px;}
 .myspace_topInfoBox .usrName{font-size: 25px;}
 .myspace_topInfoBox .usrNums{font-size: 18px;}
-.myspace_dynamicSection {width:100%; display: flex;}
-.myspace_dynamicSection p{width:calc(50% - 20px); margin:10px; font-size: 16px;}
+.myspace_dynamicSection, .myspace_historySection {width:calc(50% - 52px); display: flex; background: #1e2022; border:1px solid #2A2A2A;  padding: 10px; margin: 10px; border-radius:15px;}
+.myspace_dynamicSection p, .myspace_historySection p{width:calc(50% - 20px); margin:10px; font-size: 15px; }
+.myspace_dynamicSection p:first-child, .myspace_historySection p:first-child{ font-weight:bold; font-size: 17px; }
+
 
 /* 用户空间动态 */
 .space_singlebox{margin-left:20%;margin-top:20px;width:60%;font-size:16px;overflow:hidden;background:#18181c;border-radius:12px;padding:5px;transition:all 0.2s;cursor:pointer}
