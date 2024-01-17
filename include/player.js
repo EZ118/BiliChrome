@@ -1,5 +1,5 @@
 var bvidPlayingNow = "";
-var scrCommentNow = [];
+var player_scrCommerts = [];
 var player_scrCommertCnt = 0;
 
 function ajaxGet(url, callback) {
@@ -100,7 +100,7 @@ function getScreenComment(cid){
 				console.log("弹幕装填出错（解析时）")
 			}
 		}
-		scrCommentNow = newInfo.sort(commentSortMethod);
+		player_scrCommerts = newInfo.sort(commentSortMethod);
 	});
 }
 
@@ -158,15 +158,15 @@ window.addEventListener("load", function(){
 	closeBtn.addEventListener("click", function(){
 		playerContainer.style.display = "none";
 		videoContainer.src = "";
-		player_scrComment = [];
+		player_scrCommerts = [];
 		player_scrCommertCnt = 0;
 	});
 
 	setInterval(function(){
-		if(!player_scrComment || player_scrComment == [] ){ return; }
+		if(!player_scrCommerts || player_scrCommerts.length == 0){ return; }
 		try{
-			if ( scrCommentNow[player_scrCommertCnt]["time"] <= videoContainer.currentTime){
-				commentContainer.innerHTML = "<b>「弹幕」</b>" + scrCommentNow[player_scrCommertCnt]["text"];
+			if ( player_scrCommerts[player_scrCommertCnt]["time"] <= videoContainer.currentTime){
+				commentContainer.innerHTML = "<b>「弹幕」</b>" + player_scrCommerts[player_scrCommertCnt]["text"];
 				player_scrCommertCnt += 1;
 			}
 		} catch(e){ console.log("弹幕装填出错（显示时）") }
