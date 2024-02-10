@@ -1,18 +1,11 @@
 img{ -webkit-user-drag:none; }
 a{ text-decoration:none; color:#FFF;}
 body{
-	background-color:#17181a;
-	color:#FFF;
-	user-select:none;
-	overflow-y:scroll;
-	height:100%;
-	width:100%;
-	margin:0px;
+	background-color:#17181a; color:#FFF;
+	user-select:none; overflow-y:auto;
+	height:100%; width:100%; margin:0px;
 }
-html{
-	height:100%;
-	width:100%;
-}
+html{ height:100%; width:100%; }
 
 /* 右侧列表通用容器 */
 #item_container{ width:calc(100% - 85px);margin-left:85px; margin-top:10px; }
@@ -52,7 +45,7 @@ html{
 #player_container{ position:fixed; top:0px; left:80px; z-index: 103; width:calc(100% - 80px); height:100%; background:#1e2022; }
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none;background:#000; }
 #player_title{ margin-left:15px; font-size:18px; }
-#player_descArea{ user-select:text; height:100%; font-size: 16px; color:#DDD;overflow-y:auto; }
+#player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; height:100%; font-size: 16px; color:#DDD;overflow-y:auto; }
 #player_descArea hr{margin:1px; color:#888; border:none; border-bottom:1px solid #848484;}
 #player_descArea .moreReply{padding:5px;margin:10px;border:1px dashed #646464;border-radius: 8px;}
 #player_descArea .reply{margin-bottom:5px;}
@@ -61,8 +54,8 @@ html{
 #player_scrComment{ width:80%; position:fixed; top:50px; left:85px; z-index:104; font-size:16px; color:#EEE; }
 
 /* 自定义对话框 */
-#dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100%; height:100%; background: rgba(0,0,0,0.4); }
-.dlg_container_real{ position:fixed; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#1e2022; border-radius:8px; }
+#dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100vw; height:100vh; background: rgba(0,0,0,0.4); }
+.dlg_container_real{ position:fixed; top:80px; left:20vw; width:60vw; height:calc(100vh - 160px); background:#1e2022; border-radius:8px; }
 #dlg_content{ width:100%; height:100%; background:#17181a; overflow-y:auto; overflow-x:hidden; }
 #dlg_title{ margin-left:15px; font-size:18px; }
 
