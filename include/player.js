@@ -1,3 +1,4 @@
+var biliJctData = "";
 var bvidPlayingNow = "";
 var player_scrCommerts = [];
 var player_scrCommertCnt = 0;
@@ -13,6 +14,26 @@ function ajaxGet(url, callback) {
 	xhr.open("GET", url, true);
 	xhr.send();
 }
+function ajaxPost(url, data, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                callback(xhr.responseText);
+            } else {
+                callback("Error: " + xhr.status);
+            }
+        }
+    };
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // xhr.setRequestHeader("Origin", "https://www.bilibili.com");
+    // xhr.setRequestHeader("Referer", "https://www.bilibili.com/blackboard/html5mobileplayer.html");
+    xhr.send(data);
+}
+
+
 
 function str2xml(xmlString) {
 	/* xml字符串转xml对象 */
@@ -90,6 +111,7 @@ function commentSortMethod(x, y) {
 }
 
 function getScreenComment(cid){
+	/* 获取弹幕 */
 	ajaxGet("https://comment.bilibili.com/" + cid + ".xml",function(s){
 		cInfo = xml2json(str2xml(s)).i.d;
 		newInfo = [];
@@ -145,13 +167,60 @@ function openPlayer(bvid){
 	});
 }
 
+
+function doLikeVid(bvid){
+	alert("该功能未成功实现\n问题出在：哔哩哔哩官方的点赞API对于请求标头Origin有限制，而Chrome扩展没有权限修改Origin，导致请求出问题\n（player.js:173）");
+	/* 点赞视频 */
+	ajaxPost("https://api.bilibili.com/x/web-interface/archive/like", "bvid=" + bvid + "&like=1&csrf=" + biliJctData, function(result){
+		var res = JSON.parse(result);
+		if (res.code == 0) { alert("点赞成功"); }
+		else if (res.code == 65006) { alert("已赞过"); }
+		else { alert("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
+	});
+}
+
+function doGiveCoin(bvid){
+	alert("该功能未成功实现\n问题出在：哔哩哔哩官方的点赞API对于请求标头Origin有限制，而Chrome扩展没有权限修改Origin，导致请求出问题。\n（player.js:184）");
+	/* 投币视频 */
+	ajaxPost("https://api.bilibili.com/x/web-interface/coin/add", "bvid=" + bvid + "&upid=114514&multiply=1&avtype=1", function(result){
+		var res = JSON.parse(result);
+		if (res.code == 0) { alert("投币成功"); }
+		else if (res.code == 65006) { alert("已投过"); }
+		else { alert("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
+	});
+}
+
+function getJctStr(){
+	/* 获取B站用户数据（仅用于请求相关API） */
+	chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function(cookies) {
+		var finalVal = "";
+		for (let i = 0; i < cookies.length; i ++){
+			if (cookies[i]["name"] == "bili_jct"){
+				finalVal = cookies[i]["value"];
+				break;
+			}
+		}
+		
+		biliJctData = finalVal
+		if(!biliJctData){ document.getElementById("player_sidetopBar").setAttribute("style", "display:none;"); }
+		return finalVal;
+	});
+}
+
+
 window.addEventListener("load", function(){
 	playerContainer = document.getElementById("player_container");
 	videoContainer = document.getElementById("player_videoContainer");;
 	commentContainer = document.getElementById("player_scrComment");
 	openBtn = document.getElementById("player_openNewBtn");
 	closeBtn = document.getElementById("player_closeBtn");
+	likeBtn = document.getElementById("player_likeBtn");
+	coinBtn = document.getElementById("player_coinBtn");
 
+	/* 登录数据获取 */
+	getJctStr();
+
+	/* 按钮事件监听 */
 	openBtn.addEventListener("click", function(){
 		chrome.tabs.create({ url: "https://www.bilibili.com/video/" + bvidPlayingNow });
 	});
@@ -161,6 +230,12 @@ window.addEventListener("load", function(){
 		player_scrCommerts = [];
 		player_scrCommertCnt = 0;
 	});
+	likeBtn.addEventListener("click", function(){
+		doLikeVid(bvidPlayingNow);
+	})
+	coinBtn.addEventListener("click", function(){
+		doGiveCoin(bvidPlayingNow);
+	})
 
 	setInterval(function(){
 		if(!player_scrCommerts || player_scrCommerts.length == 0){ return; }
