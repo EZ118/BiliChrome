@@ -189,28 +189,6 @@ function getUserSpace(uid){
 	});
 }
 
-function getUserHistory(){
-	/* [用户个人] 获取个人视频播放历史 */
-	ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function(result){
-		var tjlist = JSON.parse(result);
-		var WebList = "";
-		for(var i = 0; i < tjlist.data.list.length; i++){
-			let item = tjlist.data.list[i];
-			WebList += `<div class='dynamic_singlebox'>
-						<a href="#bvid_` + item.history.bvid + `">
-							<img src='` + item.cover + `@412w_232h_1c.webp'><br>
-							<div class="dynamic_singlebox_vt">` + item.title + `</div>
-						</a>
-						<a href="#uid_` + item.author_mid + `">
-						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + item.author_name + `</div>
-						</a>
-					</div>
-				`;
-		}
-		openDlg("观看历史（近30条）", WebList, "https://www.bilibili.com/account/history");
-	});
-}
-
 function getMySpace(){
 	/* [用户个人] 获取当前用户空间 */
 	document.getElementById("item_container").innerHTML = "";
@@ -256,10 +234,36 @@ function getMySpace(){
 					<p align="left">最近动态</p>
 					<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
 				</div>
+				<div class="myspace_historySection">
+					<p align="left">稍后再看</p>
+					<p align="right"><a href="#watchlater_` + uid + `">[查看]</a></p>
+				</div>
 			</div>
 		`;
 		document.getElementById("item_container").innerHTML = WebList;
 		document.getElementById("dynamic_loader").style.display = "none";
+	});
+}
+
+function getUserHistory(){
+	/* [用户个人] 获取个人视频播放历史 */
+	ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function(result){
+		var tjlist = JSON.parse(result);
+		var WebList = "";
+		for(var i = 0; i < tjlist.data.list.length; i++){
+			let item = tjlist.data.list[i];
+			WebList += `<div class='dynamic_singlebox'>
+						<a href="#bvid_` + item.history.bvid + `">
+							<img src='` + item.cover + `@412w_232h_1c.webp'><br>
+							<div class="dynamic_singlebox_vt">` + item.title + `</div>
+						</a>
+						<a href="#uid_` + item.author_mid + `">
+						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + item.author_name + `</div>
+						</a>
+					</div>
+				`;
+		}
+		openDlg("观看历史（近30条）", WebList, "https://www.bilibili.com/account/history");
 	});
 }
 
@@ -309,6 +313,29 @@ function getCollectionById(fid, mediaCount){
 	});
 }
 
+function getWatchLater(){
+	/* 按照收藏夹id获取收藏夹内容 */
+	ajaxGet("https://api.bilibili.com/x/v2/history/toview", function(result){
+		var tjlist = JSON.parse(result);
+		if (tjlist.code == -400) { alert("该收藏夹未被公开，暂时无法查看"); return; }
+		var WebList = "";
+		for(var i = 0; i < tjlist.data.list.length; i++){
+			let item = tjlist.data.list[i];
+			WebList += `<div class='dynamic_singlebox'>
+						<a href="#bvid_` + item.bvid + `">
+							<img src='` + item.pic + `@412w_232h_1c.webp'><br>
+							<div class="dynamic_singlebox_vt">` + item.title + `</div>
+						</a>
+						<a href="#uid_` + item.owner.mid + `">
+						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
+						</a>
+					</div>
+				`;
+		}
+		openDlg("稍后再看", WebList, "https://www.bilibili.com/watchlater/#/list");
+	});
+}
+
 function getVidPlayingNow(){
 	/* 当前其他设备正在播放提示框 */
 	ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function(result){
@@ -353,6 +380,12 @@ window.onload = function(){
 		} else if(data[0] == "f"){
 			/* fid，打开指定收藏夹 */
 			getCollectionById(data.split("_")[1], data.split("_")[2]);
+		} else if(data.includes("history")){
+			/* history，查看播放历史 */
+			getUserHistory();
+		} else if(data.includes("watchlater")){
+			/* watchlater，查看稍后再看列表 */
+			getWatchLater();
 		} else if(data[0] == "n"){
 			let tab = data.split("_")[1];
 			/*if(tab == currentTab){return;}
@@ -362,8 +395,6 @@ window.onload = function(){
 			else if(tab == "space"){getMySpace();}
 			else if(tab == "search"){getSearchResult( prompt("[搜索] 输入关键字搜索") );}
 			currentTab = tab;
-		} else if(data[0] == "h"){
-			getUserHistory();
 		}
 	});
 }
