@@ -1,4 +1,5 @@
 var currentTab = "home";
+var currentUid = "114514";
 
 function ajaxGet(url, callback) {
 	var xhr = new XMLHttpRequest();
@@ -217,6 +218,7 @@ function getMySpace(){
 	ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function(result){
 		var usrInfo = JSON.parse(result);
 		var uid = usrInfo.data.profile.mid;
+		currentUid = uid;
 		var WebList = `
 			<br>
 			<table class="myspace_topInfoBox" cellpadding="0" cellspacing="0">
@@ -241,19 +243,69 @@ function getMySpace(){
 				</tr>
 			</table>
 			<br>
-			<div style="width:100%;display:flex;">
+			<div style="width:100%;display:flex; flex-wrap: wrap;">
 				<div class="myspace_dynamicSection">
-					<p align="left">最近动态</p>
-					<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
+					<p align="left">我的收藏</p>
+					<p align="right"><a href="#myfav_` + uid + `">[查看]</a></p>
 				</div>
 				<div class="myspace_historySection">
 					<p align="left">历史记录</p>
-					<p align="right"><a href="#history_default">[查看]</a></p>
+					<p align="right"><a href="#history_` + uid + `">[查看]</a></p>
+				</div>
+				<div class="myspace_dynamicSection">
+					<p align="left">最近动态</p>
+					<p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
 				</div>
 			</div>
 		`;
 		document.getElementById("item_container").innerHTML = WebList;
 		document.getElementById("dynamic_loader").style.display = "none";
+	});
+}
+
+function getMyCollectionList(){
+	/* [用户个人] 获取个人视频收藏夹列表 */
+	ajaxGet("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function(result){
+		var tjlist = JSON.parse(result);
+		var WebList = "";
+		for(var i = 0; i < tjlist.data.list.length; i++){
+			let item = tjlist.data.list[i];
+			let favIntro = item.intro??"暂无简介";
+			WebList += `<a href="#fav_` + item.id + `_` + item.media_count + `">
+					<div class='dynamic_singlebox' style='height:70px;'>
+						<div class="dynamic_singlebox_vt" style='height:55px'>
+							<i class='material-icons'>collections_bookmark_rounded</i><br/>
+							` + item.title + `
+						</div>
+						<div class="dynamic_singlebox_un">*&nbsp;` + favIntro + `</div>
+					</div>
+				</a>`;
+		}
+		openDlg("所有收藏夹", WebList, "https://space.bilibili.com/" + currentUid + "/favlist");
+	});
+}
+
+function getCollectionById(fid, mediaCount){
+	/* 按照收藏夹id获取收藏夹内容 */
+	mediaCount = parseInt(mediaCount);
+	ajaxGet("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function(result){
+		var tjlist = JSON.parse(result);
+		if (tjlist.code == -400) { alert("该收藏夹未被公开，暂时无法查看"); return; }
+		var WebList = "<a href='#myfav'>&nbsp;<i class='material-icons'>arrow_back_rounded</i></a><br>";
+		for(var i = 0; i < tjlist.data.medias.length; i++){
+			let item = tjlist.data.medias[i];
+			WebList += `<div class='dynamic_singlebox'>
+						<a href="#bvid_` + item.bvid + `">
+							<img src='` + item.cover + `@412w_232h_1c.webp'><br>
+							<div class="dynamic_singlebox_vt">` + item.title + `</div>
+						</a>
+						<a href="#uid_` + item.upper.mid + `">
+						 	<div class="dynamic_singlebox_un">🔘&nbsp;` + item.upper.name + `</div>
+						</a>
+					</div>
+				`;
+		}
+		openDlg("收藏夹 [FID:" + fid + "]", WebList, "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create");
 	});
 }
 
@@ -278,7 +330,6 @@ function getVidPlayingNow(){
 	});
 }
 
-
 window.onload = function(){
 	document.referrer="https://www.bilibili.com/";
 	getRecommendedVideos();
@@ -288,11 +339,20 @@ window.onload = function(){
 		/* 通过URL变化，替代点击事件 */
 		var data = window.location.href.split("#")[1];
 		if(data[0] == "b" || data[0] == "a"){
+			/* bvid或avid，播放视频 */
 			openPlayer(data.split("_")[1]);
 		} else if(data[0] == "u"){
+			/* uid，打开空间 */
 			getUserSpace(data.split("_")[1]);
 		} else if(data[0] == "i"){
+			/* image url，打开图片 */
 			openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
+		} else if(data.includes("myfav")){
+			/* myfav，打开收藏夹列表  */
+			getMyCollectionList();
+		} else if(data[0] == "f"){
+			/* fid，打开指定收藏夹 */
+			getCollectionById(data.split("_")[1], data.split("_")[2]);
 		} else if(data[0] == "n"){
 			let tab = data.split("_")[1];
 			/*if(tab == currentTab){return;}
@@ -313,5 +373,3 @@ document.getElementById("RefreshBtn").onclick = function(){
 	else if(currentTab == "subscriptions"){getSubscribedVideos();}
 	else if(currentTab == "space"){getMySpace();}
 }
-
-
