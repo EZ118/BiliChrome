@@ -33,9 +33,10 @@
 					<td align="right" width="380px">
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_coinBtn" title="投币">toll_rounded</i>
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_likeBtn" title="点赞">thumb_up_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_pipBtn" title="画中画">picture_in_picture_rounded</i>
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_scrSwitchBtn" title="切换弹幕模式">notes_rounded</i>
 						<i class="material-icons" style="width:35px;cursor:pointer;" id="player_openNewBtn" title="在新标签页打开">open_in_new_rounded</i>
-						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_closeBtn" title="关闭播放器">close_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_closeBtn" title="关闭播放器 (Ctrl+Q)">close_rounded</i>
 					</td>
 				</tr>
 				<tr>
@@ -58,8 +59,8 @@
 						<b id="dlg_title">[窗口标题]</b>
 					</td>
 					<td align="right" width="280px">
-						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_openNewBtn">open_in_new_rounded</i>
-						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_closeBtn">close_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_openNewBtn" title="在新标签页打开">open_in_new_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="dlg_closeBtn" title="关闭窗口 (Ctrl+Q)">close_rounded</i>
 					</td>
 				</tr>
 				<tr>
@@ -69,6 +70,9 @@
 				</tr>
 			</table>
 		</div>
+
+		<!-- 自定义Toast -->
+		<div id="toast_container"></div>
 
 		<script src="./include/jquery.min.js"></script>
 		<script src="./include/dlg.js"></script>
