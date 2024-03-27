@@ -2,7 +2,7 @@ var currentTab = "home";
 var currentUid = "114514";
 
 function ajaxGet(url, callback) {
-    $.get(url, function(data, status) {
+    $.get(url, function (data, status) {
         if (status === "success") {
             callback(data);
         } else {
@@ -15,7 +15,7 @@ function getSearchResult(wd) {
     if (!wd) { return; }
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
         var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b>" + wd + "</b>的搜索结果：</p><br>";
         for (var i = 0; i < tjlist.data.result[11].data.length; i++) {
             let card = tjlist.data.result[11].data[i];
@@ -42,7 +42,7 @@ function getRecommendedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
     for (let i = 1; i <= 2; i++) {
-        ajaxGet("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function(tjlist) {
+        ajaxGet("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
             var WebList = "";
             for (var i = 0; i < tjlist.data.item.length; i++) {
                 WebList += `<div class='dynamic_singlebox'>
@@ -64,7 +64,7 @@ function getRecommendedVideos() {
 function getHotVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             WebList += `<div class='wide_singlebox'>
@@ -89,7 +89,7 @@ function getHotVideos() {
 function getSubscribedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function(tjlist) {
+    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.cards.length; i++) {
             let card = JSON.parse(tjlist.data.cards[i].card);
@@ -114,7 +114,7 @@ function getSubscribedVideos() {
 
 function getUserSpace(uid) {
     var WebList = "";
-    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function(FeedJson) {
+    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function (FeedJson) {
         for (var i = 0; i < FeedJson.data.cards.length; i++) {
             itm = FeedJson.data.cards[i];
 
@@ -122,7 +122,7 @@ function getUserSpace(uid) {
             var VidDesc = "";
             var LinkUrl = "default";
             var card_json = JSON.parse(itm.card);
-            try { VidDesc = card_json.item.content; } catch (e) {}
+            try { VidDesc = card_json.item.content; } catch (e) { }
             try {
                 VidDesc = card_json.title;
                 if (card_json.pic) {
@@ -130,7 +130,7 @@ function getUserSpace(uid) {
                 }
                 if (card_json.aid) { LinkUrl = "aid_" + card_json.aid; }
 
-            } catch (e) {}
+            } catch (e) { }
 
             try {
                 if (card_json.item.pictures_count != null) {
@@ -144,12 +144,12 @@ function getUserSpace(uid) {
                         if (j % 3 == 2) { ImgUrl += "<br/>"; }
                     }
                 }
-            } catch (e) {}
+            } catch (e) { }
 
             if (VidDesc == null) { VidDesc = ""; }
             if (LinkUrl == null) { LinkUrl = "default"; }
 
-            if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")) {} else {
+            if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")) { } else {
                 VidDesc = VidDesc.split("\n").join("<br>")
                 WebList += `
                     <div class='space_singlebox' align='left'>
@@ -173,7 +173,7 @@ function getUserSpace(uid) {
 function getMySpace() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function(usrInfo) {
+    ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function (usrInfo) {
         var uid = usrInfo.data.profile.mid;
         currentUid = uid;
         var WebList = `
@@ -230,7 +230,7 @@ function getMySpace() {
 }
 
 function getUserHistory() {
-    ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
@@ -250,7 +250,7 @@ function getUserHistory() {
 }
 
 function getMyCollectionList() {
-    ajaxGet("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
@@ -271,7 +271,7 @@ function getMyCollectionList() {
 
 function getCollectionById(fid, mediaCount) {
     mediaCount = parseInt(mediaCount);
-    ajaxGet("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
         var WebList = "<a href='#myfav'>&nbsp;<i class='material-icons'>arrow_back_rounded</i></a><br>";
         for (var i = 0; i < tjlist.data.medias.length; i++) {
@@ -292,7 +292,7 @@ function getCollectionById(fid, mediaCount) {
 }
 
 function getWatchLater() {
-    ajaxGet("https://api.bilibili.com/x/v2/history/toview", function(tjlist) {
+    ajaxGet("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
@@ -313,7 +313,7 @@ function getWatchLater() {
 }
 
 function getVidPlayingNow() {
-    ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function(vidInfo) {
+    ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
             container = document.createElement("a");
             container.href = "#bvid_" + vidInfo.data.history.bvid;
@@ -324,42 +324,47 @@ function getVidPlayingNow() {
                     <i>（4秒后自动关闭）</i>
                 </div>`;
             document.body.appendChild(container);
-            setTimeout(function() {
-				$(container).fadeOut(700);
+            setTimeout(function () {
+                $(container).fadeOut(700);
             }, 3500);
         }
     });
 }
 
-window.onload = function() {
+function routeCtrl() {
+    var data = window.location.href.split("#")[1];
+    if (data[0] == "b" || data[0] == "a") {
+        openPlayer(data.split("_")[1]);
+    } else if (data[0] == "u") {
+        getUserSpace(data.split("_")[1]);
+    } else if (data[0] == "i") {
+        openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
+    } else if (data.includes("myfav")) {
+        getMyCollectionList();
+    } else if (data[0] == "f") {
+        getCollectionById(data.split("_")[1], data.split("_")[2]);
+    } else if (data.includes("history")) {
+        getUserHistory();
+    } else if (data.includes("watchlater")) {
+        getWatchLater();
+    } else if (data[0] == "n") {
+        let tab = data.split("_")[1];
+        if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { getSearchResult(prompt("[搜索] 输入关键字搜索")); }
+        currentTab = tab;
+    }
+}
+
+window.onload = function () {
     document.referrer = "https://www.bilibili.com/";
     getRecommendedVideos();
     getVidPlayingNow();
+    routeCtrl();
 
-    window.addEventListener('popstate', function(event) {
-        var data = window.location.href.split("#")[1];
-        if (data[0] == "b" || data[0] == "a") {
-            openPlayer(data.split("_")[1]);
-        } else if (data[0] == "u") {
-            getUserSpace(data.split("_")[1]);
-        } else if (data[0] == "i") {
-            openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
-        } else if (data.includes("myfav")) {
-            getMyCollectionList();
-        } else if (data[0] == "f") {
-            getCollectionById(data.split("_")[1], data.split("_")[2]);
-        } else if (data.includes("history")) {
-            getUserHistory();
-        } else if (data.includes("watchlater")) {
-            getWatchLater();
-        } else if (data[0] == "n") {
-            let tab = data.split("_")[1];
-            if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { getSearchResult(prompt("[搜索] 输入关键字搜索")); }
-            currentTab = tab;
-        }
+    window.addEventListener('popstate', function (event) {
+        routeCtrl();
     });
 }
 
-$("#RefreshBtn").click(function() {
+$("#RefreshBtn").click(function () {
     if (currentTab == "home") { getRecommendedVideos(); } else if (currentTab == "hot") { getHotVideos(); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
 });
