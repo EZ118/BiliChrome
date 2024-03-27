@@ -55,6 +55,7 @@ chrome.contextMenus.create({
     id: 'viewInExt',
     type: 'normal',
     contexts: ['all'],
+    documentUrlPatterns: ['*://*.bilibili.com/*']
 });
 
 chrome.contextMenus.onClicked.addListener(function (item, tab) {
