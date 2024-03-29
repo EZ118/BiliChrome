@@ -1,16 +1,19 @@
 var dlgOpenNewNow = "";
 
-function openDlg(title, html, url) {
+function openDlg(title, html, url, style) {
 	if (!url) { url = ""; }
 
 	$('#dlg_container').fadeIn(200);
 	$('#dlg_content').html(html);
 	$('#dlg_title').html(title);
 	dlgOpenNewNow = url;
+
+	if (style) { $('#dlg_container').attr("style", style); }  /* 附加样式 */
 }
 
 function closeDlg() {
-	$('#dlg_container').fadeOut(200);
+	//$('#dlg_container').fadeOut(200);
+	$('#dlg_container').attr("style", "display:none;");
 	$('#dlg_content').html("");
 	$('#dlg_title').html("[默认标题]");
 	dlgOpenNewNow = "";

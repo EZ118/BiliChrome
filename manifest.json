@@ -1,6 +1,6 @@
 {
     "name": "Bili WebApp",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "description": "哔哩哔哩第三方浏览器客户端，对接B站API实现，所有客户端在线内容来自哔哩哔哩官方",
     "manifest_version": 3,
     "icons": {

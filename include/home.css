@@ -53,10 +53,12 @@ html{ height:100%; width:100%; }
 #player_descArea .reply i{color:#888; margin-left: 20px;}
 #player_scrComment{ width:80%; position:fixed; top:50px; left:85px; z-index:104; font-size:16px; color:#EEE; }
 .player_danmuText{ width: fit-content; max-width: 500px; font-size: 18px; font-weight: bold; opacity: 0.8; z-index: 104; position:fixed; color: #EEEEEE; text-shadow: 0 0 2px #000; }
+#player_relatedVidBtn { background: #3b3b3b; border: 0; border-radius: 20px; color: #FFF; padding: 8px 20px; cursor: pointer; position: fixed; bottom: 25px; right: 25px; transition: all 0.2s; }
+#player_relatedVidBtn:hover { background: #dc4879; border: 0; border-radius: 20px; color: #FFF; padding: 8px 20px; cursor: pointer; position: fixed; bottom: 25px; right: 25px; }
 
 /* 自定义对话框 */
 #dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100vw; height:100vh; background: rgba(0,0,0,0.4); }
-.dlg_container_real{ position:fixed; top:80px; left:20vw; width:60vw; height:calc(100vh - 160px); background:#1e2022; border-radius:8px; }
+.dlg_container_real{ position:relative; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#1e2022; border-radius:8px; }
 #dlg_content{ width:100%; height:100%; background:#17181a; overflow-y:auto; overflow-x:hidden; }
 #dlg_title{ margin-left:15px; font-size:18px; }
 #toast_container{display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background-color:#333;color:#fff;padding:8px 20px;border-radius:5px;z-index:9999}
