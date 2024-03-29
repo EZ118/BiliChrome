@@ -332,7 +332,8 @@ function getVidPlayingNow() {
 }
 
 function routeCtrl() {
-    var data = window.location.href.split("#")[1];
+    var baseUrl = window.location.href + "#";
+    var data = baseUrl.split("#")[1];
     if (data[0] == "b" || data[0] == "a") {
         openPlayer(data.split("_")[1]);
     } else if (data[0] == "u") {
