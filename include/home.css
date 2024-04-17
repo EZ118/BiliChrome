@@ -44,6 +44,12 @@ html{ height:100%; width:100%; }
 .sidenavItem:hover{ color:#00a1d6; transform:scale(1.1,1.1); box-shadow: 0 0 20px rgba(255,255,255,.7); background: #FFF; }	
 .sidenavItem .material-icons{ width: 24px; }
 
+/* 悬浮搜索框 */
+.searchbox_container{ position:fixed;top:0px;left:0px;width:100vw;height:100vh;z-index:105;background:rgba(0,0,0,0.6)}
+.searchbox_container .searchInput{ padding:15px 25px;outline:none;font-size:16px;border-radius:30px;color:#FFF;background:#1e2022;position:absolute;top:70px;left:50vw;transform:translateX(-50%);width:400px;border:1px solid #383942;box-shadow:0 10px 18px #00000038,0 6px 8px #00000029;transition:all .3s}
+.searchbox_container .searchInput:focus{ border:1px solid #51515b}
+.searchbox_container .searchClose{ position:absolute;top:84px;left:calc(50vw + 187px);color:#FFF;cursor:pointer;width:24px}
+
 /* 播放器 */
 #player_container{ position:fixed; top:0px; left:92px; z-index: 103; width:calc(100vw - 103px); height:100vh; background:#1e2022; border-radius: 20px 0px 0px 20px; }
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none;background:#000; }
@@ -85,3 +91,15 @@ html{ height:100%; width:100%; }
 .space_singlebox_un .userpic{width:30px;height:30px;border-radius:30px}
 .space_singlebox_un label{position:relative;top:-10px;left:5px}
 .space_singlebox_vt{color:#FFFFFF;width:100%;margin:5px 0px}
+
+
+
+/*
+	z-index层级：
+	105:搜索框遮罩
+	104:滚动弹幕
+	103:播放器
+	102:自定义对话框
+	101:刷新按钮
+	1000:悬浮目录
+*/

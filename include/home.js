@@ -16,7 +16,7 @@ function getSearchResult(wd) {
     $("#item_container").html("");
     $("#dynamic_loader").show();
     ajaxGet("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
-        var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b>" + wd + "</b>的搜索结果：</p><br>";
+        var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b style='user-select:text;'>" + wd + "</b>的搜索结果：</p>";
         for (var i = 0; i < tjlist.data.result[11].data.length; i++) {
             let card = tjlist.data.result[11].data[i];
             WebList += `<div class='wide_singlebox'>
@@ -335,22 +335,30 @@ function routeCtrl() {
     var baseUrl = window.location.href + "#";
     var data = baseUrl.split("#")[1];
     if (data[0] == "b" || data[0] == "a") {
+        /* 视频播放 */
         openPlayer(data.split("_")[1]);
     } else if (data[0] == "u") {
+        /* 用户空间 */
         getUserSpace(data.split("_")[1]);
     } else if (data[0] == "i") {
+        /* 图片查看 */
         openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
     } else if (data.includes("myfav")) {
+        /* 收藏夹列表 */
         getMyCollectionList();
     } else if (data[0] == "f") {
+        /* 收藏夹 */
         getCollectionById(data.split("_")[1], data.split("_")[2]);
     } else if (data.includes("history")) {
+        /* 观看历史 */
         getUserHistory();
     } else if (data.includes("watchlater")) {
+        /* 稍后再看 */
         getWatchLater();
     } else if (data[0] == "n") {
+        /* 导航栏 */
         let tab = data.split("_")[1];
-        if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { getSearchResult(prompt("[搜索] 输入关键字搜索")); }
+        if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchBox(); }
         currentTab = tab;
     }
 }
@@ -367,5 +375,6 @@ window.onload = function () {
 }
 
 $("#RefreshBtn").click(function () {
+    /* 刷新 */
     if (currentTab == "home") { getRecommendedVideos(); } else if (currentTab == "hot") { getHotVideos(); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
 });
