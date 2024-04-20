@@ -1,10 +1,12 @@
 // background.js
 
+/* 插件安装成功后，跳转到介绍页面 */
 chrome.runtime.onInstalled.addListener(function () {
     console.log('Bili WebApp Extension Installed!');
     chrome.tabs.create({ url: "https://ez118.github.io/biliweb/#installed" });
 });
 
+/* 为每一次API请求添加Referer请求头（Origin因为权限原因无法修改，目前未能解决） */
 chrome.declarativeNetRequest.updateDynamicRules({
     addRules: [
         {
@@ -51,7 +53,7 @@ chrome.declarativeNetRequest.updateDynamicRules({
 // });
 
 chrome.contextMenus.create({
-    title: '在 BiliChrome 中观看',
+    title: '在 BiliChrome 观看',
     id: 'viewInExt',
     type: 'normal',
     contexts: ['all'],
@@ -64,7 +66,13 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
     var purl = url.split("/");
     if (item.menuItemId == "viewInExt" && purl[3] == "video" && purl[4]) {
         var cmd = 'bvid_' + purl[4];
-        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + cmd });
+        //chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + cmd });
+        chrome.windows.create({ url: 'home.html#' + cmd, type: 'popup', width: 1210, height: 620 });
     }
 });
 
+/* 单独窗口 */
+chrome.action.onClicked.addListener(function(tab) {
+    chrome.windows.create({ url: 'home.html', type: 'popup', width: 950, height: 600 });
+});
+  
