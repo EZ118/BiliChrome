@@ -1,0 +1,19 @@
+{
+    "name": "BiliScape",
+    "short_name": "BiliScape",
+    "descriptions": "哔哩哔哩第三方浏览器客户端，对接B站API实现，所有客户端在线内容来自哔哩哔哩官方",
+    "start_url": "home.html",
+    "background_color": "#17181a",
+    "display": "standalone",
+    "theme_color": "#17181a",
+    "icons": [
+        {
+            "src": "./image/icon_64x64.png",
+            "type": "image/png"
+        },
+        {
+            "src": "./image/icon_128x128.png",
+            "type": "image/png"
+        }
+    ]
+}

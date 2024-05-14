@@ -39,21 +39,29 @@ chrome.declarativeNetRequest.updateDynamicRules({
 
 /* 右键菜单 */
 // chrome.contextMenus.create({
-//     title: 'BiliChrome',
+//     title: 'BiliScape',
 //     id: 'search',
 //     type: 'normal',
 //     contexts: ['all'],
 // });
 // chrome.contextMenus.create({
-//     title: '在 BiliChrome 中观看',
+//     title: '在 BiliScape 搜索',
+//     // parentId: 'search',
+//     id: 'viewInExt',
+//     type: 'normal',
+//     contexts: ['all']
+// });
+// chrome.contextMenus.create({
+//     title: '在 BiliScape 观看',
 //     // parentId: 'search',
 //     id: 'viewInExt',
 //     type: 'normal',
 //     contexts: ['all'],
+//     documentUrlPatterns: ['*://*.bilibili.com/*']
 // });
 
 chrome.contextMenus.create({
-    title: '在 BiliChrome 观看',
+    title: '在 BiliScape 观看',
     id: 'viewInExt',
     type: 'normal',
     contexts: ['all'],
@@ -66,8 +74,8 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
     var purl = url.split("/");
     if (item.menuItemId == "viewInExt" && purl[3] == "video" && purl[4]) {
         var cmd = 'bvid_' + purl[4];
-        //chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + cmd });
-        chrome.windows.create({ url: 'home.html#' + cmd, type: 'popup', width: 1210, height: 620 });
+        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + cmd });
+        //chrome.windows.create({ url: 'home.html#' + cmd, type: 'popup', width: 1220, height: 620 });
     }
 });
 
