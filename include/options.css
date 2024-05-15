@@ -20,9 +20,10 @@ h1, h2, h3, p { margin: 5px 0px; }
 .topNav .topNavItem{ color:#FFF; background: #393939; padding:6px 8px; border-radius: 5px; margin: 5px; }
 
 .container{ width:calc(100vw - 20px); margin: 10px; }
+.btn{ padding: 10px 15px; background:#1e2022; color:#FFF; border:1px solid #333; cursor:pointer; border-radius:15px; margin: 8px 1px; }
 
-#userCard { padding:10px; width:calc(100%); height:100px; background:#1e2022; border-radius:20px; border:1px solid #333; }
-#userCard img{height:80px; width:80px; border-radius: 14px; margin-right:10px;}
+#userCard { padding:10px; width:calc(100%); height:100px; background:#1e2022; border-radius:15px; border:1px solid #333; }
+#userCard img{height:80px; width:80px; border-radius: 10px; margin-right:10px;}
 #userCard .usrName{font-size: 22px;}
 #userCard .usrNums{font-size: 16px;}
 

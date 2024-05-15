@@ -1,13 +1,3 @@
-function ajaxGet(url, callback) {
-    $.get(url, function (data, status) {
-        if (status === "success") {
-            callback(data);
-        } else {
-            callback("Error: " + status);
-        }
-    });
-}
-
 function areKeysEqual(dict1, dict2) {
     const keys1 = Object.keys(dict1);
     const keys2 = Object.keys(dict2);
@@ -45,12 +35,23 @@ function removeStorage(key, callback) {
     });
 }
 
+function getConfig(item, callback){
+    var checkList = { "account":"account", "player":"player_cfg" };
+    chrome.storage.sync.get(checkList[item], function (result) {
+        if (result[item]) {
+            callback(result[item]);
+        } else {
+            callback(null);
+        }
+    });
+}
+
 function getAccount(uid, callback) {
     getStorage("account", function (detail) {
         if (detail) {
             callback(detail);
         } else if (!detail && uid && uid != "auto") {
-            ajaxGet("https://api.bilibili.com/x/web-interface/card?mid=" + uid, function (data) {
+            $.get("https://api.bilibili.com/x/web-interface/card?mid=" + uid, function (data, status) {
                 var result = {
                     "name": data.data.card.name,
                     "uid": data.data.card.mid,
@@ -58,13 +59,14 @@ function getAccount(uid, callback) {
                     "sex": data.data.card.sex,
                     "fans": data.data.card.fans,
                     "sign": data.data.card.sign,
-                    "level": data.data.card.level_info.current_level
+                    "level": data.data.card.level_info.current_level,
+                    "coins": null
                 };
                 setStorage("account", result);
                 callback(result);
-            })
+            });
         } else if (!detail && uid == "auto") {
-            ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function (data) {
+            $.get("https://api.bilibili.com/x/space/v2/myinfo?", function (data, status) {
                 if (data.code == -101) {
                     callback({ "name": null, "uid": null, "face": null, "sign": "未登录" });
                     console.log("未登录");
@@ -76,7 +78,8 @@ function getAccount(uid, callback) {
                     "sex": data.data.profile.sex,
                     "fans": data.data.follower,
                     "sign": data.data.profile.sign,
-                    "level": data.data.profile.level
+                    "level": data.data.profile.level,
+                    "coins": data.data.coins
                 };
                 setStorage("account", result);
                 callback(result);
@@ -95,7 +98,7 @@ function resetAccount() {
 
 
 
-function showUserSpace(uid) {
+function showUserCard(uid) {
     getAccount(uid, function (result) {
         if (!result.name) {
             $("#userCard").html(`
@@ -192,7 +195,6 @@ function optRouteCtrl() {
         $("#common_container").show();
         $("#player_container").hide();
         $("#more_container").hide();
-        showUserSpace("auto");
     } else if (data.includes("player")) {
         $("#common_container").hide();
         $("#player_container").show();
@@ -203,13 +205,29 @@ function optRouteCtrl() {
         $("#more_container").show();
     }
 }
-window.onload = function () {
+$(document).ready(function () {
     if (window.location.href.split("/").slice(-1)[0] === "options.html") {
         optRouteCtrl();
         showPlayerPref();
+        showUserCard("auto");
 
         window.addEventListener('popstate', function (event) {
             optRouteCtrl();
         });
+        $("#refreshUserInfo").click(function () {
+            $("#refreshUserInfo").hide();
+            $("#refreshUserInfo").html("刷新完成!");
+            $("#refreshUserInfo").fadeIn(1000);
+            resetAccount();
+        });
+        $("#restorePlayerCfg").click(function () {
+            $("#restorePlayerCfg").hide();
+            $("#restorePlayerCfg").html("已恢复为默认!");
+            $("#restorePlayerCfg").fadeIn(1000);
+            removeStorage("player_cfg");
+            setTimeout(function(){
+                showPlayerPref();
+            }, 500);
+        });
     }
-}
+});

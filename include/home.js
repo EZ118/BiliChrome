@@ -1,21 +1,11 @@
 var currentTab = "home";
 var currentUid = "114514";
 
-function ajaxGet(url, callback) {
-    $.get(url, function (data, status) {
-        if (status === "success") {
-            callback(data);
-        } else {
-            callback("Error: " + status);
-        }
-    });
-}
-
 function getSearchResult(wd) {
     if (!wd) { return; }
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
+    $.get("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
         var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b style='user-select:text;'>" + wd + "</b>的搜索结果：</p>";
         for (var i = 0; i < tjlist.data.result[11].data.length; i++) {
             let card = tjlist.data.result[11].data[i];
@@ -42,7 +32,7 @@ function getRecommendedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
     for (let i = 1; i <= 2; i++) {
-        ajaxGet("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
+        $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
             var WebList = "";
             for (var i = 0; i < tjlist.data.item.length; i++) {
                 WebList += `<div class='dynamic_singlebox'>
@@ -64,7 +54,7 @@ function getRecommendedVideos() {
 function getHotVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
+    $.get("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             WebList += `<div class='wide_singlebox'>
@@ -89,7 +79,7 @@ function getHotVideos() {
 function getSubscribedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
+    $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.cards.length; i++) {
             let card = JSON.parse(tjlist.data.cards[i].card);
@@ -114,7 +104,7 @@ function getSubscribedVideos() {
 
 function getUserSpace(uid) {
     var WebList = "";
-    ajaxGet("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function (FeedJson) {
+    $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function (FeedJson) {
         for (var i = 0; i < FeedJson.data.cards.length; i++) {
             itm = FeedJson.data.cards[i];
 
@@ -173,28 +163,28 @@ function getUserSpace(uid) {
 function getMySpace() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    ajaxGet("https://api.bilibili.com/x/space/v2/myinfo?", function (usrInfo) {
-        var uid = usrInfo.data.profile.mid;
-        currentUid = uid;
-        var WebList = `
+    getAccount("auto", function (usrInfo) {
+        currentUid = usrInfo.uid;
+        
+        $("#item_container").html(`
             <br>
             <table class="myspace_topInfoBox" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td><img src="` + usrInfo.data.profile.face + `@256w_256h_1c.webp"></td>
+                    <td><img src="` + usrInfo.face + `@256w_256h_1c.webp"></td>
                     <td width="10px"></td>
                     <td>
-                        <b class="usrName">` + usrInfo.data.profile.name + `</b>&nbsp;&nbsp;<i>` + usrInfo.data.profile.sex + `</i><br>
-                        LEVEL:&nbsp;<i>` + usrInfo.data.profile.level + `</i><br>
-                        <i>` + usrInfo.data.profile.sign + `</i>
+                        <b class="usrName">` + usrInfo.name + `</b>&nbsp;&nbsp;<i>` + usrInfo.sex + `</i><br>
+                        LEVEL:&nbsp;<i>` + usrInfo.level + `</i><br>
+                        <i>` + usrInfo.sign + `</i>
                     </td>
                     <td style="width: calc(98vw - 100px - 480px)"></td>
                     <td align="center">
-                        <b class="usrNums">` + usrInfo.data.coins + `</b><br>
+                        <b class="usrNums">` + usrInfo.coins + `</b><br>
                         <i>硬币</i>
                     </td>
                     <td width="30px"></td>
                     <td align="center">
-                        <b class="usrNums">` + usrInfo.data.follower + `</b><br>
+                        <b class="usrNums">` + usrInfo.fans + `</b><br>
                         <i>粉丝</i>
                     </td>
                 </tr>
@@ -203,34 +193,33 @@ function getMySpace() {
             <div style="width:100%;display:flex; flex-wrap: wrap;">
                 <div class="myspace_dynamicSection">
                     <p align="left">我的收藏</p>
-                    <p align="right"><a href="#myfav_` + uid + `">[查看]</a></p>
+                    <p align="right"><a href="#myfav_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
                 <div class="myspace_historySection">
                     <p align="left">历史记录</p>
-                    <p align="right"><a href="#history_` + uid + `">[查看]</a></p>
+                    <p align="right"><a href="#history_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
                 <div class="myspace_dynamicSection">
                     <p align="left">最近动态</p>
-                    <p align="right"><a href="#uid_` + uid + `">[查看]</a></p>
+                    <p align="right"><a href="#uid_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
                 <div class="myspace_historySection">
                     <p align="left">稍后再看</p>
-                    <p align="right"><a href="#watchlater_` + uid + `">[查看]</a></p>
+                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
             </div>
-			
-			<center style="margin-top:calc(90vh - 330px); z-index: -1;">
-				<a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;">前往Github查看项目</a><br>
-				<font color="#888">提示：ctrl+Q可快速关闭视频等窗口</font>
-			</center>
-        `;
-        $("#item_container").html(WebList);
+            
+            <center style="margin-top:calc(90vh - 330px); z-index: -1;">
+                <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;">前往Github查看项目</a><br>
+                <font color="#888">提示：ctrl+Q可快速关闭视频等窗口</font>
+            </center>
+        `);
         $("#dynamic_loader").hide();
     });
 }
 
 function getUserHistory() {
-    ajaxGet("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function (tjlist) {
+    $.get("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
@@ -250,7 +239,7 @@ function getUserHistory() {
 }
 
 function getMyCollectionList() {
-    ajaxGet("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function (tjlist) {
+    $.get("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
@@ -271,7 +260,7 @@ function getMyCollectionList() {
 
 function getCollectionById(fid, mediaCount) {
     mediaCount = parseInt(mediaCount);
-    ajaxGet("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
+    $.get("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
         var WebList = "<a href='#myfav'>&nbsp;<i class='material-icons'>arrow_back_rounded</i></a><br>";
         for (var i = 0; i < tjlist.data.medias.length; i++) {
@@ -292,7 +281,7 @@ function getCollectionById(fid, mediaCount) {
 }
 
 function getWatchLater() {
-    ajaxGet("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
+    $.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
@@ -313,7 +302,7 @@ function getWatchLater() {
 }
 
 function getVidPlayingNow() {
-    ajaxGet("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
+    $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
             container = document.createElement("a");
             container.href = "#bvid_" + vidInfo.data.history.bvid;
@@ -332,8 +321,7 @@ function getVidPlayingNow() {
 }
 
 function routeCtrl() {
-    var baseUrl = window.location.href + "#";
-    var data = baseUrl.split("#")[1];
+    var data = window.location.hash.substring(1);
     if (data[0] == "b" || data[0] == "a") {
         /* 视频播放 */
         openPlayer(data.split("_")[1]);
@@ -360,19 +348,21 @@ function routeCtrl() {
         let tab = data.split("_")[1];
         if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchBox(); }
         currentTab = tab;
+    } else {
+        getRecommendedVideos();
     }
 }
 
-window.onload = function () {
+$(document).ready(function () {
     document.referrer = "https://www.bilibili.com/";
-    getRecommendedVideos();
+
     getVidPlayingNow();
     routeCtrl();
 
     window.addEventListener('popstate', function (event) {
         routeCtrl();
     });
-}
+});
 
 $("#RefreshBtn").click(function () {
     /* 刷新 */
