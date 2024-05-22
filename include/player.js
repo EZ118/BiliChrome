@@ -122,6 +122,16 @@ function showScreenComment(content) {
 	});
 }
 
+function loadVideoSource(bvid) {
+	/* 加载视频源 */
+	$.get("https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=" + bvid + "&cid=" + cid + "&qn=64&high_quality=" + player_highQuality, function (result) {
+		/* 获取视频播放源 */
+		vidUrl = result.data.durl[0].url;
+		$("#player_videoContainer").attr("src", vidUrl);
+		bvidPlayingNow = bvid;
+	});
+}
+
 function openPlayer(bvid) {
 	/* 显示播放器并展示指定视频 */
 	$("#player_container").fadeIn(200);
@@ -140,13 +150,7 @@ function openPlayer(bvid) {
 		$("#player_descArea").html(VideoInfo["data"]["desc"]);
 
 		getScreenComment(cid); /* 获取弹幕 */
-
-		$.get("https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=" + bvid + "&cid=" + cid + "&qn=64&high_quality=" + player_highQuality, function (result) {
-			/* 获取视频播放源 */
-			vidUrl = result.data.durl[0].url;
-			$("#player_videoContainer").attr("src", vidUrl);
-			bvidPlayingNow = bvid;
-		});
+		loadVideoSource(bvid); /* 获取视频源 */
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
@@ -247,7 +251,7 @@ $(document).ready(function () {
 			player_highQuality = 1;
 			showToast("已切换为高画质", 5000);
 		}
-		openPlayer(bvidPlayingNow);
+		loadVideoSource(bvidPlayingNow);
 	});
 
 	setInterval(function () {
