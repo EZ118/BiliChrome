@@ -61,6 +61,7 @@ $(document).ready(function () {
 
 
 	$(document).keydown(function (event) {
+		/* 快捷键: ctrl+Q快速关闭窗口 */
 		if (event.ctrlKey && event.key === 'q') {
 			event.preventDefault();
 
@@ -83,6 +84,8 @@ $(document).ready(function () {
 	});
 });
 
+/* 阻止页面关闭 */
+/*
 window.onbeforeunload = function (e) {
 	e = e || window.event;
 	if (e) {
@@ -90,3 +93,4 @@ window.onbeforeunload = function (e) {
 	}
 	return "nothing";
 }
+*/
