@@ -4,7 +4,6 @@
 		<title>哔哩哔哩</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
-		<!-- <meta name="referrer" content="https://www.bilibili.com/"> -->
 		<link rel="stylesheet" type="text/css" href="https://fonts.googlefonts.cn/icon?family=Material+Icons">
 		<link rel="stylesheet" type="text/css" href="./include/home.css">
 		<link rel="manifest" href="./pwa.json">
@@ -43,6 +42,7 @@
 					<td align="right" width="380px">
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_coinBtn" title="投币">toll_rounded</i>
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_likeBtn" title="点赞">thumb_up_rounded</i>
+						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_highQnBtn" title="高画质(1080P)">high_quality_rounded</i>
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_pipBtn" title="画中画">picture_in_picture_rounded</i>
 						<i class="material-icons" style="width:30px;cursor:pointer;" id="player_scrSwitchBtn" title="切换弹幕模式">notes_rounded</i>
 						<i class="material-icons" style="width:35px;cursor:pointer;" id="player_openNewBtn" title="在新标签页打开">open_in_new_rounded</i>
@@ -52,6 +52,7 @@
 				<tr>
 					<td align="center">
 						<video src="" id="player_videoContainer" controls></video>
+						<!-- <iframe src="" id="player_videoContainer" frameborder="0" allowfullscreen></iframe> -->
 					</td>
 					<td align="left" style="border-left:1px solid #666;" width="380px">
 						<div id="player_descArea">暂无</div>

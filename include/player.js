@@ -1,8 +1,9 @@
-var biliJctData = "";
-var bvidPlayingNow = "";
-var player_scrCommerts = [];
-var player_scrCommertCnt = 0;
-var player_fancyScreenComment = false;
+var biliJctData = ""; /* 登录凭据 */
+var bvidPlayingNow = ""; /* 正在播放的bvid */
+var player_danmuList = []; /* 弹幕列表 */
+var player_danmuCnt = 0; /* 弹幕数量 */
+var player_advancedDanmu = false; /* 高级弹幕显示模式 */
+var player_highQuality = 0; /* 视频高画质Flag,1为开启,0为关闭 */
 
 function xml2json(xml) {
 	/* xml转json */
@@ -76,7 +77,7 @@ function getScreenComment(cid) {
 				console.log("弹幕装填出错（解析时）")
 			}
 		}
-		player_scrCommerts = newInfo.sort(commentSortMethod);
+		player_danmuList = newInfo.sort(commentSortMethod);
 	});
 }
 
@@ -140,7 +141,7 @@ function openPlayer(bvid) {
 
 		getScreenComment(cid); /* 获取弹幕 */
 
-		$.get("https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=" + bvid + "&cid=" + cid + "&qn=64", function (result) {
+		$.get("https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=" + bvid + "&cid=" + cid + "&qn=64&high_quality=" + player_highQuality, function (result) {
 			/* 获取视频播放源 */
 			vidUrl = result.data.durl[0].url;
 			$("#player_videoContainer").attr("src", vidUrl);
@@ -158,8 +159,8 @@ function closePlayer() {
 	/* 关闭播放器 */
 	$("#player_container").fadeOut(150);
 	$("#player_videoContainer").attr("src", "");
-	player_scrCommerts = [];
-	player_scrCommertCnt = 0;
+	player_danmuList = [];
+	player_danmuCnt = 0;
 }
 
 
@@ -227,27 +228,38 @@ $(document).ready(function () {
 		doGiveCoin(bvidPlayingNow); /* 投币 */
 	});
 	$("#player_scrSwitchBtn").click(function () {
-		player_fancyScreenComment = !player_fancyScreenComment; /* 切换弹幕模式 */
-		showToast("弹幕模式已切换，当前模式：" + (player_fancyScreenComment ? "全屏滑动弹幕模式" : "简单弹幕模式"));
+		player_advancedDanmu = !player_advancedDanmu; /* 切换弹幕模式 */
+		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "全屏滑动弹幕模式" : "简单弹幕模式"));
 	});
 	$("#player_pipBtn").click(function () {
 		var pip = $("#player_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
 		showToast("画中画", 1000);
-	})
+	});
 	$("#player_relatedVidBtn").click(function () {
 		getRelatedVideos(); /* 获取相关视频 */
-	})
+	});
+	$("#player_highQnBtn").click(function () {
+		/* 切换高画质 */
+		if(player_highQuality == 1) {
+			player_highQuality = 0;
+			showToast("已切换为普通画质", 5000);
+		} else {
+			player_highQuality = 1;
+			showToast("已切换为高画质", 5000);
+		}
+		openPlayer(bvidPlayingNow);
+	});
 
 	setInterval(function () {
-		if (!player_scrCommerts || player_scrCommerts.length == 0) { return; }
+		if (!player_danmuList || player_danmuList.length == 0) { return; }
 		try {
-			if (player_scrCommerts[player_scrCommertCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
-				if (player_fancyScreenComment) {
-					showScreenComment(player_scrCommerts[player_scrCommertCnt]["text"]);
+			if (player_danmuList[player_danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
+				if (player_advancedDanmu) {
+					showScreenComment(player_danmuList[player_danmuCnt]["text"]);
 				} else {
-					$("#player_scrComment").html("<b>「弹幕」</b>" + player_scrCommerts[player_scrCommertCnt]["text"]);
+					$("#player_scrComment").html("<b>「弹幕」</b>" + player_danmuList[player_danmuCnt]["text"]);
 				}
-				player_scrCommertCnt += 1;
+				player_danmuCnt += 1;
 			}
 		} catch (e) { console.log("弹幕装填出错（显示时）" + e) }
 	}, 100);
