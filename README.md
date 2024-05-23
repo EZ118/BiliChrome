@@ -1,5 +1,6 @@
 # BiliScape
-Bilibili third-party client for browsers. 第三方哔哩哔哩客户端浏览器插件
+Bilibili third-party client for browsers. 第三方哔哩哔哩客户端浏览器插件   
+安装：[在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)
 
 ## 安装   
 chrome/edge插件管理，打开开发者模式，加载已解压的扩展，选择所在文件夹，点击确定即可   
