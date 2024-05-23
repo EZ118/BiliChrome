@@ -52,15 +52,18 @@
 				<tr>
 					<td align="center">
 						<video src="" id="player_videoContainer" controls></video>
-						<!-- <iframe src="" id="player_videoContainer" frameborder="0" allowfullscreen></iframe> -->
 					</td>
-					<td align="left" style="border-left:1px solid #666;" width="380px">
+					<td align="left" style="border-left:1px solid #666; vertical-align:top;" width="380px">
+						<div class="player_sidebarTabs">
+							<p id="player_sidebarTab_1" class="player_sidebarTab_sel">详情&amp;评论</p>
+							<p id="player_sidebarTab_2" class="player_sidebarTab">相关推荐</p>
+						</div>
 						<div id="player_descArea">暂无</div>
+						<div id="player_videoList" style="display:none;">无视频</div>
 					</td>
 				</tr>
 			</table>
 			<div id="player_scrComment"></div>
-			<button id="player_relatedVidBtn" title="查看推荐视频列表">推荐视频</button>
 		</div>
 
 		<!-- 自定义对话框 -->

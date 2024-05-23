@@ -65,7 +65,7 @@ function commentSortMethod(x, y) {
 	return x["time"] - y["time"];
 }
 
-function getScreenComment(cid) {
+function getDanmu(cid) {
 	/* 获取弹幕 */
 	$.get("https://comment.bilibili.com/" + cid + ".xml", function (s) {
 		cInfo = xml2json(s).i.d;
@@ -81,30 +81,7 @@ function getScreenComment(cid) {
 	});
 }
 
-function getRelatedVideos(bvid) {
-	/* 获取推荐视频 */
-	bvid = bvid ? bvid : bvidPlayingNow;
-	$.get("https://api.bilibili.com/x/web-interface/archive/related?bvid=" + bvid, function (res) {
-		var VidList = "";
-		for (i in res.data) {
-			let item = res.data[i];
-
-			VidList += `<div class='dynamic_singlebox'>
-					<a href="#bvid_` + item.bvid + `">
-						<img src='` + item.pic + `@412w_232h_1c.webp'><br>
-						<div class="dynamic_singlebox_vt">` + item.title + `</div>
-					</a>
-					<a href="#uid_` + item.owner.mid + `">
-						<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
-					</a>
-				</div>`
-		}
-
-		openDlg("", VidList, "https://space.bilibili.com/video/" + bvid, "left:calc(100vw - 445px);z-index: 106; width: 420px; right: 0px; top: 0px; bottom: 0px; background:none;");
-	})
-}
-
-function showScreenComment(content) {
+function showDanmu(content) {
 	/* 装填高级弹幕 */
 	var containerWidth = $("#player_container").innerWidth() - 380;
 	var containerHeight = $("#player_container").innerHeight() - 20;
@@ -132,15 +109,23 @@ function loadVideoSource(bvid) {
 	});
 }
 
-function openPlayer(bvid) {
+function openPlayer(option) {
 	/* 显示播放器并展示指定视频 */
-	$("#player_container").fadeIn(200);
 
-	if (bvid[0] == "B") {
-		urlStr = "bvid=" + bvid;
+	/* 视频ID */
+	if (option.bvid) {
+		urlStr = "bvid=" + option.bvid;
+	} else if (option.aid) {
+		urlStr = "aid=" + option.aid;
 	} else {
-		urlStr = "aid=" + bvid;
+		console.log("[ERROR] 播放器参数错误：缺少一个可用的bvid或aid");
+		showToast("播放器参数错误");
+		return;
 	}
+
+	$("#player_container").fadeIn(200);
+	
+	/* 视频详情 */
 	$.get("https://api.bilibili.com/x/web-interface/view?" + urlStr, function (VideoInfo) {
 		/* 获取视频信息 */
 		cid = VideoInfo["data"]["pages"][0]["cid"];
@@ -149,14 +134,59 @@ function openPlayer(bvid) {
 		$("#player_title").html(VideoInfo["data"]["title"]);
 		$("#player_descArea").html(VideoInfo["data"]["desc"]);
 
-		getScreenComment(cid); /* 获取弹幕 */
+		getDanmu(cid); /* 获取弹幕 */
+
 		loadVideoSource(bvid); /* 获取视频源 */
+
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
 			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll);
 		});
 	});
+
+	if (option.refreshOnly) { return; }
+	
+	/* 侧边栏列表 */
+	if(option.videoList == "watch_later") {
+		$("#player_sidebarTab_2").text("稍后再看");
+		
+		$.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
+			var WebList = "";
+			for (var i = 0; i < tjlist.data.list.length; i++) {
+				let item = tjlist.data.list[i];
+				WebList += `<div class='dynamic_singlebox'>
+							<a href="#bvid_` + item.bvid + `_refreshonly">
+								<img src='` + item.pic + `@412w_232h_1c.webp'><br>
+								<div class="dynamic_singlebox_vt">` + item.title + `</div>
+							</a>
+							<a href="#uid_` + item.owner.mid + `">
+								<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
+							</a>
+						</div>
+					`;
+			}
+			$("#player_videoList").html(WebList)
+		});
+	} else {
+		$.get("https://api.bilibili.com/x/web-interface/archive/related?bvid=" + option.bvid, function (res) {
+			var VidList = "";
+			for (i in res.data) {
+				let item = res.data[i];
+
+				VidList += `<div class='dynamic_singlebox'>
+						<a href="#bvid_` + item.bvid + `">
+							<img src='` + item.pic + `@412w_232h_1c.webp'><br>
+							<div class="dynamic_singlebox_vt">` + item.title + `</div>
+						</a>
+						<a href="#uid_` + item.owner.mid + `">
+							<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
+						</a>
+					</div>`
+			}
+			$("#player_videoList").html(VidList);
+		});
+	}
 }
 
 function closePlayer() {
@@ -239,9 +269,6 @@ $(document).ready(function () {
 		var pip = $("#player_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
 		showToast("画中画", 1000);
 	});
-	$("#player_relatedVidBtn").click(function () {
-		getRelatedVideos(); /* 获取相关视频 */
-	});
 	$("#player_highQnBtn").click(function () {
 		/* 切换高画质 */
 		if(player_highQuality == 1) {
@@ -254,12 +281,30 @@ $(document).ready(function () {
 		loadVideoSource(bvidPlayingNow);
 	});
 
+
+	/* 侧边栏标签切换 */
+	$("#player_sidebarTab_1").click(function () {
+		$("#player_descArea").show();
+		$("#player_videoList").hide();
+		$("#player_sidebarTab_1").attr("class", 'player_sidebarTab_sel');
+		$("#player_sidebarTab_2").attr("class", 'player_sidebarTab');
+	});
+	$("#player_sidebarTab_2").click(function () {
+		$("#player_descArea").hide();
+		$("#player_videoList").show();
+		
+		$("#player_sidebarTab_1").attr("class", 'player_sidebarTab');
+		$("#player_sidebarTab_2").attr("class", 'player_sidebarTab_sel');
+	});
+
+
+	/* 弹幕输出 */
 	setInterval(function () {
 		if (!player_danmuList || player_danmuList.length == 0) { return; }
 		try {
 			if (player_danmuList[player_danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
 				if (player_advancedDanmu) {
-					showScreenComment(player_danmuList[player_danmuCnt]["text"]);
+					showDanmu(player_danmuList[player_danmuCnt]["text"]);
 				} else {
 					$("#player_scrComment").html("<b>「弹幕」</b>" + player_danmuList[player_danmuCnt]["text"]);
 				}

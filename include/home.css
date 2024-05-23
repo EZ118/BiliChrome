@@ -60,10 +60,14 @@ html{ height:100%; width:100%; }
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{color:#EEE; margin-left:15px;}
 #player_descArea .reply i{color:#888; margin-left: 20px;}
+#player_videoList{user-select:none; word-wrap:break-word; word-break:break-all; height:100%; font-size: 16px; color:#DDD;overflow-y:auto; }
 #player_scrComment{ width:80%; position:fixed; top:50px; left:85px; z-index:104; font-size:16px; color:#EEE; }
 .player_danmuText{ width: fit-content; max-width: 500px; font-size: 18px; font-weight: bold; opacity: 0.8; z-index: 104; position:fixed; color: #EEEEEE; text-shadow: 0 0 2px #000; }
-#player_relatedVidBtn { background: #3b3b3b; border: 0; border-radius: 20px; color: #FFF; padding: 8px 20px; cursor: pointer; position: fixed; bottom: 25px; right: 25px; transition: all 0.2s; }
-#player_relatedVidBtn:hover { background: #00a1d6; border: 0; border-radius: 20px; color: #FFF; padding: 8px 20px; cursor: pointer; position: fixed; bottom: 25px; right: 25px; }
+
+.player_sidebarTabs { display:flex; flex-direction:row; overflow: hidden; height:fit-content; margin-bottom: 10px; }
+.player_sidebarTabs .player_sidebarTab_sel { padding:5px 8px; border-bottom: 4px solid #00a1d6; font-size: 15px; margin: 8px 5px 0px 0px; cursor:pointer;}
+.player_sidebarTabs .player_sidebarTab { padding:5px 8px; border-bottom: 4px solid #333; font-size: 15px; margin: 8px 5px 0px 0px; cursor:pointer;}
+
 
 /* 自定义对话框 */
 #dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100vw; height:100vh; background: rgba(0,0,0,0.4); }

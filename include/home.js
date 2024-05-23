@@ -287,7 +287,7 @@ function getWatchLater() {
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
             WebList += `<div class='dynamic_singlebox'>
-                        <a href="#bvid_` + item.bvid + `">
+                        <a href="#bvid_` + item.bvid + `_watchlater">
                             <img src='` + item.pic + `@412w_232h_1c.webp'><br>
                             <div class="dynamic_singlebox_vt">` + item.title + `</div>
                         </a>
@@ -322,9 +322,20 @@ function getVidPlayingNow() {
 
 function routeCtrl() {
     var data = window.location.hash.substring(1);
-    if (data[0] == "b" || data[0] == "a") {
-        /* 视频播放 */
-        openPlayer(data.split("_")[1]);
+    if (data.includes("bvid")) {
+        /* 视频播放bvid */
+        openPlayer({
+            bvid: data.split("_")[1],
+            refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
+            videoList: data.includes("watchlater") ? "watch_later" : null
+        });
+    } else if (data.includes("aid")) {
+        /* 视频播放aid */
+        openPlayer({
+            aid: data.split("_")[1],
+            refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
+            videoList: data.includes("watchlater") ? "watch_later" : null
+        });
     } else if (data[0] == "u") {
         /* 用户空间 */
         getUserSpace(data.split("_")[1]);
