@@ -320,7 +320,7 @@ function getVidPlayingNow() {
     });
 }
 
-function routeCtrl() {
+function routeCtrl(isOnload) {
     var data = window.location.hash.substring(1);
     if (data.includes("bvid")) {
         /* 视频播放bvid */
@@ -362,13 +362,17 @@ function routeCtrl() {
     } else {
         getRecommendedVideos();
     }
+
+    if (isOnload == true && data[0] != "n") {
+        getRecommendedVideos();
+    }
 }
 
 $(document).ready(function () {
     document.referrer = "https://www.bilibili.com/";
 
     getVidPlayingNow();
-    routeCtrl();
+    routeCtrl(isOnload=true);
 
     window.addEventListener('popstate', function (event) {
         routeCtrl();
