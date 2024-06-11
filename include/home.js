@@ -79,6 +79,7 @@ function getHotVideos() {
 function getSubscribedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
+    
     $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.cards.length; i++) {
@@ -100,6 +101,29 @@ function getSubscribedVideos() {
         $("#item_container").html(WebList);
         $("#dynamic_loader").hide();
     });
+    /* $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?type=video", function (tjlist) {
+        var WebList = "";
+        for (var i = 0; i < tjlist.data.items.length; i++) {
+            var card = tjlist.data.items[i].modules;
+            var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
+            var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
+            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
+                            <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
+                                <img src='` + card.module_dynamic.major.archive.cover + `@412w_232h_1c.webp'><br>
+                            </a>
+                            <div height="100%">
+                                <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
+                                    <div class="wide_singlebox_vt">` + card.module_dynamic.major.archive.title + `</div>
+                                </a>
+                                <a href="#uid_` + card.module_author.mid + `">
+                                    <div class="wide_singlebox_un">🔘&nbsp;` + card.module_author.name + `</div>
+                                </a>
+                            </div>
+                        </div>`;
+        }
+        $("#item_container").html(WebList);
+        $("#dynamic_loader").hide();
+    }); */
 }
 
 function getUserSpace(uid) {
