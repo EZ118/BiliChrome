@@ -57,16 +57,18 @@ function getHotVideos() {
     $.get("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
-            WebList += `<div class='wide_singlebox'>
-                            <a href="#bvid_` + tjlist.data.list[i].bvid + `">
-                                <img src='` + tjlist.data.list[i].pic + `@412w_232h_1c.webp'><br>
+            var card = tjlist.data.list[i];
+            var tooltipText = '- 点赞数量: ' + card.stat.like  + '\n- 视频简介: ' + (card.desc ? card.desc : "无简介") + (card.rcmd_reason.content ? ("\n- 推荐原因: " + card.rcmd_reason.content) : "");
+            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
+                            <a href="#bvid_` + card.bvid + `">
+                                <img src='` + card.pic + `@412w_232h_1c.webp'><br>
                             </a>
                             <div height="100%">
-                                <a href="#bvid_` + tjlist.data.list[i].bvid + `">
-                                    <div class="wide_singlebox_vt">` + tjlist.data.list[i].title + `</div>
+                                <a href="#bvid_` + card.bvid + `">
+                                    <div class="wide_singlebox_vt">` + card.title + `</div>
                                 </a>
-                                <a href="#uid_` + tjlist.data.list[i].owner.mid + `">
-                                    <div class="wide_singlebox_un">🔘&nbsp;` + tjlist.data.list[i].owner.name + `</div>
+                                <a href="#uid_` + card.owner.mid + `">
+                                    <div class="wide_singlebox_un">🔘&nbsp;` + card.owner.name + `</div>
                                 </a>
                             </div>
                         </div>`;
@@ -83,8 +85,11 @@ function getSubscribedVideos() {
     $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
         var WebList = "";
         for (var i = 0; i < tjlist.data.cards.length; i++) {
-            let card = JSON.parse(tjlist.data.cards[i].card);
-            WebList += `<div class='wide_singlebox'>
+            var card = JSON.parse(tjlist.data.cards[i].card);
+            console.log(card.dynamic)
+            var dynamicDesc = card.dynamic ? ("- 动态内容: " + card.dynamic + "\n") : "";
+            var tooltipText = dynamicDesc + '- 点赞数量: ' + card.stat.like + '\n- 视频简介: ' + (card.desc ? card.desc : "无简介");
+            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
                             <a href="#aid_` + card.aid + `">
                                 <img src='` + card.pic + `@412w_232h_1c.webp'><br>
                             </a>
