@@ -41,6 +41,7 @@ function xml2json(xml) {
 }
 
 function parseComments(comments) {
+	/* 解析评论 */
 	let result = '';
 
 	comments.forEach(comment => {
@@ -151,6 +152,7 @@ function openPlayer(option) {
 	
 	/* 侧边栏列表 */
 	if(option.videoList == "watch_later") {
+		/* 如果是从稍后再看列表进入的话，侧边栏显示稍后再看列表 */
 		$("#player_sidebarTab_2").text("稍后再看");
 		
 		$.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
@@ -171,6 +173,7 @@ function openPlayer(option) {
 			$("#player_videoList").html(WebList)
 		});
 	} else {
+		/* 如果是从普通视频页面进入的话，侧边栏显示推荐视频 */
 		$.get("https://api.bilibili.com/x/web-interface/archive/related?" + urlStr, function (res) {
 			var VidList = "";
 			for (i in res.data) {
@@ -302,7 +305,7 @@ $(document).ready(function () {
 
 	/* 弹幕输出 */
 	setInterval(function () {
-		if (!player_danmuList || player_danmuList.length == 0) { return; }
+		if (!player_danmuList || player_danmuList.length == 0 || player_danmuList.length <= player_danmuCnt) { return; }
 		try {
 			if (player_danmuList[player_danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
 				if (player_advancedDanmu) {
@@ -314,4 +317,14 @@ $(document).ready(function () {
 			}
 		} catch (e) { console.log("弹幕装填出错（显示时）" + e) }
 	}, 100);
+
+	(function(){
+		/* 视频播放完毕事件 */
+		$("#player_videoContainer").bind('ended', function(){
+			$("#player_videoContainer")[0].currentTime = 0;
+			player_danmuCnt = 0;
+			showToast("视频播放完毕", 1000);
+		});
+	})();
+	
 });
