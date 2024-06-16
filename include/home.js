@@ -133,59 +133,56 @@ function getSubscribedVideos() {
 
 function getUserSpace(uid) {
     var WebList = "";
-    $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" + uid, function (FeedJson) {
-        for (var i = 0; i < FeedJson.data.cards.length; i++) {
-            itm = FeedJson.data.cards[i];
-
+    $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=" + uid, function(data) {
+        data.data.items.forEach(item => {
             var ImgUrl = "";
             var VidDesc = "";
             var LinkUrl = "default";
-            var card_json = JSON.parse(itm.card);
-            try { VidDesc = card_json.item.content; } catch (e) { }
-            try {
-                VidDesc = card_json.title;
-                if (card_json.pic) {
-                    ImgUrl = '<img class="videopic" src="' + card_json.pic + '@240w_135h_1c.jpg" onerror="this.remove()">';
-                }
-                if (card_json.aid) { LinkUrl = "aid_" + card_json.aid; }
+            var user = item.modules.module_author;
+            var avatarUrl = user.face;
+            var username = user.name;
+            var mid = user.mid;
+            var dynamicType = item.type;
+            var card_json = item;
 
-            } catch (e) { }
-
-            try {
-                if (card_json.item.pictures_count != null) {
-                    VidDesc = card_json.item.description;
-                    for (var j = 0; j < card_json.item.pictures.length; j++) {
-                        d = card_json.item.pictures[j];
-                        ImgUrl += `
-                            <a href="#img-` + encodeURI(d.img_src) + `">
-                                <img class="dailypic" src="` + d.img_src + `@256w_256h_1e_1c_!web-dynamic.jpg">
-                            </a>`;
-                        if (j % 3 == 2) { ImgUrl += "<br/>"; }
-                    }
+            if (dynamicType === 'DYNAMIC_TYPE_AV' && card_json.modules.module_dynamic.major) {
+                var video = card_json.modules.module_dynamic.major.archive;
+                VidDesc = video.title;
+                ImgUrl = '<img class="videopic" src="' + video.cover + '" onerror="this.remove()">';
+                LinkUrl = "bvid_" + video.bvid;
+            } else if (dynamicType === 'DYNAMIC_TYPE_WORD' || dynamicType === 'DYNAMIC_TYPE_DRAW') {
+                VidDesc = card_json.modules.module_dynamic.desc.text;
+                if (dynamicType === 'DYNAMIC_TYPE_DRAW' && card_json.modules.module_dynamic.major) {
+                    var imageUrl = card_json.modules.module_dynamic.major.draw.items[0].src;
+                    ImgUrl = `<a href="#img-` + encodeURI(imageUrl) + `"><img class="dailypic" src="` + imageUrl + `@256w_256h_1e_1c_!web-dynamic.jpg"></a>`;
                 }
-            } catch (e) { }
+            }
 
             if (VidDesc == null) { VidDesc = ""; }
             if (LinkUrl == null) { LinkUrl = "default"; }
 
             if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")) { } else {
-                VidDesc = VidDesc.split("\n").join("<br>")
+                VidDesc = VidDesc.split("\n").join("<br>");
                 WebList += `
                     <div class='space_singlebox' align='left'>
                         <a>
                             <div class="space_singlebox_un">
-                                <img class="userpic" src='` + itm.desc.user_profile.info.face + `'>
-                                <label>&nbsp;` + itm.desc.user_profile.info.uname + `</label>
+                                <img class="userpic" src='${avatarUrl}'>
+                                <label>&nbsp;${username}</label>
                             </div>
                         </a>
-                        <a href='#` + LinkUrl + `'>
-                            <div class='space_singlebox_vt'>` + VidDesc + `</div>
-                            ` + ImgUrl + `
+                        <a href='#${LinkUrl}'>
+                            <div class='space_singlebox_vt'>${VidDesc}</div>
+                            ${ImgUrl}
                         </a>
-                </div>`;
+                    </div>`;
             }
-        }
-        openDlg("用户空间 (" + uid + ")", WebList, "https://space.bilibili.com/" + uid);
+        });
+
+        openDlg("用户空间 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid);
+    }).fail(function() {
+        console.log("Error fetching data.");
+        showToast("个人空间加载失败")
     });
 }
 
