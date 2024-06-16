@@ -236,6 +236,10 @@ function getMySpace() {
                     <p align="left">稍后再看</p>
                     <p align="right"><a href="#watchlater_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
+                <div class="myspace_dynamicSection">
+                    <p align="left">评论回复</p>
+                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `">[查看]</a></p>
+                </div>
             </div>
             
             <center style="margin-top:calc(90vh - 330px); z-index: -1;">
@@ -330,6 +334,32 @@ function getWatchLater() {
     });
 }
 
+function getMsgReply(){
+    $.get("https://api.bilibili.com/x/msgfeed/reply?platform=web&build=0&mobi_app=web&ps=40", function (msgInfo) {
+        var WebList = "";
+        for(var i = 0; i < msgInfo.data.items.length; i++) {
+            var item = msgInfo.data.items[i];
+            WebList += `<div class='thinstrip_msgBox'>
+                <a href="#uid_` + item.user.mid + `">
+                    <div class='thinstrip_msgBox_headline'>
+                        <img src='` + item.user.avatar + `@45w_45h_1c.webp'>
+                        <span class='thinstrip_msgBox_username'>` + item.user.nickname + `</span>
+                    </div>
+                </a>
+                <br/>
+                <a href="#aid_` + item.item.subject_id + `">
+                    <div class='thinstrip_msgBox_contentline'>
+                        <p class='quote'>回复&nbsp;“` + item.item.root_reply_content + `”</p>
+                        <pre class='content'>` + item.item.source_content + `</pre>
+                    </div>
+                </a>
+            </div>`;
+        }
+        WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
+        openDlg("评论回复", WebList, "https://message.bilibili.com/#/reply");
+    });
+}
+
 function getVidPlayingNow() {
     $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
@@ -383,6 +413,9 @@ function routeCtrl(isOnload) {
     } else if (data.includes("watchlater")) {
         /* 稍后再看 */
         getWatchLater();
+    } else if (data.includes("replymsg"))  {
+        /* 消息中心 - 评论回复列表 */
+        getMsgReply();
     } else if (data[0] == "n") {
         /* 导航栏 */
         let tab = data.split("_")[1];
