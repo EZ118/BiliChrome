@@ -32,12 +32,12 @@ html{ height:100%; width:100%; }
 .wide_singlebox_vt .keyword{ color:#00a1d6; }
 
 /* 条形消息卡片 */
-.thinstrip_msgBox{ background:transparent; border:1px solid #3b3b3b; border-radius:10px; padding:10px; margin:5px; width:90%; margin-left:calc(5% - 10px); }
-.thinstrip_msgBox_headline{ display:flex; vertical-align:center; line-height: 31px; }
+.thinstrip_msgBox{ background:transparent; border:1px solid #3b3b3b; border-radius:10px; padding:8px 10px; margin:5px; width:90%; margin-left:calc(5% - 10px); }
+.thinstrip_msgBox_headline{ display:flex; vertical-align:center; line-height: 31px; margin:5px 0px; }
 .thinstrip_msgBox_headline img{ border-radius: 30px; width:30px; height:30px; margin-right:5px; }
 .thinstrip_msgBox_headline span{ margin-left:5px; font-weight:bold; font-size:15px; }
-.thinstrip_msgBox_contentline .quote{ background:#333; color:#DDD; border-radius:4px; padding:5px; margin:3px 0px; border-left:4px solid #003344; width:98%; font-size:11px; font-style:italic; }
-.thinstrip_msgBox_contentline .content{ width:fit-content; max-width:98%; white-space:pre-wrap; word-wrap:break-word; font-size:12px; font-family:parent; margin:3px 0px; }
+.thinstrip_msgBox_contentline .quote{ background:#333; color:#DDD; border-radius:4px; padding:5px; margin:5px 0px; border-left:4px solid #003344; width:98%; font-size:11px; font-style:italic; }
+.thinstrip_msgBox_contentline .content{ width:fit-content; max-width:98%; white-space:pre-wrap; word-wrap:break-word; font-size:12px; font-family:parent; margin:5px 0px; }
 
 /* 页面主体 */
 #dynamic_loader{ margin-left:calc(50% - 50px);margin-top:50px;font-size:40px; }

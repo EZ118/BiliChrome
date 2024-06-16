@@ -346,7 +346,6 @@ function getMsgReply(){
                         <span class='thinstrip_msgBox_username'>` + item.user.nickname + `</span>
                     </div>
                 </a>
-                <br/>
                 <a href="#aid_` + item.item.subject_id + `">
                     <div class='thinstrip_msgBox_contentline'>
                         <p class='quote'>回复&nbsp;“` + item.item.root_reply_content + `”</p>
