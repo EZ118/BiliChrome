@@ -208,28 +208,25 @@ function doLikeVid(bvid) {
 	/* 点赞视频 */
 	$.post("https://api.bilibili.com/x/web-interface/archive/like", "bvid=" + bvid + "&like=1&csrf=" + biliJctData)
 		.done(function (res) {
-			res = res.responseJSON;
 			if (res.code == 0) { showToast("点赞成功"); }
 			else if (res.code == 65006) { showToast("已赞过"); }
 			else { showToast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】\nB站官方点赞API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:173）");
+			showToast("【失败】\nB站官方点赞API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:216）");
 		})
 }
 
 function doGiveCoin(bvid) {
 	/* 投币视频 */
-	$.post("https://api.bilibili.com/x/web-interface/coin/add", "bvid=" + bvid + "&upid=114514&multiply=1&avtype=1")
+	$.post("https://api.bilibili.com/x/web-interface/coin/add", "bvid=" + bvid + "&upid=114514&multiply=1&avtype=1&csrf=" + biliJctData)
 		.done(function (res) {
-			alert("s")
-			res = res.responseJSON;
 			if (res.code == 0) { showToast("投币成功"); }
 			else if (res.code == 65006) { showToast("已投过"); }
 			else { showToast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】\nB站官方投币API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:184）");
+			showToast("【失败】\nB站官方投币API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:229）");
 		})
 }
 
