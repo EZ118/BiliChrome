@@ -2,7 +2,7 @@
 
 /* 插件安装成功后，跳转到介绍页面 */
 chrome.runtime.onInstalled.addListener(function () {
-    console.log('Bili WebApp Extension Installed!');
+    console.log('BliScape Extension Installed!');
     chrome.tabs.create({ url: "https://ez118.github.io/biliweb/#installed" });
 });
 
