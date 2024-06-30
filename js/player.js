@@ -232,18 +232,9 @@ function doGiveCoin(bvid) {
 
 function getJctStr() {
 	/* 获取B站用户数据（仅用于请求相关API） */
-	chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
-		var finalVal = "";
-		for (let i = 0; i < cookies.length; i++) {
-			if (cookies[i]["name"] == "bili_jct") {
-				finalVal = cookies[i]["value"];
-				break;
-			}
-		}
-
-		biliJctData = finalVal;
-		return finalVal;
-	});
+	getJctToken(function (token) {
+		biliJctData = token;
+	})
 }
 
 $(document).ready(function () {
