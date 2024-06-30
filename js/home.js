@@ -255,6 +255,10 @@ function getMySpace() {
                     <p align="right"><a href="#myfav_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
                 <div class="myspace_subSection">
+                    <p align="left">我的关注</p>
+                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `">[查看]</a></p>
+                </div>
+                <div class="myspace_subSection">
                     <p align="left">历史记录</p>
                     <p align="right"><a href="#history_` + usrInfo.uid + `">[查看]</a></p>
                 </div>
@@ -269,6 +273,10 @@ function getMySpace() {
                 <div class="myspace_subSection">
                     <p align="left">评论回复</p>
                     <p align="right"><a href="#replymsg_` + usrInfo.uid + `">[查看]</a></p>
+                </div>
+                <div class="myspace_subSection">
+                    <p align="left">将订阅导出到PipePipe</p>
+                    <p align="right"><a href="#export_subscription">[查看]</a></p>
                 </div>
             </div>
             
@@ -301,6 +309,39 @@ function getUserHistory() {
                 `;
         }
         openDlg("观看历史（近30条）", "<div class='flex_container'>" + WebList + "</div>", "https://www.bilibili.com/account/history");
+    });
+}
+
+function getUserSubscription(uid) {
+    $("#item_container").html("");
+    $("#dynamic_loader").show();
+    var requests = [];
+    var WebList = "";
+    for (let i = 1; i <= 6; i++) {
+        let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
+            if (tjlist.data.list.length <= 0) { return; }
+
+            for (var j = 0; j < tjlist.data.list.length; j++) {
+                var item = tjlist.data.list[j];
+                WebList += `<a href="#uid_` + item.mid + `">
+                        <div class='dynamic_singlebox' style='height:90px;'>
+                            <div class="dynamic_singlebox_vt" style='height:35px; line-height:30px; display:flex; flex-direction:row; vertical-align:middle;'>
+                                <img style='height:30px;width:30px;border-radius:25px;' src='` + item.face + `@45w_45h_1c.webp'>
+                                &nbsp;
+                                <b>` + item.uname + `</b>
+                            </div>
+                            <div class="dynamic_singlebox_un">[简介]&nbsp; ` + (item.sign||"<i>无</i>") + `</div>
+                        </div>
+                    </a>`;
+            }
+        });
+        requests.push(request);
+    }
+    $.when.apply($, requests).done(function () {
+        setTimeout(function () {
+            $("#item_container").html("<p style='margin:0px 10px 0px 10px;font-size:16px;'>关注列表：</p><div class='flex_container'>" + WebList + "</div>");
+            $("#dynamic_loader").hide();
+        }, 400);
     });
 }
 
@@ -349,7 +390,7 @@ function getCollectionById(fid, mediaCount) {
 
 function getWatchLater() {
     $.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
-        if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
+        if (tjlist.code == -400) { showToast("暂时无法查看"); return; }
         var WebList = "";
         for (var i = 0; i < tjlist.data.list.length; i++) {
             let item = tjlist.data.list[i];
@@ -400,9 +441,9 @@ function getVidPlayingNow() {
             container.href = "#bvid_" + vidInfo.data.history.bvid;
             container.innerHTML = `<div class="continuation_alertBox">
                     <img src="` + vidInfo.data.cover + `@240w_135h_1c.jpg">
-                    <b>` + vidInfo.data.title + `</b><br>
-                    <p>🔘&nbsp;` + vidInfo.data.author_name + `</p>
-                    <i>（4秒后自动关闭）</i>
+                    <p class="continuation_alertBox_vt">` + vidInfo.data.title + `</p>
+                    <p class="continuation_alertBox_un">🔘&nbsp;` + vidInfo.data.author_name + `</p>
+                    <p align="right" style="font-size:10px;">（其他设备观看了该视频，4秒后关闭）</p>
                 </div>`;
             document.body.appendChild(container);
             setTimeout(function () {
@@ -428,16 +469,20 @@ function routeCtrl(isOnload) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
-    } else if (data[0] == "u") {
+    } else if (data.includes("uid")) {
         /* 用户空间 */
         getUserSpace(data.split("_")[1]);
-    } else if (data[0] == "i") {
+    } else if (data.includes("img-")) {
         /* 图片查看 */
         openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
         getMyCollectionList();
-    } else if (data[0] == "f") {
+    } else if (data.includes("mysubscription")) {
+        /* 订阅up主列表 */
+        if (isOnload) { setTimeout(function () { getUserSubscription(currentUid); }, 300); }
+        else { getUserSubscription(currentUid); }
+    } else if (data.includes("fav_")) {
         /* 收藏夹 */
         getCollectionById(data.split("_")[1], data.split("_")[2]);
     } else if (data.includes("history")) {
@@ -446,9 +491,17 @@ function routeCtrl(isOnload) {
     } else if (data.includes("watchlater")) {
         /* 稍后再看 */
         getWatchLater();
+        getUserHistory();
     } else if (data.includes("replymsg"))  {
         /* 消息中心 - 评论回复列表 */
         getMsgReply();
+    } else if (data.includes("export_subscription")) {
+        /* 导出订阅（pipepipe格式 -options.js） */
+        getAccount("auto", function(usrInfo){
+            alert("【将订阅导出到PipePipe】\n该功能将会获取您的订阅列表，并导出为PipePipe兼容格式。订阅列表的获取需要5s~20s的时间，转换完成后将通过浏览器下载保存。");
+            saveSubscriptionForPipePipe(usrInfo.uid);
+        });
+        
     } else if (data[0] == "n") {
         /* 导航栏 */
         let tab = data.split("_")[1];
@@ -465,14 +518,15 @@ function routeCtrl(isOnload) {
 
 $(document).ready(function () {
     document.referrer = "https://www.bilibili.com/";
-
-    getVidPlayingNow();
-    routeCtrl(isOnload=true);
-
+    
     getAccount("auto", function (usrInfo) {
+        /* 载入用户信息 */
         currentUid = usrInfo.uid;
         if(!usrInfo.uid) { showToast("您未登录，建议登录后使用") }
     });
+
+    getVidPlayingNow();
+    routeCtrl(isOnload=true);
 
     window.addEventListener('popstate', function (event) {
         routeCtrl();

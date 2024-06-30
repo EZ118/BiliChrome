@@ -35,8 +35,8 @@ function removeStorage(key, callback) {
     });
 }
 
-function getConfig(item, callback){
-    var checkList = { "account":"account", "player":"player_cfg" };
+function getConfig(item, callback) {
+    var checkList = { "account": "account", "player": "player_cfg" };
     chrome.storage.sync.get(checkList[item], function (result) {
         if (result[item]) {
             callback(result[item]);
@@ -94,7 +94,48 @@ function resetAccount() {
         })
     })
 }
+function getJctToken(callback) {
+	/* 获取B站账号登录凭据（用于接口请求时的身份验证） */
+	chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
+		var finalVal = "";
+		for (let i = 0; i < cookies.length; i++) {
+			if (cookies[i]["name"] == "bili_jct") {
+				finalVal = cookies[i]["value"];
+				break;
+			}
+		}
+		callback(finalVal);
+	});
+}
+function downloadFile(fileName, text) {
+    const url = window.URL || window.webkitURL || window;
+    const blob = new Blob([text]);
+    const saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    saveLink.href = url.createObjectURL(blob);
+    // 设置 download 属性
+    saveLink.download = fileName;
+    saveLink.click();
+}
+function saveSubscriptionForPipePipe(uid) {
+    var requests = WebList = [];
 
+    for (let i = 1; i <= 6; i++) {
+        let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
+            if (tjlist.data.list.length <= 0) { return; }
+
+            for (var j = 0; j < tjlist.data.list.length; j++) {
+                WebList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + tjlist.data.list[j].mid, "name": tjlist.data.list[j].uname });
+            }
+        });
+
+        requests.push(request);
+    }
+
+    $.when.apply($, requests).done(function () {
+        WebList = { "app_version": "3.4.3", "app_version_int": 105100, "subscriptions": WebList };
+        downloadFile("pipepipe_subscriptions_" + uid + ".json", JSON.stringify(WebList));
+    });
+}
 
 
 
@@ -109,7 +150,7 @@ function showUserCard(uid) {
                     <td align="left">
                         <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
                             <b class="usrName">未登录</b><br>
-                            <i>点击此登录</i>
+                            <i>点此登录</i>
                         </a>
                     </td>
                     <td align="right" width="50px">
@@ -225,7 +266,7 @@ $(document).ready(function () {
             $("#restorePlayerCfg").html("已恢复为默认!");
             $("#restorePlayerCfg").fadeIn(1000);
             removeStorage("player_cfg");
-            setTimeout(function(){
+            setTimeout(function () {
                 showPlayerPref();
             }, 500);
         });
