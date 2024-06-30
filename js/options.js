@@ -117,14 +117,14 @@ function downloadFile(fileName, text) {
     saveLink.click();
 }
 function saveSubscriptionForPipePipe(uid) {
-    var requests = WebList = [];
+    var requests = [];
+    var finalList = [];
 
     for (let i = 1; i <= 6; i++) {
         let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
             if (tjlist.data.list.length <= 0) { return; }
-
             for (var j = 0; j < tjlist.data.list.length; j++) {
-                WebList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + tjlist.data.list[j].mid, "name": tjlist.data.list[j].uname });
+                finalList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + tjlist.data.list[j].mid, "name": tjlist.data.list[j].uname });
             }
         });
 
@@ -132,13 +132,13 @@ function saveSubscriptionForPipePipe(uid) {
     }
 
     $.when.apply($, requests).done(function () {
-        WebList = { "app_version": "3.4.3", "app_version_int": 105100, "subscriptions": WebList };
-        downloadFile("pipepipe_subscriptions_" + uid + ".json", JSON.stringify(WebList));
+        finalList = {"app_version":"3.4.3","app_version_int":105100,"subscriptions":finalList};
+        downloadFile("pipepipe_subscriptions_" + uid + ".json", JSON.stringify(finalList));
     });
 }
 
 
-
+/* OPTIONS.JS 页面脚本 */
 function showUserCard(uid) {
     getAccount(uid, function (result) {
         if (!result.name) {
