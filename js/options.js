@@ -123,9 +123,9 @@ function saveSubscriptionForPipePipe(uid) {
     for (let i = 1; i <= 6; i++) {
         let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
             if (tjlist.data.list.length <= 0) { return; }
-            for (var j = 0; j < tjlist.data.list.length; j++) {
-                finalList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + tjlist.data.list[j].mid, "name": tjlist.data.list[j].uname });
-            }
+            $.each(tjlist.data.list,function(index,item){
+                finalList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + item.mid, "name": item.uname });
+            });
         });
 
         requests.push(request);

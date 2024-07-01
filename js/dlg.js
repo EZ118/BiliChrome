@@ -30,7 +30,12 @@ function showToast(message, duration) {
 /* 全局事件 */
 $(document).ready(function () {
 	$('#dlg_openNewBtn').click(function () {
-		chrome.tabs.create({ url: dlgOpenNewNow });
+		/* 对话框右上角“在新标签页中打开” */
+		if (dlgOpenNewNow[0] == "#") {
+			location.href = "dlgOpenNewNow";
+		} else {
+			chrome.tabs.create({ url: dlgOpenNewNow });
+		}
 	});
 
 	$('#dlg_closeBtn').click(function () {
@@ -39,6 +44,7 @@ $(document).ready(function () {
 
 
 	$(document).keydown(function (event) {
+		/* Ctrl + Q 快捷键关闭对话框事件处理 */
 		if (event.ctrlKey && event.key === 'q') {
 			event.preventDefault();
 
