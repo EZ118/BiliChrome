@@ -230,16 +230,11 @@ function doGiveCoin(bvid) {
 		})
 }
 
-function getJctStr() {
-	/* 获取B站用户数据（仅用于请求相关API） */
-	getJctToken(function (token) {
-		biliJctData = token;
-	})
-}
-
 $(document).ready(function () {
 	/* 登录数据获取 */
-	getJctStr();
+	getJctToken(function (token) {
+		biliJctData = token;
+	});
 
 	/* 按钮事件监听 */
 	$("#player_openNewBtn").click(function () {
