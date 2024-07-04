@@ -67,8 +67,8 @@ function getDanmu(cid) {
 	$.get("https://comment.bilibili.com/" + cid + ".xml", function (s) {
 		cInfo = xml2json(s).i.d;
 		newInfo = [];
-		
-		$.each(cInfo,function(index,item){
+
+		$.each(cInfo, function (index, item) {
 			try {
 				newInfo.push({ "text": item["#text"], "time": parseFloat(item["@attributes"]["p"].split(",")[0]) });
 			} catch (e) {
@@ -111,6 +111,27 @@ function loadVideoSource(bvid, cid) {
 	});
 }
 
+function loadCidList(pages) {
+	/* 如果视频包含多个分P视频，则加载分P列表 */
+	var cidList = "";
+	$.each(pages, function (index, item) {
+		if (index == 0) {
+			cidList += "<div class='player_cidListItem player_cidListItem_selected' cid-data='" + item.cid + "' page-num='" + item.page + "'>" + item.part + "</div>";
+		} else {
+			cidList += "<div class='player_cidListItem' cid-data='" + item.cid + "' page-num='" + item.page + "'>" + item.part + "</div>";
+		}
+	});
+	$("#player_descArea").append("<br><hr><b style='font-size:18px;'>[选集]</b><div class='flex_container'>" + cidList + "</div>");
+	$(".player_cidListItem").click(function () {
+		var cid = $(this).attr("cid-data");
+		var page = $(this).attr("page-num");
+		$(".player_cidListItem").removeClass("player_cidListItem_selected");
+		$(this).addClass("player_cidListItem_selected");
+		showToast("正在加载分P视频 [P" + page + "]");
+		loadVideoSource(bvidPlayingNow, cid);
+	});
+}
+
 function openPlayer(option) {
 	/* 显示播放器并展示指定视频 */
 
@@ -130,7 +151,8 @@ function openPlayer(option) {
 	/* 视频详情 */
 	$.get("https://api.bilibili.com/x/web-interface/view?" + urlStr, function (VideoInfo) {
 		/* 获取视频信息 */
-		var cid = VideoInfo["data"]["pages"][0]["cid"];
+		var cid = VideoInfo["data"]["cid"];
+		var cidPages = VideoInfo["data"]["pages"];
 		var bvid = VideoInfo["data"]["bvid"];
 		var aid = VideoInfo["data"]["aid"];
 		var desc = VideoInfo["data"]["desc"] || "-";
@@ -138,8 +160,8 @@ function openPlayer(option) {
 		$("#player_title").html(VideoInfo["data"]["title"]);
 		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc);
 
+		if (cidPages.length > 1) { loadCidList(cidPages); } /* 显示分P视频列表 */
 		getDanmu(cid); /* 获取弹幕 */
-
 		loadVideoSource(bvid, cid); /* 获取视频源 */
 
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
@@ -158,7 +180,7 @@ function openPlayer(option) {
 
 		$.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
 			var WebList = "";
-			$.each(tjlist.data.list,function(index,item){
+			$.each(tjlist.data.list, function (index, item) {
 				WebList += `<div class='dynamic_singlebox'>
 							<a href="#bvid_` + item.bvid + `_refreshonly">
 								<img src='` + item.pic + `@412w_232h_1c.webp'><br>
@@ -178,7 +200,7 @@ function openPlayer(option) {
 
 		$.get("https://api.bilibili.com/x/web-interface/archive/related?" + urlStr, function (res) {
 			var VidList = "";
-			$.each(res.data,function(index,item){
+			$.each(res.data, function (index, item) {
 				VidList += `<div class='dynamic_singlebox'>
 						<a href="#bvid_` + item.bvid + `">
 							<img src='` + item.pic + `@412w_232h_1c.webp'><br>
