@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>设置 | BiliScape</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googlefonts.cn/icon?family=Material+Icons">
+	<link rel="stylesheet" type="text/css" href="./css/options.css">
+</head>
+
+<body>
+	<div class="topNav">
+		<a href="#common">
+			<p class="topNavItem">通用设置</p>
+		</a>
+		<a href="#player">
+			<p class="topNavItem">播放设置</p>
+		</a>
+		<a href="#more">
+			<p class="topNavItem">更多信息</p>
+		</a>
+	</div>
+
+	<div id="common_container" class="container">
+		<table id="userCard" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="left" width="80px">
+					<img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif">
+				</td>
+				<td align="left" width="5px"></td>
+				<td align="left">
+					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
+						<b class="usrName">未登录</b><br>
+						<i>点击此登录</i>
+					</a>
+				</td>
+				<td align="right" width="50px">
+					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
+						<b class="usrNums"> ▶ &nbsp;&nbsp;</b><br>
+					</a>
+				</td>
+			</tr>
+		</table>
+		<button id="refreshUserInfo" class="btn">刷新用户信息</button>&nbsp;
+		<button id="restorePlayerCfg" class="btn">恢复播放设置为默认</button>
+	</div>
+	<div id="player_container" class="container" style="display: none;">
+		加载中...
+	</div>
+	<div id="more_container" class="container" align="center" style="display: none;">
+		<br><br>
+		<img src="./img/icon_128x128.png" width="80px"><br />
+		<a href="https://github.com/EZ118/BiliChrome" target="_blank">
+			<h1>BiliScape</h1>
+		</a>
+		<b>第三方哔哩哔哩客户端浏览器插件</b><br><br>
+		<a href="https://github.com/EZ118/" target="_blank"><i>Developed by EZ118</i></a>
+	</div>
+
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/options.js"></script>
+</body>
+
+</html>
