@@ -40,17 +40,18 @@ function xml2json(xml) {
 	return obj;
 }
 
-function parseComments(comments) {
+function parseComments(comments, cnt = 0) {
 	/* 解析评论 */
 	let result = '';
 
-	comments.forEach(comment => {
+	$.each(comments, function (index, comment) {
 		const { member, content, replies, ctime } = comment;
 		const timeString = new Date(ctime * 1000).toLocaleString();
 
+		if(index > 0) { result += "<hr>"; }
 		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
 		result += `<div class="content">${content.message}</div>`;
-		result += `<i>时间：${timeString}</i></div><hr>`;
+		result += `<i>时间：${timeString}</i></div>`;
 
 		if (replies && replies.length > 0) {
 			result += `<div class="moreReply">回复：<br>`;
@@ -158,7 +159,7 @@ function openPlayer(option) {
 		var desc = VideoInfo["data"]["desc"] || "-";
 
 		$("#player_title").html(VideoInfo["data"]["title"]);
-		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc);
+		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc.replace(/\n/g, "<br>") );
 
 		if (cidPages.length > 1) { loadCidList(cidPages); } /* 显示分P视频列表 */
 		getDanmu(cid); /* 获取弹幕 */
@@ -167,7 +168,7 @@ function openPlayer(option) {
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
-			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll);
+			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'><br>");
 		});
 	});
 

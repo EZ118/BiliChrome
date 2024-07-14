@@ -64,12 +64,12 @@ main div {  color:#000; }
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none; }
 #player_title{ margin-left:15px; font-size:18px; }
 #player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; height:calc(100% - 53px); font-size: 16px; overflow-y:auto; }
-#player_descArea hr{margin:1px; color:#88888888; border:none; border-bottom:1px solid #848484;}
+#player_descArea hr{margin:3px; color:#91919160; border:none; border-bottom:1px solid #848484;}
 #player_descArea .moreReply{padding:5px;margin:10px;border:1px dashed #646464;border-radius: 8px;}
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{ margin-left:15px; }
-#player_descArea .reply i{ color:#88888888; margin-left:20px; }
-#player_videoList{user-select:none; word-wrap:break-word; word-break:break-all; height:100%; font-size: 16px; overflow-y:auto; display:flex; flex-direction:row; flex-wrap:wrap;justify-content:center; }
+#player_descArea .reply i{ color:#8888889b; margin-left:15px; font-size:small; }
+#player_videoList{user-select:none; word-wrap:break-word; word-break:break-all; width:100%; height:calc(100% - 54px); font-size: 16px; overflow-y:auto; display:flex; flex-direction:row; flex-wrap:wrap;justify-content:center; }
 #player_scrComment{ width:80%; position:fixed; top:50px; left:10px; z-index:104; font-size:16px;  }
 .player_danmuText{ width:fit-content; max-width:500px; font-size:18px; font-weight:bold; opacity:0.8; z-index:104; position:fixed; color:#EEEEEE; text-shadow:0 0 2px #000; }
 
