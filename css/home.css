@@ -26,14 +26,16 @@ main div {  color:#000; }
 .dark-theme .continuation_alertBox{ background:#222222; }
 
 /* 窄型视频列表框 */
-.dynamic_singlebox{ height:220px;width:250px;font-size:15px;overflow:hidden;border-radius:10px;margin:8px;padding:5px;transition:all 0.2s;cursor:pointer;z-index:1; border:1px solid #3b3b3b3b; }
+.dynamic_singlebox{ height:205px;width:250px;font-size:15px;overflow:hidden;border-radius:10px;margin:8px;padding:5px;transition:all 0.2s;cursor:pointer;z-index:1; border:1px solid #3b3b3b3b; display:flex; flex-direction:column;}
 .dynamic_singlebox:hover{ background:#3b3b3b4b; }
-.dynamic_singlebox_un{ color:#6a6a6a;font-size:12px;position:relative;top:0px;width:100%;overflow:hidden; }
-.dynamic_singlebox_vt{ width:100%;height:55px;overflow:hidden;word-wrap:break-word;word-break:normal; }
-.dynamic_singlebox img{ width:100%;border-radius:8px; }
+.dynamic_singlebox_un{ color:#6a6a6a;font-size:12px;width:100%;overflow:hidden; transition: all 0.1s; }
+.dynamic_singlebox_vt{ width:100%; height:43px; overflow:hidden; word-wrap:break-word; word-break:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; transition: all 0.1s;}
+.dynamic_singlebox img{ width:100%; border-radius:5px; }
+.dynamic_singlebox_imgwrap { width:238px; height:134px; border-radius:8px; overflow:hidden; background-color: #3b3b3b3b; }
 
 .dark-theme .dynamic_singlebox_vt{ color:#FFF; }
 .dark-theme .dynamic_singlebox_un{ color:#bdbdbd; }
+.dynamic_singlebox_un:hover, .dynamic_singlebox_vt:hover{ color:#00AEEC; }
 
 /* 宽型视频列表框 */
 .wide_singlebox{ display:flex; width:calc(33% - 40px); min-width: 315px; height:120px; margin-left:15px; margin-top:15px; float:left; overflow:hidden; border-radius:10px; padding:10px; transition:all 0.2s;cursor:pointer;z-index:1; border:1px solid #3b3b3b3b; }

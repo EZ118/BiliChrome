@@ -273,7 +273,7 @@ $(document).ready(function () {
 	});
 	$("#player_scrSwitchBtn").click(function () {
 		player_advancedDanmu = !player_advancedDanmu; /* 切换弹幕模式 */
-		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "全屏滑动弹幕模式" : "简单弹幕模式"));
+		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "全屏滚动弹幕模式" : "简单弹幕模式"));
 	});
 	$("#player_pipBtn").click(function () {
 		var pip = $("#player_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */

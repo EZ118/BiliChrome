@@ -62,7 +62,7 @@ function getRecommendedVideos() {
             $.each(tjlist.data.item,function(index,item){
                 WebList += `<div class='dynamic_singlebox'>
                         <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.pic + `@412w_232h_1c.webp'><br>
+                            <div class="dynamic_singlebox_imgwrap"><img src='` + item.pic + `@412w_232h_1c.webp'></div>
                             <div class="dynamic_singlebox_vt">` + item.title + `</div>
                         </a>
                         <a href="#uid_` + item.owner.mid + `">
