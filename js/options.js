@@ -155,7 +155,7 @@ function showUserCard(uid) {
                     </td>
                     <td align="right" width="50px">
                         <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-                            <b class="usrNums"> ▶ &nbsp;&nbsp;</b><br>
+                            <b class="usrNums icons10-angle-right">&nbsp;&nbsp;</b><br>
                         </a>
                     </td>
                 </tr>

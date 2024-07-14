@@ -533,7 +533,7 @@ $(document).ready(function () {
     getAccount("auto", function (usrInfo) {
         /* 载入用户信息 */
         currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { showToast("您未登录，建议登录后使用") }
+        if (!usrInfo.uid) { showToast("您未登录，建议<a href='#options'>登录</a>后使用", 5000) }
     });
 
     getVidPlayingNow();

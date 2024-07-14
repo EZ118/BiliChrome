@@ -92,12 +92,14 @@ main div {  color:#000; }
 .dlg_container_real{ position:relative; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#e8e8e8; border-radius:8px; border:1px solid rgba(197, 217, 241, 0.063); }
 #dlg_content{ width:100%; height:100%; background:#e8e8e8; overflow-y:auto; overflow-x:hidden; }
 #dlg_title{ margin-left:15px; font-size:18px; }
-#toast_container{display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background-color:#e8e8e8;padding:8px 20px;border-radius:5px;z-index:9999; box-shadow: 0px 2px 5px #555;}
-.dark-theme #toast_container{background-color:#333333;}
 
 .dark-theme .dlg_container_real{ background: #1e2022; color:#FFF; }
 .dark-theme #dlg_content{ width:100%; height:100%; background:#17181a; color:#FFF; overflow-y:auto; overflow-x:hidden; }
 
+/* Toast提示消息 */
+#toast_container{ display:none; position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#e8e8e8; padding:8px 20px; border-radius:5px; z-index:9999; box-shadow:0px 2px 5px #555; }
+#toast_container a{ color:#00AEEC; }
+.dark-theme #toast_container{ background-color:#333333; }
 
 /* 用户个人空间 */
 .myspace_topInfoBox{ margin:10px; padding:10px; width:calc(100% - 40px); height:120px; background:#f3f3f3; border-radius:20px; display:inline-flex; border:1px solid #e8e8e8; color:#000; }
