@@ -15,6 +15,8 @@ main div {  color:#000; }
 /* 右侧列表通用容器 */
 #item_container{ }
 .flex_container{ display:flex; flex-wrap:wrap; }
+.options_frame { width:100%; height:99%; border:none; border-radius:5px; }
+
 
 /* 当前其他设备正在播放提示框 */
 .continuation_alertBox{ overflow: hidden; display:flex; flex-direction:column; width:262px; height:240px; background:#FFF; box-shadow: 1px 1px 5px #555; border:1px solid #3b3b3b3b; border-radius: 10px; padding:10px; position:fixed; top:20px; right:20px; z-index:2; }
@@ -102,7 +104,8 @@ main div {  color:#000; }
 .myspace_topInfoBox img{height:100px; width:100px; border-radius: 14px; margin-right:10px;}
 .myspace_topInfoBox .usrName{font-size: 25px;}
 .myspace_topInfoBox .usrNums{font-size: 18px;}
-.myspace_subSection {width:calc(50% - 31px); display: flex; background: #f3f3f3; border:1px solid #e8e8e8;  padding: 10px; margin: 10px; border-radius:15px; color:#000;}
+
+.myspace_subSection {width:calc(50% - 31px); display:flex; flex-direction:row; justify-content:center; align-items: center; background:#f3f3f3; border:1px solid #e8e8e8;  padding: 10px; margin: 10px; border-radius:15px; color:#000;}
 
 .myspace_subSection p{width:calc(50% - 20px); margin:10px; font-size: 15px; color:#000; }
 .myspace_subSection p:first-child{ font-weight:bold; font-size: 17px; }

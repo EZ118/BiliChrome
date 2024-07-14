@@ -252,31 +252,35 @@ function getMySpace() {
             <div style="width:100%;display:flex; flex-wrap: wrap;">
                 <div class="myspace_subSection">
                     <p align="left">我的收藏</p>
-                    <p align="right"><a href="#myfav_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#myfav_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">我的关注</p>
-                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">历史记录</p>
-                    <p align="right"><a href="#history_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#history_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">最近动态</p>
-                    <p align="right"><a href="#uid_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#uid_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">稍后再看</p>
-                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">评论回复</p>
-                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `">[查看]</a></p>
+                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                </div>
+                <div class="myspace_subSection">
+                    <p align="left">扩展选项</p>
+                    <p align="right"><a href="#options">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">将订阅导出到PipePipe</p>
-                    <p align="right"><a href="#export_subscription">[查看]</a></p>
+                    <p align="right"><a href="#export_subscription">查看<i class='icons10-angle-right'></i></a></p>
                 </div>
             </div>
             
@@ -466,29 +470,41 @@ function routeCtrl(isOnload) {
     } else if (data.includes("uid")) {
         /* 用户空间 */
         getUserSpace(data.split("_")[1]);
+
     } else if (data.includes("img-")) {
         /* 图片查看 */
-        openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1])
+        openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1]);
+
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
         getMyCollectionList();
+
     } else if (data.includes("mysubscription")) {
         /* 订阅up主列表 */
         if (isOnload) { setTimeout(function () { getUserSubscription(currentUid); }, 300); }
         else { getUserSubscription(currentUid); }
+
     } else if (data.includes("fav_")) {
         /* 收藏夹 */
         getCollectionById(data.split("_")[1], data.split("_")[2]);
+
     } else if (data.includes("history")) {
         /* 观看历史 */
         getUserHistory();
+
     } else if (data.includes("watchlater")) {
         /* 稍后再看 */
         getWatchLater();
         getUserHistory();
+
     } else if (data.includes("replymsg")) {
         /* 消息中心 - 评论回复列表 */
         getMsgReply();
+
+    } else if (data.includes("options")) {
+        /* 显示扩展选项对话框 */
+        openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options")
+
     } else if (data.includes("export_subscription")) {
         /* 导出订阅（pipepipe格式 -options.js） */
         getAccount("auto", function (usrInfo) {
@@ -501,6 +517,7 @@ function routeCtrl(isOnload) {
         let tab = data.split("_")[1];
         if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchPage(); }
         currentTab = tab;
+
     } else {
         getRecommendedVideos();
     }
