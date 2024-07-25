@@ -117,9 +117,9 @@ function loadCidList(pages) {
 	var cidList = "";
 	$.each(pages, function (index, item) {
 		if (index == 0) {
-			cidList += "<div class='player_cidListItem player_cidListItem_selected' cid-data='" + item.cid + "' page-num='" + item.page + "'>" + item.part + "</div>";
+			cidList += "<div class='player_cidListItem player_cidListItem_selected' cid-data='" + item.cid + "' page-num='" + item.page + "' title='" + item.part + "'>" + item.part + "</div>";
 		} else {
-			cidList += "<div class='player_cidListItem' cid-data='" + item.cid + "' page-num='" + item.page + "'>" + item.part + "</div>";
+			cidList += "<div class='player_cidListItem' cid-data='" + item.cid + "' page-num='" + item.page + "' title='" + item.part + "'>" + item.part + "</div>";
 		}
 	});
 	$("#player_descArea").append("<br><hr><b style='font-size:18px;'>[选集]</b><div class='flex_container'>" + cidList + "</div>");
