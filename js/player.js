@@ -130,6 +130,7 @@ function loadCidList(pages) {
 		$(this).addClass("player_cidListItem_selected");
 		showToast("正在加载分P视频 [P" + page + "]");
 		loadVideoSource(bvidPlayingNow, cid);
+		getDanmu(cid);
 	});
 }
 
