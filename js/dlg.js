@@ -43,6 +43,13 @@ $(document).ready(function () {
 		closeDlg();
 	});
 
+	$('#dlg_container').click(function (event) {
+		/* 点击对话框之外，自动关闭对话框 */
+		var target = $(event.target);
+		if (!target.is('.dlg_container_real') && !target.is('.dlg_container_real *')) {
+			closeDlg();
+		}
+	});
 
 	$(document).keydown(function (event) {
 		/* Ctrl + Q 快捷键关闭对话框事件处理 */
