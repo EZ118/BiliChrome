@@ -40,6 +40,14 @@ function xml2json(xml) {
 	return obj;
 }
 
+function limitConsecutiveChars(str) {
+    /* 只允许字符串中连续出现5个相同字符 */
+    //return str.replace(/(.)\1{4,}/g, (match, p1) => p1.repeat(5));
+
+	const maxConsecutive = 10;
+    return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
+}
+
 function parseComments(comments, cnt = 0) {
 	/* 解析评论 */
 	let result = '';
@@ -159,8 +167,12 @@ function openPlayer(option) {
 		var aid = VideoInfo["data"]["aid"];
 		var desc = VideoInfo["data"]["desc"] || "-";
 
+		
+		desc = desc.replace(/\n/g, "<br>");
+		desc = limitConsecutiveChars(desc);
+
 		$("#player_title").html(VideoInfo["data"]["title"]);
-		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc.replace(/\n/g, "<br>") );
+		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc);
 
 		if (cidPages.length > 1) { loadCidList(cidPages); } /* 显示分P视频列表 */
 		getDanmu(cid); /* 获取弹幕 */
