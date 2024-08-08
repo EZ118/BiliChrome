@@ -10,16 +10,16 @@ html{ height:100%; width:100%; }
 h1, h2, h3, p { margin: 5px 0px; }
 
 /* 自定义对话框 */
-#dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100vw; height:100vh; background: rgba(0,0,0,0.4); }
-.dlg_container_real{ position:fixed; top:80px; left:20vw; width:60vw; height:calc(100vh - 160px); background:#1e2022; border-radius:8px; }
+#dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100%; height:100%; background: rgba(0,0,0,0.4); }
+.dlg_container_real{ position:fixed; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#1e2022; border-radius:8px; }
 #dlg_content{ width:100%; height:100%; background:#17181a; overflow-y:auto; overflow-x:hidden; }
 #dlg_title{ margin-left:15px; font-size:18px; }
 #toast_container{display:none;position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background-color:#333;color:#fff;padding:8px 20px;border-radius:5px;z-index:9999}
 
-.topNav{ width: 100vw; display: flex; flex-direction: row; margin-bottom: 10px; border-bottom: 1px solid #393939; border-radius: 8px; }
+.topNav{ width: 100%; display: flex; flex-direction: row; margin-bottom: 10px; border-bottom: 1px solid #393939; border-radius: 8px; }
 .topNav .topNavItem{ color:#FFF; background: #393939; padding:6px 8px; border-radius: 5px; margin: 5px; }
 
-.container{ width:calc(100vw - 20px); margin: 10px; }
+.container{ width:calc(100% - 20px); margin: 10px; height:fit-content; }
 .btn{ padding: 10px 15px; background:#1e2022; color:#FFF; border:1px solid #333; cursor:pointer; border-radius:15px; margin: 8px 1px; }
 
 #userCard { padding:10px; width:calc(100%); height:100px; background:#1e2022; border-radius:15px; border:1px solid #333; }

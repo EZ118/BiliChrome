@@ -38,28 +38,6 @@ chrome.declarativeNetRequest.updateDynamicRules({
 
 
 /* 右键菜单 */
-// chrome.contextMenus.create({
-//     title: 'BiliScape',
-//     id: 'search',
-//     type: 'normal',
-//     contexts: ['all'],
-// });
-// chrome.contextMenus.create({
-//     title: '在 BiliScape 搜索',
-//     // parentId: 'search',
-//     id: 'viewInExt',
-//     type: 'normal',
-//     contexts: ['all']
-// });
-// chrome.contextMenus.create({
-//     title: '在 BiliScape 观看',
-//     // parentId: 'search',
-//     id: 'viewInExt',
-//     type: 'normal',
-//     contexts: ['all'],
-//     documentUrlPatterns: ['*://*.bilibili.com/*']
-// });
-
 chrome.contextMenus.create({
     title: '在 BiliScape 观看',
     id: 'viewInExt',
@@ -83,4 +61,3 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
 chrome.action.onClicked.addListener(function(tab) {
     chrome.windows.create({ url: 'home.html', type: 'popup', width: 950, height: 600 });
 });
-  
