@@ -6,44 +6,8 @@ var player_danmuCnt = 0; /* 弹幕数量 */
 var player_advancedDanmu = false; /* 高级弹幕显示模式 */
 var player_highQuality = 0; /* 视频高画质Flag,1为开启,0为关闭 */
 
-function xml2json(xml) {
-	/* xml转json */
-	var obj = {};
-	if (xml.nodeType == 1) {
-		if (xml.attributes.length > 0) {
-			obj["@attributes"] = {};
-			for (var j = 0; j < xml.attributes.length; j++) {
-				var attribute = xml.attributes.item(j);
-				obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-			}
-		}
-	} else if (xml.nodeType == 3) {
-		obj = xml.nodeValue;
-	}
-	// do children
-	if (xml.hasChildNodes()) {
-		for (var i = 0; i < xml.childNodes.length; i++) {
-			var item = xml.childNodes.item(i);
-			var nodeName = item.nodeName;
-			if (typeof (obj[nodeName]) == "undefined") {
-				obj[nodeName] = xml2json(item);
-			} else {
-				if (typeof (obj[nodeName].length) == "undefined") {
-					var old = obj[nodeName];
-					obj[nodeName] = [];
-					obj[nodeName].push(old);
-				}
-				obj[nodeName].push(xml2json(item));
-			}
-		}
-	}
-	return obj;
-}
-
 function limitConsecutiveChars(str) {
-    /* 只允许字符串中连续出现5个相同字符 */
-    //return str.replace(/(.)\1{4,}/g, (match, p1) => p1.repeat(5));
-
+    /* 只允许字符串中连续出现n个相同字符 */
 	const maxConsecutive = 10;
     return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 }
@@ -72,24 +36,24 @@ function parseComments(comments, cnt = 0) {
 }
 
 function getDanmu(cid) {
-	/* 获取弹幕 */
-	$.get("https://comment.bilibili.com/" + cid + ".xml", function (s) {
-		cInfo = xml2json(s).i.d;
-		newInfo = [];
+    /* 获取弹幕 */
+    $.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
+        const danmuList = [];
 
-		$.each(cInfo, function (index, item) {
-			try {
-				newInfo.push({ "text": item["#text"], "time": parseFloat(item["@attributes"]["p"].split(",")[0]) });
-			} catch (e) {
-				console.log("弹幕装填出错（解析时）");
-			}
-		});
-		player_danmuList = newInfo.sort(function (x, y) {
-			/* 弹幕排序方式 */
-			return x["time"] - y["time"];
-		});
-	});
+        $(s).find("d").each(function () {
+            try {
+                const time = parseFloat($(this).attr("p").split(",")[0]);
+                const text = $(this).text();
+                danmuList.push({ text, time });
+            } catch (e) {
+                console.error("弹幕装填出错（解析时）", e);
+            }
+        });
+
+        player_danmuList = danmuList.sort((a, b) => a.time - b.time);
+    });
 }
+
 
 function showDanmu(content) {
 	/* 装填高级弹幕 */
@@ -287,7 +251,7 @@ $(document).ready(function () {
 	});
 	$("#player_scrSwitchBtn").click(function () {
 		player_advancedDanmu = !player_advancedDanmu; /* 切换弹幕模式 */
-		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "全屏滚动弹幕模式" : "简单弹幕模式"));
+		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "滚动弹幕模式" : "简单弹幕模式"));
 	});
 	$("#player_pipBtn").click(function () {
 		var pip = $("#player_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
