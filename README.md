@@ -1,32 +1,80 @@
-# BiliScape
-BiliBili third-party client for browsers. 第三方哔哩哔哩客户端浏览器插件   
+<br />
+<div align="center">
+    <img src="https://ez118.github.io/biliweb/icon.svg" width="100" height="100" />
+    <h1>BiliScape</h1>
+</div>
+
+----
+<div align="center">
+
+![License](https://img.shields.io/badge/license-GPLv3-yellow)
+![GitHub repo size](https://img.shields.io/github/repo-size/EZ118/BiliChrome)
+![GitHub Repo stars](https://img.shields.io/github/stars/EZ118/BiliChrome)
+![GitHub all releases](https://img.shields.io/github/downloads/EZ118/BiliChrome/total)
+
+<p>第三方哔哩哔哩客户端浏览器插件</p>
+
+<img src="https://ez118.github.io/biliweb/shot2.png" width="32%" alt="动态" />
+<img src="https://ez118.github.io/biliweb/shot3.png" width="32%" alt="播放" />
+<img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="搜索" /><br/>
+<img src="https://ez118.github.io/biliweb/shot1.png" width="96%" alt="首页" /><br/>
+
+</div>
+
+
+## 功能   
+- [x] 推荐视频列表
+- [x] 最热视频列表
+- [ ] 直播板块
+  - [ ] 热门直播
+  - [ ] 观看直播
+- [ ] 番剧板块
+  - [ ] 热门番剧
+  - [ ] 观看番剧
+- [x] 动态板块
+  - [x] 基本动态信息查看
+  - [ ] 动态评论查看
+- [x] 搜索板块
+  - [x] 搜索视频
+  - [ ] 热搜
+  - [ ] 搜索历史
+- [x] 视频播放板块
+  - [x] 播放视频（360P / 1080P）
+  - [x] 视频详情
+  - [x] 视频推荐列表
+  - [x] 查看评论
+  - [x] 点赞、投币操作
+  - [x] 小窗播放
+  - [x] 弹幕
+  - [ ] 字幕
+  - [ ] 播放历史
+- [x] 用户板块
+  - [x] 关注用户
+  - [x] 最近动态
+  - [ ] 关注/取关
+  - [x] 稍后再看
+  - [x] 观看记录
+  - [x] 我的收藏
+  - [x] 查看评论回复列表
+- [x] 设置板块
+  - [x] 暗黑模式
+  - [x] 账户基本信息
+  - [ ] 播放设置（界面完成，程序尚不能应用设置）
 
 ## 安装   
-M$-Edge浏览器：[在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
-Moz-Firefox浏览器：[在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
-其他浏览器安装方式：Chrome/Edge插件管理，打开开发者模式，加载已解压的扩展，选择所在文件夹，点击确定即可。   
-若要安装为网页应用：主菜单，创建快捷方式，勾选在独立窗口打开，确认即可。   
-建议在[B站官网登陆](https://passport.bilibili.com/)后再使用。   
+**Edge浏览器：** [在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
+**Firefox浏览器：** [在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
+**Chrome浏览器：** 主菜单 > 扩展程序 > 管理扩展程序 > 启用 开发者模式 > 加载已解压的扩展程序 并选择文件夹 **或** 将打包为zip的扩展拖拽到页面内。   
 
-## 功能
-- 首页视频推荐
-- 热度视频列表
-- 关注up主动态
-- 视频搜索
-- 用户页面显示基本信息，展示动态列表、观看历史、收藏夹、评论回复、稍后再看
-- 基本播放器功能，查看视频、评论、视频详情、弹幕、视频推荐、小窗播放、投币、点赞
-- 其他UP主动态列表
-- 日间/夜间 主题切换
-- 仿WinUI界面
+## 提示   
+**安装为网页应用：**   
+**Edge：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 应用 > 将此站点作为应用安装`
+**Chrome：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 保存并分享 > 将网页作为应用安装`。   
+**Firefox：** 不支持
 
-## 参考与使用
+## 参考与使用   
+- [jQuery](https://jquery.com/)
 - [Material Icon](https://fonts.google.com/icons)
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [virtualvivek/windows-ui](https://github.com/virtualvivek/windows-ui)
 - [windows-ui/icons](https://github.com/windows-ui/icons)
-
-## 截图
-![首页](https://ez118.github.io/biliweb/shot1.png)   
-![动态](https://ez118.github.io/biliweb/shot2.png)   
-![视频播放](https://ez118.github.io/biliweb/shot3.png)    
-![搜索](https://ez118.github.io/biliweb/shot4.png)
