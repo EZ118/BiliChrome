@@ -67,7 +67,7 @@ main div {  color:#000; }
 #player_title{ margin-left:15px; font-size:18px; }
 #player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; white-space:pre-wrap; height:calc(100% - 53px); font-size: 16px; overflow-y:auto; }
 #player_descArea hr{margin:3px; color:#91919160; border:none; border-bottom:1px solid #848484;}
-#player_descArea .moreReply{padding:5px; margin:10px; border:1px dashed #646464; border-radius: 8px;}
+#player_descArea .moreReply{padding:5px; margin:10px; border:1px dashed #646464; border-radius:8px; cursor:pointer; }
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{ margin-left:15px; }
 #player_descArea .reply i{ color:#8888889b; margin-left:15px; font-size:small; }
@@ -95,6 +95,14 @@ main div {  color:#000; }
 
 .dark-theme .dlg_container_real{ background: #1e2022; color:#FFF; }
 .dark-theme #dlg_content{ width:100%; height:100%; background:#17181a; color:#FFF; overflow-y:auto; overflow-x:hidden; }
+
+/* 自定义对话框中显示的评论回复样式 */
+#dlg_content .reply_container{ width:60%; margin-left:20%; margin-top:10px; user-select:text; }
+#dlg_content .reply_container hr{ margin:3px; color:#91919160; border:none; border-bottom:1px solid #848484; }
+#dlg_content .moreReply{padding:5px; margin:10px; border:1px dashed #646464; border-radius:8px;}
+#dlg_content .reply{margin-bottom:5px;}
+#dlg_content .reply .content{ margin-left:15px; }
+#dlg_content .reply i{ color:#8888889b; margin-left:15px; font-size:small; }
 
 /* Toast提示消息 */
 #toast_container{ display:none; position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#e8e8e8; padding:8px 20px; border-radius:5px; z-index:9999; box-shadow:0px 2px 5px #555; }

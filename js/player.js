@@ -17,7 +17,7 @@ function parseComments(comments, cnt = 0) {
 	let result = '';
 
 	$.each(comments, function (index, comment) {
-		const { member, content, replies, ctime } = comment;
+		const { oid, member, content, replies, ctime } = comment;
 		const timeString = new Date(ctime * 1000).toLocaleString();
 
 		if(index > 0) { result += "<hr>"; }
@@ -26,13 +26,21 @@ function parseComments(comments, cnt = 0) {
 		result += `<i>时间：${timeString}</i></div>`;
 
 		if (replies && replies.length > 0) {
-			result += `<div class="moreReply">回复：<br>`;
+			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
 			result += parseComments(replies);
 			result += `</div>`;
 		}
 	});
 
 	return result;
+}
+
+function showMoreReplies(oid){
+	$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + oid, function (ReplyInfo) {
+		/* 获取评论 */
+		textAll = parseComments(ReplyInfo.data.replies);
+		openDlg("更多评论 [" + oid + "]", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
+	});
 }
 
 function getDanmu(cid) {
@@ -146,6 +154,13 @@ function openPlayer(option) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
 			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'><br>");
+
+			$("#player_descArea .moreReply").click(function (evt) {
+				/* 当用户点击了评论回复，则显示更多评论 */
+				const clickedEle = $(evt.target);
+				let oid = clickedEle.parent().parent().attr("oid") || clickedEle.parent().attr("oid") || clickedEle.attr("oid");
+				showMoreReplies(oid);
+			});
 		});
 	});
 

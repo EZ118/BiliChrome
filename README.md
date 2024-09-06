@@ -4,7 +4,6 @@
     <h1>BiliScape</h1>
 </div>
 
-----
 <div align="center">
 
 ![License](https://img.shields.io/badge/license-GPLv3-yellow)
@@ -21,6 +20,16 @@
 
 </div>
 
+## 安装   
+**Edge浏览器：** [在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
+**Firefox浏览器：** [在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
+**Chrome浏览器：** 主菜单 > 扩展程序 > 管理扩展程序 > 启用 开发者模式 > 加载已解压的扩展程序 并选择文件夹 **或** 将打包为zip的扩展拖拽到页面内。   
+
+## 提示   
+**安装为网页应用：**   
+**Edge：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 应用 > 将此站点作为应用安装`   
+**Chrome：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 保存并分享 > 将网页作为应用安装`。   
+**Firefox：** 不支持
 
 ## 功能   
 - [x] 推荐视频列表
@@ -42,7 +51,7 @@
   - [x] 播放视频（360P / 1080P）
   - [x] 视频详情
   - [x] 视频推荐列表
-  - [x] 查看评论
+  - [x] 查看评论/回复
   - [x] 点赞、投币操作
   - [x] 小窗播放
   - [x] 弹幕
@@ -60,17 +69,6 @@
   - [x] 暗黑模式
   - [x] 账户基本信息
   - [ ] 播放设置（界面完成，程序尚不能应用设置）
-
-## 安装   
-**Edge浏览器：** [在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
-**Firefox浏览器：** [在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
-**Chrome浏览器：** 主菜单 > 扩展程序 > 管理扩展程序 > 启用 开发者模式 > 加载已解压的扩展程序 并选择文件夹 **或** 将打包为zip的扩展拖拽到页面内。   
-
-## 提示   
-**安装为网页应用：**   
-**Edge：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 应用 > 将此站点作为应用安装`
-**Chrome：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 保存并分享 > 将网页作为应用安装`。   
-**Firefox：** 不支持
 
 ## 参考与使用   
 - [jQuery](https://jquery.com/)

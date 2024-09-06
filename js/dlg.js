@@ -1,8 +1,9 @@
 /* 自定义对话框 */
 var dlgOpenNewNow = "";
 
-function openDlg(title, html, url) {
+function openDlg(title, html, url, isTop) {
 	if (!url) { url = ""; }
+	if(isTop) { $('#dlg_container').css("z-index", "104"); }
 
 	$('#dlg_container').fadeIn(200);
 	$('#dlg_content').html(html);
@@ -10,6 +11,8 @@ function openDlg(title, html, url) {
 	dlgOpenNewNow = url;
 }
 function closeDlg() {
+	if($('#dlg_container').css("z-index") === "104") { $('#dlg_container').css("z-index", "") }
+
 	$('#dlg_container').fadeOut(200);
 	$('#dlg_content').html("");
 	$('#dlg_title').html("[默认标题]");
