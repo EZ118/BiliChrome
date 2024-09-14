@@ -27,8 +27,8 @@
 
 ## 提示   
 **安装为网页应用：**   
-**Edge：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 应用 > 将此站点作为应用安装`   
-**Chrome：** 在扩展主窗口中右键“推荐列表” > “在Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 保存并分享 > 将网页作为应用安装`。   
+**Edge：** 在扩展主窗口中右键“推荐列表” > “在 Microsoft Edge 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 应用 > 将此站点作为应用安装`   
+**Chrome：** 在扩展主窗口中右键“推荐列表” > “在 Chrome 新标签页中打开链接”，在打开的浏览器窗口中操作 `浏览器主菜单 > 保存并分享 > 将网页作为应用安装`。   
 **Firefox：** 不支持
 
 ## 功能   
@@ -56,7 +56,7 @@
   - [x] 小窗播放
   - [x] 弹幕
   - [ ] 字幕
-  - [ ] 播放历史
+  - [ ] 记录播放历史
 - [x] 用户板块
   - [x] 关注用户
   - [x] 最近动态
@@ -74,5 +74,4 @@
 - [jQuery](https://jquery.com/)
 - [Material Icon](https://fonts.google.com/icons)
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
-- [virtualvivek/windows-ui](https://github.com/virtualvivek/windows-ui)
-- [windows-ui/icons](https://github.com/windows-ui/icons)
+- [apprat/sober](https://soberjs.com/)

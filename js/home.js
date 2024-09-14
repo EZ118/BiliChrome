@@ -1,5 +1,6 @@
 var currentTab = "home";
 var currentUid = "114514";
+var lastDynamicOffset = null;
 
 function showSearchPage() {
     $("#item_container").html(`
@@ -9,9 +10,10 @@ function showSearchPage() {
                 <span style="color:#00AEEC;font-size:xx-large">&nbsp;|&nbsp;搜索</span>
             </div>
             <br>
-            <div class="app-input-search-box">
-                <input class="app-input-text" type="search" size="38" placeholder="回车以搜索">
-            </div>
+            <s-search style="width:300px;">
+                <s-icon type="search" slot="start"></s-icon>
+                <input type="text" class="app-input-text" placeholder="回车以搜索">
+            </s-search>
         </div>`);
     $("#dynamic_loader").hide();
     var inputObject = $("#item_container").find("input.app-input-text");
@@ -31,20 +33,25 @@ function getSearchResult(wd) {
     $("#dynamic_loader").show();
     $.get("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
         var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b style='user-select:text;'>" + wd + "</b>的搜索结果：</p>";
-        $.each(tjlist.data.result[11].data,function(index,item){
-            WebList += `<div class='wide_singlebox'>
-                    <a href="#bvid_` + item.bvid + `">
-                        <img src='https:` + item.pic + `@412w_232h_1c.webp'><br>
-                    </a>
-                    <div height="100%">
+        $.each(tjlist.data.result[11].data, function (index, item) {
+            WebList += `
+                <s-card clickable="true">
+                    <div slot="image" style="overflow:hidden;">
                         <a href="#aid_` + item.aid + `">
-                            <div class="wide_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.mid + `">
-                            <div class="wide_singlebox_un">🔘&nbsp;` + item.author + `</div>
+                            <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
                         </a>
                     </div>
-                </div>`;
+                    <div slot="subhead">
+                        <a href="#aid_` + item.aid + `">
+                            ` + item.title + `
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_` + item.mid + `">
+                            ` + item.author + `
+                        </a>
+                    </div>
+                </s-card>`;
         });
         $("#item_container").html(WebList);
         $("#dynamic_loader").hide();
@@ -59,16 +66,25 @@ function getRecommendedVideos() {
 
     for (let i = 1; i <= 2; i++) {
         let request = $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
-            $.each(tjlist.data.item,function(index,item){
-                WebList += `<div class='dynamic_singlebox'>
-                        <a href="#bvid_` + item.bvid + `">
-                            <div class="dynamic_singlebox_imgwrap"><img src='` + item.pic + `@412w_232h_1c.webp'></div>
-                            <div class="dynamic_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.owner.mid + `">
-                            <div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
-                        </a>
-                    </div>`;
+            $.each(tjlist.data.item, function (index, item) {
+                WebList += `
+                    <s-card clickable="true">
+                        <div slot="image" style="overflow:hidden;">
+                            <a href="#bvid_` + item.bvid + `">
+                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            </a>
+                        </div>
+                        <div slot="subhead">
+                            <a href="#bvid_` + item.bvid + `">
+                                ` + item.title + `
+                            </a>
+                        </div>
+                        <div slot="text">
+                            <a href="#uid_` + item.owner.mid + `">
+                                ` + item.owner.name + `
+                            </a>
+                        </div>
+                    </s-card>`;
             });
         });
 
@@ -87,83 +103,91 @@ function getHotVideos() {
     $("#dynamic_loader").show();
     $.get("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
         var WebList = "";
-        $.each(tjlist.data.list,function(index,item){
+        $.each(tjlist.data.list, function (index, item) {
             var tooltipText = '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介") + (item.rcmd_reason.content ? ("\n- 推荐原因: " + item.rcmd_reason.content) : "");
-            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
-                    <a href="#bvid_` + item.bvid + `">
-                        <img src='` + item.pic + `@412w_232h_1c.webp'><br>
-                    </a>
-                    <div height="100%">
+
+            WebList += `
+                <s-card clickable="true" title='` + tooltipText + `'>
+                    <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
-                            <div class="wide_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.owner.mid + `">
-                            <div class="wide_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
+                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
                         </a>
                     </div>
-                </div>`;
+                    <div slot="subhead">
+                        <a href="#bvid_` + item.bvid + `">
+                            ` + item.title + `
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_` + item.owner.mid + `">
+                            ` + item.owner.name + `
+                        </a>
+                    </div>
+                </s-card>`;
         })
         $("#item_container").append("<div class='flex_container'>" + WebList + "</div>");
         $("#dynamic_loader").hide();
     });
 }
 
-function getSubscribedVideos() {
+async function getSubscribedVideos() {
     $("#item_container").html("");
     $("#dynamic_loader").show();
 
-    $.get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?type_list=8,512,4097,4098,4099,4100,4101", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.cards,function(index,item){
-            var card = JSON.parse(item.card);
-            var dynamicDesc = card.dynamic ? ("- 动态内容: " + card.dynamic + "\n") : "";
-            var tooltipText = dynamicDesc + '- 点赞数量: ' + card.stat.like + '\n- 视频简介: ' + (card.desc ? card.desc : "无简介");
-            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
-                    <a href="#aid_` + card.aid + `">
-                        <img src='` + card.pic + `@412w_232h_1c.webp'><br>
-                    </a>
-                    <div height="100%">
-                        <a href="#aid_` + card.aid + `">
-                            <div class="wide_singlebox_vt">` + card.title + `</div>
-                        </a>
-                        <a href="#uid_` + card.owner.mid + `">
-                            <div class="wide_singlebox_un">🔘&nbsp;` + card.owner.name + `</div>
-                        </a>
-                    </div>
-                </div>`;
-        });
-        $("#item_container").html(WebList);
-        $("#dynamic_loader").hide();
-    });
-    /* $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?type=video", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.items,function(index,item){
-            var card = item.modules;
-            var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
-            var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
-            WebList += `<div class='wide_singlebox' title='` + tooltipText + `'>
-                    <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
-                        <img src='` + card.module_dynamic.major.archive.cover + `@412w_232h_1c.webp'><br>
-                    </a>
-                    <div height="100%">
-                        <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
-                            <div class="wide_singlebox_vt">` + card.module_dynamic.major.archive.title + `</div>
-                        </a>
-                        <a href="#uid_` + card.module_author.mid + `">
-                            <div class="wide_singlebox_un">🔘&nbsp;` + card.module_author.name + `</div>
-                        </a>
-                    </div>
-                </div>`;
-        });
-        $("#item_container").html(WebList);
-        $("#dynamic_loader").hide();
-    }); */
+    var WebList = "<div class='flex_container'>";
+
+    for (let i = 1; i <= 3; i++) {
+        // 构建请求的 URL，包含当前的 offset
+        const url = `https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?timezone_offset=-480&offset=${lastDynamicOffset || ""}&type=video&platform=web&page=${i}`;
+
+        try {
+            // 等待请求完成并获取数据
+            let response = await $.get(url);
+            let tjlist = response;
+
+            // 处理获取到的数据
+            $.each(tjlist.data.items, function (index, item) {
+                var card = item.modules;
+                var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
+                var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
+
+                WebList += `
+                    <s-card clickable="true" title='` + tooltipText + `'>
+                        <div slot="image" style="overflow:hidden;">
+                            <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
+                                <img src='` + card.module_dynamic.major.archive.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            </a>
+                        </div>
+                        <div slot="subhead">
+                            <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
+                                ` + card.module_dynamic.major.archive.title + `
+                            </a>
+                        </div>
+                        <div slot="text">
+                            <a href="#uid_` + card.module_author.mid + `">
+                                ` + card.module_author.name + `
+                            </a>
+                        </div>
+                    </s-card>`;
+            });
+
+            // 更新 lastDynamicOffset
+            lastDynamicOffset = tjlist.data.offset;
+        } catch (error) {
+            console.error("[ERROR] 近期关注UP视频动态获取失败", error);
+            break; // 如果请求失败，则退出循环
+        }
+    }
+
+    // 所有请求完成后更新页面内容
+    $("#item_container").html(WebList + "</div>");
+    $("#dynamic_loader").hide();
 }
 
 function getUserSpace(uid) {
     var WebList = "";
     $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=" + uid, function (data) {
-        $.each(data.data.items,function(index,item){
+        $.each(data.data.items, function (index, item) {
             var ImgUrl = "";
             var VidDesc = "";
             var LinkUrl = "default";
@@ -196,7 +220,7 @@ function getUserSpace(uid) {
             if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")) { } else {
                 VidDesc = VidDesc.split("\n").join("<br>");
                 WebList += `
-                    <div class='space_singlebox' align='left'>
+                    <s-ripple class='space_singlebox' align='left'>
                         <a>
                             <div class="space_singlebox_un">
                                 <img class="userpic" src='${avatarUrl}@45w_45h_1c.webp'>
@@ -207,7 +231,7 @@ function getUserSpace(uid) {
                             <div class='space_singlebox_vt'>${VidDesc}</div>
                             ${ImgUrl}
                         </a>
-                    </div>`;
+                    </s-ripple>`;
             }
         });
 
@@ -252,35 +276,35 @@ function getMySpace() {
             <div style="width:100%;display:flex; flex-wrap: wrap;">
                 <div class="myspace_subSection">
                     <p align="left">我的收藏</p>
-                    <p align="right"><a href="#myfav_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#myfav_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">我的关注</p>
-                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">历史记录</p>
-                    <p align="right"><a href="#history_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#history_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">最近动态</p>
-                    <p align="right"><a href="#uid_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#uid_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">稍后再看</p>
-                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">评论回复</p>
-                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">扩展选项</p>
-                    <p align="right"><a href="#options">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#options"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
                 <div class="myspace_subSection">
                     <p align="left">将订阅导出到PipePipe</p>
-                    <p align="right"><a href="#export_subscription">查看<i class='icons10-angle-right'></i></a></p>
+                    <p align="right"><a href="#export_subscription"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
                 </div>
             </div>
             
@@ -299,17 +323,25 @@ function getMySpace() {
 function getUserHistory() {
     $.get("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function (tjlist) {
         var WebList = "";
-        $.each(tjlist.data.list,function(index,item){
-            WebList += `<div class='dynamic_singlebox'>
+        $.each(tjlist.data.list, function (index, item) {
+            WebList += `
+                <s-card clickable="true">
+                    <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.history.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp'><br>
-                            <div class="dynamic_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.author_mid + `">
-                            <div class="dynamic_singlebox_un">🔘&nbsp;` + item.author_name + `</div>
+                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
                         </a>
                     </div>
-                `;
+                    <div slot="subhead">
+                        <a href="#bvid_` + item.history.bvid + `">
+                            ` + item.title + `
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_` + item.author_mid + `">
+                            ` + item.author_name + `
+                        </a>
+                    </div>
+                </s-card>`;
         });
         openDlg("观看历史（近30条）", "<div class='flex_container'>" + WebList + "</div>", "https://www.bilibili.com/account/history");
     });
@@ -324,16 +356,19 @@ function getUserSubscription(uid) {
         let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
             if (tjlist.data.list.length <= 0) { return; }
 
-            $.each(tjlist.data.list,function(index,item){
+            $.each(tjlist.data.list, function (index, item) {
                 WebList += `<a href="#uid_` + item.mid + `">
-                        <div class='dynamic_singlebox' style='height:90px;'>
-                            <div class="dynamic_singlebox_vt" style='height:35px; line-height:30px; display:flex; flex-direction:row; vertical-align:middle;'>
-                                <img style='height:30px;width:30px;border-radius:25px;' src='` + item.face + `@45w_45h_1c.webp'>
-                                &nbsp;
-                                <b>` + item.uname + `</b>
+                        <s-card clickable="true">
+                            <div slot="image" style="height:30px;overflow:hidden;">
+                                <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='` + item.face + `@45w_45h_1c.webp'>
                             </div>
-                            <div class="dynamic_singlebox_un">[简介]&nbsp; ` + (item.sign || "<i>无</i>") + `</div>
-                        </div>
+                            <div slot="subhead">
+                                ` + item.uname + `
+                            </div>
+                            <div slot="text">
+                                [简介] ` + (item.sign || "<i>无</i>") + `
+                            </div>
+                        </s-card>
                     </a>`;
             });
         });
@@ -350,17 +385,17 @@ function getUserSubscription(uid) {
 function getMyCollectionList() {
     $.get("https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=" + currentUid + "&ps=999&pn=1", function (tjlist) {
         var WebList = "";
-        $.each(tjlist.data.list,function(index,item){
-            let favIntro = item.intro ?? "暂无简介";
+        $.each(tjlist.data.list, function (index, item) {
+            let favIntro = item.intro ?? "暂无";
             WebList += `<a href="#fav_` + item.id + `_` + item.media_count + `">
-                    <div class='dynamic_singlebox' style='height:60px;'>
-                        <div class="dynamic_singlebox_vt" style='height:30px'>
-                            <i class='icons10-folder' style="font-size:20px;"></i>
-                            &nbsp;
+                    <s-card clickable="true" type="outlined" style="min-width:160px;">
+                        <div slot="subhead">
                             ` + item.title + `
                         </div>
-                        <div class="dynamic_singlebox_un">*&nbsp;` + favIntro + `</div>
-                    </div>
+                        <div slot="text">
+                            [简介] ` + favIntro + `
+                        </div>
+                    </s-card>
                 </a>`;
         });
         openDlg("所有收藏夹", "<div class='flex_container'>" + WebList + "</div>", "https://space.bilibili.com/" + currentUid + "/favlist");
@@ -371,18 +406,26 @@ function getCollectionById(fid, mediaCount) {
     mediaCount = parseInt(mediaCount);
     $.get("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
-        var WebList = "<a href='#myfav'>&nbsp;<i class='icons10-arrow-left' style='font-size:25px;'></i></a><br><div class='flex_container'>";
-        $.each(tjlist.data.medias,function(index,item){
-            WebList += `<div class='dynamic_singlebox'>
+        var WebList = "<a href='#myfav'><s-icon-button><s-icon type='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>";
+        $.each(tjlist.data.medias, function (index, item) {
+            WebList += `
+                <s-card clickable="true">
+                    <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp'><br>
-                            <div class="dynamic_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.upper.mid + `">
-                            <div class="dynamic_singlebox_un">🔘&nbsp;` + item.upper.name + `</div>
+                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
                         </a>
                     </div>
-                `;
+                    <div slot="subhead">
+                        <a href="#bvid_` + item.bvid + `">
+                            ` + item.title + `
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_` + item.upper.mid + `">
+                            ` + item.upper.name + `
+                        </a>
+                    </div>
+                </s-card>`;
         });
         openDlg("收藏夹 [FID:" + fid + "]", WebList + "</div>", "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create");
     });
@@ -392,17 +435,25 @@ function getWatchLater() {
     $.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
         if (tjlist.code == -400) { showToast("暂时无法查看"); return; }
         var WebList = "";
-        $.each(tjlist.data.list,function(index,item){
-            WebList += `<div class='dynamic_singlebox'>
+        $.each(tjlist.data.list, function (index, item) {
+            WebList += `
+                <s-card clickable="true">
+                    <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `_watchlater">
-                            <img src='` + item.pic + `@412w_232h_1c.webp'><br>
-                            <div class="dynamic_singlebox_vt">` + item.title + `</div>
-                        </a>
-                        <a href="#uid_` + item.owner.mid + `">
-                            <div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
+                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
                         </a>
                     </div>
-                `;
+                    <div slot="subhead">
+                        <a href="#bvid_` + item.bvid + `_watchlater">
+                            ` + item.title + `
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_` + item.owner.mid + `">
+                            ` + item.owner.name + `
+                        </a>
+                    </div>
+                </s-card>`;
         });
         openDlg("稍后再看", "<div class='flex_container'>" + WebList + "</div>", "https://www.bilibili.com/watchlater/#/list");
     });
@@ -411,8 +462,8 @@ function getWatchLater() {
 function getMsgReply() {
     $.get("https://api.bilibili.com/x/msgfeed/reply?platform=web&build=0&mobi_app=web&ps=40", function (msgInfo) {
         var WebList = "";
-        $.each(msgInfo.data.items,function(index,item){
-            WebList += `<div class='thinstrip_msgBox'>
+        $.each(msgInfo.data.items, function (index, item) {
+            WebList += `<s-ripple class='thinstrip_msgBox'>
                 <a href="#uid_` + item.user.mid + `">
                     <div class='thinstrip_msgBox_headline'>
                         <img src='` + item.user.avatar + `@45w_45h_1c.webp'>
@@ -425,7 +476,7 @@ function getMsgReply() {
                         <pre class='content'>` + item.item.source_content + `</pre>
                     </div>
                 </a>
-            </div>`;
+            </s-ripple>`;
         });
         WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
         openDlg("评论回复", WebList, "https://message.bilibili.com/#/reply");
@@ -451,8 +502,14 @@ function getVidPlayingNow() {
     });
 }
 
-function routeCtrl(isOnload) {
-    var data = window.location.hash.substring(1);
+function routeCtrl(isOnload, hash) {
+    var data = null;
+    if (hash) {
+        data = hash.substring(1);
+    } else {
+        data = window.location.hash.substring(1);
+    }
+
     if (data.includes("bvid")) {
         /* 视频播放bvid */
         openPlayer({
@@ -518,6 +575,8 @@ function routeCtrl(isOnload) {
         if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchPage(); }
         currentTab = tab;
 
+    } else if (data == "default") {
+        /* 不做任何事情 */
     } else {
         getRecommendedVideos();
     }

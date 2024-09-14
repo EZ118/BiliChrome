@@ -1,6 +1,6 @@
 var biliJctData = ""; /* 登录凭据 */
 var bvidPlayingNow = ""; /* 正在播放的bvid */
-var cidPlayingNow = "";
+var cidPlayingNow = ""; /* 正在播放的cid */
 var player_danmuList = []; /* 弹幕列表 */
 var player_danmuCnt = 0; /* 弹幕数量 */
 var player_advancedDanmu = false; /* 高级弹幕显示模式 */
@@ -13,17 +13,17 @@ function limitConsecutiveChars(str) {
 }
 
 function parseComments(comments, cnt = 0) {
-	/* 解析评论 */
+	/* 解析评论；将评论列表中的每一项递归解析，并返回解析后的字符串（html），由主函数统一调用 */
 	let result = '';
 
 	$.each(comments, function (index, comment) {
-		const { oid, member, content, replies, ctime } = comment;
-		const timeString = new Date(ctime * 1000).toLocaleString();
+		const { oid, member, content, replies, ctime, like } = comment;
+		const timeString = new Date(ctime * 1000).toLocaleDateString();
 
 		if(index > 0) { result += "<hr>"; }
 		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
 		result += `<div class="content">${content.message}</div>`;
-		result += `<i>时间：${timeString}</i></div>`;
+		result += `<i>${like}赞 &nbsp; 日期：${timeString}</i></div>`;
 
 		if (replies && replies.length > 0) {
 			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
@@ -36,6 +36,7 @@ function parseComments(comments, cnt = 0) {
 }
 
 function showMoreReplies(oid){
+	/* 在对话框中展示单条评论下的所有回复，oid即评论ID */
 	$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + oid, function (ReplyInfo) {
 		/* 获取评论 */
 		textAll = parseComments(ReplyInfo.data.replies);
@@ -44,7 +45,7 @@ function showMoreReplies(oid){
 }
 
 function getDanmu(cid) {
-    /* 获取弹幕 */
+    /* 获取弹幕文件，并解析内容，将所有条目按照时间顺序排序；最终存储在全局变量player_danmuList中 */
     $.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
         const danmuList = [];
 
@@ -64,14 +65,14 @@ function getDanmu(cid) {
 
 
 function showDanmu(content) {
-	/* 装填高级弹幕 */
+	/* 装填高级弹幕；只负责将弹幕文本显示在屏幕中 */
 	var containerWidth = $("#player_container").innerWidth() - 380;
 	var containerHeight = $("#player_container").innerHeight() - 20;
 	var pageH = parseInt(Math.random() * containerHeight);
 	var newSpan = $("<div class='player_danmuText'></span>");
 	newSpan.text(content);
 
-	newSpan.appendTo("#player_scrComment");
+	newSpan.appendTo("#player_simpleDanmu");
 
 	newSpan.css("left", (containerWidth - newSpan.innerWidth() + 20));
 	newSpan.css("top", pageH);
@@ -82,7 +83,7 @@ function showDanmu(content) {
 }
 
 function loadVideoSource(bvid, cid) {
-	/* 加载视频源 */
+	/* 加载视频源，需要bvid和cid */
 	$.get("https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=" + bvid + "&cid=" + cid + "&qn=64&high_quality=" + player_highQuality, function (result) {
 		/* 获取视频播放源 */
 		vidUrl = result.data.durl[0].url;
@@ -96,18 +97,16 @@ function loadCidList(pages) {
 	/* 如果视频包含多个分P视频，则加载分P列表 */
 	var cidList = "";
 	$.each(pages, function (index, item) {
-		if (index == 0) {
-			cidList += "<div class='player_cidListItem player_cidListItem_selected' cid-data='" + item.cid + "' page-num='" + item.page + "' title='" + item.part + "'>" + item.part + "</div>";
-		} else {
-			cidList += "<div class='player_cidListItem' cid-data='" + item.cid + "' page-num='" + item.page + "' title='" + item.part + "'>" + item.part + "</div>";
-		}
+		cidList += `<s-chip type='${(index == 0) ? "filled-tonal" : "outlined"}' class='player_cidListItem' cid-data='${item.cid}' page-num='${item.page}' title='${item.part}'>${item.part}</s-chip>`;
 	});
 	$("#player_descArea").append("<br><hr><b style='font-size:18px;'>[选集]</b><div class='flex_container'>" + cidList + "</div>");
 	$(".player_cidListItem").click(function () {
 		var cid = $(this).attr("cid-data");
 		var page = $(this).attr("page-num");
-		$(".player_cidListItem").removeClass("player_cidListItem_selected");
-		$(this).addClass("player_cidListItem_selected");
+
+		$(".player_cidListItem").attr("type", "outlined");
+		$(this).attr("type", "filled-tonal");
+
 		showToast("正在加载分P视频 [P" + page + "]");
 		loadVideoSource(bvidPlayingNow, cid);
 		getDanmu(cid);
@@ -174,16 +173,24 @@ function openPlayer(option) {
 		$.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
 			var WebList = "";
 			$.each(tjlist.data.list, function (index, item) {
-				WebList += `<div class='dynamic_singlebox'>
-							<a href="#bvid_` + item.bvid + `_refreshonly">
-								<img src='` + item.pic + `@412w_232h_1c.webp'><br>
-								<div class="dynamic_singlebox_vt">` + item.title + `</div>
-							</a>
-							<a href="#uid_` + item.owner.mid + `">
-								<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
-							</a>
-						</div>
-					`;
+				WebList += `
+                    <s-card clickable="true">
+                        <div slot="image" style="overflow:hidden;">
+                            <a href="#bvid_` + item.bvid + `">
+                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            </a>
+                        </div>
+                        <div slot="subhead">
+                            <a href="#bvid_` + item.bvid + `">
+                                ` + item.title + `
+                            </a>
+                        </div>
+                        <div slot="text">
+                            <a href="#uid_` + item.owner.mid + `">
+                                ` + item.owner.name + `
+                            </a>
+                        </div>
+                    </s-card>`;
 			});
 			$("#player_videoList").html(WebList)
 		});
@@ -192,19 +199,28 @@ function openPlayer(option) {
 		$("#player_sidebarTab_2").text("相关推荐");
 
 		$.get("https://api.bilibili.com/x/web-interface/archive/related?" + urlStr, function (res) {
-			var VidList = "";
+			var WebList = "";
 			$.each(res.data, function (index, item) {
-				VidList += `<div class='dynamic_singlebox'>
-						<a href="#bvid_` + item.bvid + `">
-							<img src='` + item.pic + `@412w_232h_1c.webp'><br>
-							<div class="dynamic_singlebox_vt">` + item.title + `</div>
-						</a>
-						<a href="#uid_` + item.owner.mid + `">
-							<div class="dynamic_singlebox_un">🔘&nbsp;` + item.owner.name + `</div>
-						</a>
-					</div>`
+				WebList += `
+                    <s-card clickable="true">
+                        <div slot="image" style="overflow:hidden;">
+                            <a href="#bvid_` + item.bvid + `">
+                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            </a>
+                        </div>
+                        <div slot="subhead">
+                            <a href="#bvid_` + item.bvid + `">
+                                ` + item.title + `
+                            </a>
+                        </div>
+                        <div slot="text">
+                            <a href="#uid_` + item.owner.mid + `">
+                                ` + item.owner.name + `
+                            </a>
+                        </div>
+                    </s-card>`;
 			});
-			$("#player_videoList").html(VidList);
+			$("#player_videoList").html(WebList);
 		});
 	}
 }
@@ -267,6 +283,7 @@ $(document).ready(function () {
 	$("#player_scrSwitchBtn").click(function () {
 		player_advancedDanmu = !player_advancedDanmu; /* 切换弹幕模式 */
 		showToast("弹幕模式已切换，当前模式：" + (player_advancedDanmu ? "滚动弹幕模式" : "简单弹幕模式"));
+		$("#player_simpleDanmu").text("");
 	});
 	$("#player_pipBtn").click(function () {
 		var pip = $("#player_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
@@ -286,20 +303,16 @@ $(document).ready(function () {
 
 
 	/* 侧边栏标签切换 */
-	$("#player_sidebarTab_1").click(function () {
-		$("#player_descArea").show();
-		$("#player_videoList").hide();
-		$("#player_sidebarTab_1").attr("class", 'player_sidebarTab_sel');
-		$("#player_sidebarTab_2").attr("class", 'player_sidebarTab');
+	$("#player_sidebarTab").click(() => {
+		const { selectedIndex } = document.querySelector('#player_sidebarTab');
+		if(selectedIndex == 0) {
+			$("#player_descArea").show();
+			$("#player_videoList").hide();
+		} else {
+			$("#player_descArea").hide();
+			$("#player_videoList").show();
+		}
 	});
-	$("#player_sidebarTab_2").click(function () {
-		$("#player_descArea").hide();
-		$("#player_videoList").show();
-
-		$("#player_sidebarTab_1").attr("class", 'player_sidebarTab');
-		$("#player_sidebarTab_2").attr("class", 'player_sidebarTab_sel');
-	});
-
 
 	/* 弹幕输出 */
 	setInterval(function () {
@@ -309,7 +322,7 @@ $(document).ready(function () {
 				if (player_advancedDanmu) {
 					showDanmu(player_danmuList[player_danmuCnt]["text"]);
 				} else {
-					$("#player_scrComment").html("<b>「弹幕」</b>" + player_danmuList[player_danmuCnt]["text"]);
+					$("#player_simpleDanmu").html("<b>「弹幕」</b>" + player_danmuList[player_danmuCnt]["text"]);
 				}
 				player_danmuCnt += 1;
 			}
