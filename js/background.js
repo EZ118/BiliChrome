@@ -59,5 +59,5 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
 
 /* 单独窗口 */
 chrome.action.onClicked.addListener(function(tab) {
-    chrome.windows.create({ url: 'home.html', type: 'popup', width: 950, height: 600 });
+    chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
 });
