@@ -22,7 +22,7 @@
         "*://*.bilibili.com/*"
     ],
     "host_permissions": [
-        "https://www.bilibili.com/"
+        "*://*.bilibili.com/*"
     ],
     "action": {
         "default_title": "BiliScape"
