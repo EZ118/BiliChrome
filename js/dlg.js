@@ -21,14 +21,7 @@ function closeDlg() {
 
 /* 自定义Toast */
 function showToast(message, duration) {
-	duration = duration ? duration : "3000";
-	var toast = $('#toast_container');
-	// toast.text(message);
-	toast.html(message);
-	toast.fadeIn(200);
-	setTimeout(function () {
-		toast.fadeOut(200);
-	}, duration);
+	sober.Snackbar.show(message);
 }
 
 /* 全局事件 */

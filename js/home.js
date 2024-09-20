@@ -306,14 +306,9 @@ function getMySpace() {
                     <div slot="headline">扩展选项</div>
                     <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
-                <!-- <s-card class="myspace_subSection" type="outlined">
-                    <div slot="headline">将订阅导出至PipePipe</div>
-                    <a href="#export_subscription"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
-                </s-card> -->
             </div>
-
             
-            <center style="margin-top:calc(88vh - 370px); z-index: -1;">
+            <center style="margin-top:calc(40vh - 120px); z-index: -1;">
                 <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;">前往Github查看项目</a><br>
                 <font color="#888">提示：ctrl+Q可快速关闭视频等窗口</font>
             </center>

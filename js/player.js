@@ -174,7 +174,7 @@ function openPlayer(option) {
 			var WebList = "";
 			$.each(tjlist.data.list, function (index, item) {
 				WebList += `
-                    <s-card clickable="true">
+                    <s-card clickable="true" class="common_video_card">
                         <div slot="image" style="overflow:hidden;">
                             <a href="#bvid_` + item.bvid + `">
                                 <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -202,7 +202,7 @@ function openPlayer(option) {
 			var WebList = "";
 			$.each(res.data, function (index, item) {
 				WebList += `
-                    <s-card clickable="true">
+                    <s-card clickable="true" class="common_video_card">
                         <div slot="image" style="overflow:hidden;">
                             <a href="#bvid_` + item.bvid + `">
                                 <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>

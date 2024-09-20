@@ -73,9 +73,9 @@
 					</s-navigation-item>
 				</s-navigation>
 			</div>
-			<div id="item_container">
+			<s-scroll-view id="item_container">
 				<!-- 页面内容 -->
-			</div>
+			</s-scroll-view>
 		</div>
 
 		<!-- 刷新按钮 -->
@@ -172,8 +172,8 @@
 								<div slot="text" id="player_sidebarTab_2">相关推荐</div>
 							</s-tab-item>
 						</s-tab>
-						<div id="player_descArea">暂无</div>
-						<div id="player_videoList" style="display:none;">无视频</div>
+						<s-scroll-view id="player_descArea">暂无</s-scroll-view>
+						<s-scroll-view id="player_videoList" style="display:none;">无视频</s-scroll-view>
 					</td>
 				</tr>
 			</table>
@@ -205,7 +205,7 @@
 				</tr>
 				<tr>
 					<td align="left" colspan="2" valign="top">
-						<div id="dlg_content"><!-- 此处显示内容 --></div>
+						<s-scroll-view id="dlg_content"><!-- 此处显示内容 --></s-scroll-view>
 					</td>
 				</tr>
 			</table>

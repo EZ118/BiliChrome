@@ -38,7 +38,7 @@ html{ height:100%; width:100%; }
 #player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none; border-radius:8px; }
 #player_title{ margin-left:15px; font-size:18px; }
 #player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; white-space:pre-wrap; height:calc(100% - 53px); font-size: 16px; overflow-y:auto; }
-#player_descArea hr{margin:3px; color:#91919160; border:none; border-bottom:1px solid #848484;}
+#player_descArea hr{ margin:3px; border:none; border-bottom:1px solid #FFFFFF38; }
 #player_descArea .moreReply{padding:5px; margin:10px; border:1px dashed #646464; border-radius:8px; cursor:pointer; }
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{ margin-left:15px; }
@@ -63,9 +63,15 @@ html{ height:100%; width:100%; }
 #dlg_content .reply .content{ margin-left:15px; }
 #dlg_content .reply i{ color:#8888889b; margin-left:15px; font-size:small; }
 
+/* 视频列表卡片组件 */
+.common_video_card { margin:7px; width:280px; }
+.common_video_card a{ color:inherit; }
+.common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
 /* Toast提示消息 */
-#toast_container{ display:none; position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#f6f2f7; padding:8px 20px; border-radius:5px; z-index:9999; box-shadow:0px 2px 5px #555; }
-#toast_container a{ color:#00AEEC; }
+s-snackbar{ position:fixed; bottom:40px; left:50%; transform:translateX(-50%); z-index:9999;}
+s-snackbar a{ color:#00AEEC; }
 
 /* 用户个人空间 */
 .myspace_topInfoBox{ margin:10px; width:calc(100% - 30px); height:120px; min-width:300px; max-width:none; display:inline-flex; }
@@ -110,12 +116,6 @@ html{ height:100%; width:100%; }
 	/* 用户空间动态 */
 	.space_singlebox{color:#FFF;}
 }
-
-/* 视频列表卡片组件 */
-.common_video_card { margin:7px; width:280px; }
-.common_video_card a{ color:inherit; }
-.common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 
 
