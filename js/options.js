@@ -270,5 +270,17 @@ $(document).ready(function () {
                 showPlayerPref();
             }, 500);
         });
+
+        $("#exportSubscription").click(function(){
+            /* 导出订阅（pipepipe格式 -options.js） */
+            $("#exportSubscription").hide();
+
+            getAccount("auto", function (usrInfo) {
+                alert("【将订阅导出到PipePipe】\n该功能将会获取您的订阅列表，并导出为PipePipe兼容格式。订阅列表的获取需要5s~20s的时间，转换完成后将通过浏览器下载保存。");
+                saveSubscriptionForPipePipe(usrInfo.uid);
+
+                $("#exportSubscription").fadeIn(1000);
+            });
+        })
     }
 });

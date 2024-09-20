@@ -35,7 +35,7 @@ function getSearchResult(wd) {
         var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b style='user-select:text;'>" + wd + "</b>的搜索结果：</p>";
         $.each(tjlist.data.result[11].data, function (index, item) {
             WebList += `
-                <s-card clickable="true">
+                <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#aid_` + item.aid + `">
                             <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -68,7 +68,7 @@ function getRecommendedVideos() {
         let request = $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
             $.each(tjlist.data.item, function (index, item) {
                 WebList += `
-                    <s-card clickable="true">
+                    <s-card clickable="true" class="common_video_card">
                         <div slot="image" style="overflow:hidden;">
                             <a href="#bvid_` + item.bvid + `">
                                 <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -107,7 +107,7 @@ function getHotVideos() {
             var tooltipText = '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介") + (item.rcmd_reason.content ? ("\n- 推荐原因: " + item.rcmd_reason.content) : "");
 
             WebList += `
-                <s-card clickable="true" title='` + tooltipText + `'>
+                <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
                             <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -152,7 +152,7 @@ async function getSubscribedVideos() {
                 var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
 
                 WebList += `
-                    <s-card clickable="true" title='` + tooltipText + `'>
+                    <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
                         <div slot="image" style="overflow:hidden;">
                             <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
                                 <img src='` + card.module_dynamic.major.archive.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -249,64 +249,69 @@ function getMySpace() {
         currentUid = usrInfo.uid;
 
         var WebHtml = `
-            <br>
-            <table class="myspace_topInfoBox" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td><img src="` + usrInfo.face + `@256w_256h_1c.webp"></td>
-                    <td width="10px"></td>
-                    <td>
-                        <b class="usrName">` + usrInfo.name + `</b>&nbsp;&nbsp;<i>` + usrInfo.sex + `</i><br>
-                        LEVEL:&nbsp;<i>` + usrInfo.level + `</i><br>
-                        <i>` + usrInfo.sign + `</i>
-                    </td>
-                    <td style="width: calc(98vw - 100px - 320px)"></td>
-                    <td align="center">
-                        <b class="usrNums">` + usrInfo.coins + `</b><br>
-                        <i>硬币</i>
-                    </td>
-                    <td align="center" width="30px">|</td>
-                    <td align="center">
-                        <b class="usrNums">` + usrInfo.fans + `</b><br>
-                        <i>粉丝</i>
-                    </td>
-                    <td width="30px"></td>
-                </tr>
-            </table>
-            <br>
-            <div style="width:100%;display:flex; flex-wrap: wrap;">
-                <div class="myspace_subSection">
-                    <p align="left">我的收藏</p>
-                    <p align="right"><a href="#myfav_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
+            <s-card class="myspace_topInfoBox" type="outlined">
+                <div slot="image">
+                    <img src="` + usrInfo.face + `@256w_256h_1c.webp">
                 </div>
-                <div class="myspace_subSection">
-                    <p align="left">我的关注</p>
-                    <p align="right"><a href="#mysubscription_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
+                <div slot="headline">
+                    <span class="usrName">` + usrInfo.name + `</span><br/>
+                    <p class="usrSign">` + usrInfo.sign + `</p>
+
+                    <s-chip type="elevated">LV` + usrInfo.level + `</s-chip>
+                    <s-chip type="elevated">` + usrInfo.sex + `</s-chip>
+                    <s-chip type="elevated">` + usrInfo.coins + `币</s-chip>
+                    <s-chip type="elevated">` + usrInfo.fans + `粉丝</s-chip>
                 </div>
-                <div class="myspace_subSection">
-                    <p align="left">历史记录</p>
-                    <p align="right"><a href="#history_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
+                <div slot="subhead">
+                    <a href="https://space.bilibili.com/` + usrInfo.uid + `" target="_blank">
+                        <s-button type="outlined">
+                            <s-icon slot="start">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-120q-66 0-113-47T80-280q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm480 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm-480-80q33 0 56.5-23.5T320-280q0-33-23.5-56.5T240-360q-33 0-56.5 23.5T160-280q0 33 23.5 56.5T240-200Zm480 0q33 0 56.5-23.5T800-280q0-33-23.5-56.5T720-360q-33 0-56.5 23.5T640-280q0 33 23.5 56.5T720-200ZM480-520q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-680q0-33-23.5-56.5T480-760q-33 0-56.5 23.5T400-680q0 33 23.5 56.5T480-600Zm0-80Zm240 400Zm-480 0Z"></path></svg>
+                            </s-icon>
+                            空间
+                        </s-button>
+                    </a>
                 </div>
-                <div class="myspace_subSection">
-                    <p align="left">最近动态</p>
-                    <p align="right"><a href="#uid_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
-                </div>
-                <div class="myspace_subSection">
-                    <p align="left">稍后再看</p>
-                    <p align="right"><a href="#watchlater_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
-                </div>
-                <div class="myspace_subSection">
-                    <p align="left">评论回复</p>
-                    <p align="right"><a href="#replymsg_` + usrInfo.uid + `"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
-                </div>
-                <div class="myspace_subSection">
-                    <p align="left">扩展选项</p>
-                    <p align="right"><a href="#options"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
-                </div>
-                <div class="myspace_subSection">
-                    <p align="left">将订阅导出到PipePipe</p>
-                    <p align="right"><a href="#export_subscription"><s-icon-button type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a></p>
-                </div>
+            </s-card>
+            
+
+            <div class="flex_container">
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">
+                        我的收藏
+                    </div>
+                    <a href="#myfav_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">我的关注</div>
+                    <a href="#mysubscription_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">历史记录</div>
+                    <a href="#history_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">最近动态</div>
+                    <a href="#uid_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">稍后再看</div>
+                    <a href="#watchlater_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">评论回复</div>
+                    <a href="#replymsg_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">扩展选项</div>
+                    <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
+                <!-- <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">将订阅导出至PipePipe</div>
+                    <a href="#export_subscription"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card> -->
             </div>
+
             
             <center style="margin-top:calc(88vh - 370px); z-index: -1;">
                 <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;">前往Github查看项目</a><br>
@@ -325,7 +330,7 @@ function getUserHistory() {
         var WebList = "";
         $.each(tjlist.data.list, function (index, item) {
             WebList += `
-                <s-card clickable="true">
+                <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.history.bvid + `">
                             <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -358,7 +363,7 @@ function getUserSubscription(uid) {
 
             $.each(tjlist.data.list, function (index, item) {
                 WebList += `<a href="#uid_` + item.mid + `">
-                        <s-card clickable="true">
+                        <s-card clickable="true" class="common_video_card">
                             <div slot="image" style="height:30px;overflow:hidden;">
                                 <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='` + item.face + `@45w_45h_1c.webp'>
                             </div>
@@ -388,7 +393,7 @@ function getMyCollectionList() {
         $.each(tjlist.data.list, function (index, item) {
             let favIntro = item.intro ?? "暂无";
             WebList += `<a href="#fav_` + item.id + `_` + item.media_count + `">
-                    <s-card clickable="true" type="outlined" style="min-width:160px;">
+                    <s-card clickable="true" class="common_video_card" type="outlined" style="min-width:160px;">
                         <div slot="subhead">
                             ` + item.title + `
                         </div>
@@ -409,7 +414,7 @@ function getCollectionById(fid, mediaCount) {
         var WebList = "<a href='#myfav'><s-icon-button><s-icon type='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>";
         $.each(tjlist.data.medias, function (index, item) {
             WebList += `
-                <s-card clickable="true">
+                <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
                             <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -437,7 +442,7 @@ function getWatchLater() {
         var WebList = "";
         $.each(tjlist.data.list, function (index, item) {
             WebList += `
-                <s-card clickable="true">
+                <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `_watchlater">
                             <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
@@ -561,13 +566,6 @@ function routeCtrl(isOnload, hash) {
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
         openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options")
-
-    } else if (data.includes("export_subscription")) {
-        /* 导出订阅（pipepipe格式 -options.js） */
-        getAccount("auto", function (usrInfo) {
-            alert("【将订阅导出到PipePipe】\n该功能将会获取您的订阅列表，并导出为PipePipe兼容格式。订阅列表的获取需要5s~20s的时间，转换完成后将通过浏览器下载保存。");
-            saveSubscriptionForPipePipe(usrInfo.uid);
-        });
 
     } else if (data[0] == "n") {
         /* 导航栏 */
