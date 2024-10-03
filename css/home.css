@@ -51,7 +51,7 @@ html{ height:100%; width:100%; }
 
 /* 自定义对话框 */
 #dlg_container{ position:fixed; top:0px; left:0; z-index:102; width:100vw; height:100vh; background: rgba(0,0,0,0.3); }
-.dlg_container_real{ position:relative; top:80px; left:20%; width:60%; height:calc(100% - 160px); background:#e8e8e8; border-radius:8px; border:1px solid rgba(197, 217, 241, 0.063); }
+.dlg_container_real{ position:relative; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); width:clamp(300px,65%,1200px); height:calc(100% - 140px); background:#e8e8e8; border-radius:8px; border:1px solid rgba(197, 217, 241, 0.063); }
 #dlg_content{ width:100%; height:100%; background:#e8e8e8; overflow-y:auto; overflow-x:hidden; }
 #dlg_title{ margin-left:15px; font-size:18px; }
 
@@ -81,7 +81,7 @@ s-snackbar a{ color:#00AEEC; }
 .myspace_topInfoBox div[slot="headline"] .usrSign { font-size:medium; font-weight:normal; margin:3px 0; padding:0; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; }
 .myspace_topInfoBox div[slot="headline"] s-chip { margin:3px 2px; }
 .myspace_topInfoBox div[slot="subhead"] { width:fit-content; }
-.myspace_topInfoBox div[slot="subhead"] s-button { margin:32px 5px; }
+.myspace_topInfoBox div[slot="subhead"] s-icon-button { margin:32px 5px; }
 
 .myspace_subSection { width:calc(50% - 25px); min-width:300px; max-width:none; margin:10px; display:flex; flex-direction:row; flex-shrink:0; break-inside: avoid; }
 .myspace_subSection div[slot="headline"]{ width:fit-content; float:left; font-weight:bold; font-size:17px; }
