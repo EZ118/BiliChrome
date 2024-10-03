@@ -68,7 +68,7 @@ function showSearchPage() {
     $("#item_container .search_history #search_clearHistory").on('click', function (event) {
         /* 清除历史 */
         localStorage.removeItem("searchHistory");
-        showToast("已清空搜素历史")
+        showToast("已清空搜索历史")
         showSearchPage();
     });
 }
