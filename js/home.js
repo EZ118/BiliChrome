@@ -3,6 +3,18 @@ var currentUid = "114514";
 var lastDynamicOffset = null;
 
 function showSearchPage() {
+    /* 显示搜素页 */
+
+    /* 处理搜素历史 */
+    let WebList = '';
+    let searchHistory = localStorage.getItem("searchHistory");
+    if (searchHistory) {
+        let searchHistoryArray = JSON.parse(searchHistory);
+        $.each(searchHistoryArray, function (index, item) {
+            WebList += `<s-chip type="elevated" class="search_histroyItem">${item}</s-chip>`;
+        });
+    }
+
     $("#item_container").html(`
         <div align="center">
             <div style='margin-top:30vh; margin-bottom:35px; display:flex; justify-content:center; align-items:flex-end;'>
@@ -14,17 +26,50 @@ function showSearchPage() {
                 <s-icon type="search" slot="start"></s-icon>
                 <input type="text" class="app-input-text" placeholder="回车以搜索">
             </s-search>
+            <br>
+            <div style="width:350px; margin-top:20px;" title="搜素历史" class="search_history">
+                ${WebList}
+                <br><br>
+                <s-chip title="清空搜素历史" id="search_clearHistory" type="elevated"><s-icon type="close"></s-icon></s-chip>
+            </div>
         </div>`);
     $("#dynamic_loader").hide();
     var inputObject = $("#item_container").find("input.app-input-text");
 
     inputObject.off('keydown');
+    $("#item_container .search_history .search_histroyItem").off();
+    $("#item_container .search_history #search_clearHistory").off();
+
     inputObject.on('keydown', function (event) {
+        /* 回车开始搜素 */
         if (event.key === 'Enter' || event.keyCode === 13) {
             if ($(this).val().trim() !== '') {
-                getSearchResult($(this).val());
+                let searchWd = $(this).val();
+                getSearchResult(searchWd);
+
+                /* 记录搜索历史 */
+                if (!searchHistory) {
+                    localStorage.setItem("searchHistory", '["' + searchWd + '"]');
+                } else {
+                    let searchHistoryArray = JSON.parse(searchHistory);
+                    if (searchHistoryArray.indexOf(searchWd) === -1) {
+                        searchHistoryArray.push(searchWd);
+                        localStorage.setItem("searchHistory", JSON.stringify(searchHistoryArray));
+                    }
+                }
             }
         }
+    });
+    $("#item_container .search_history .search_histroyItem").on('click', function (event) {
+        /* 从历史记录搜素 */
+        let searchWd = $(event.target).text();
+        getSearchResult(searchWd);
+    });
+    $("#item_container .search_history #search_clearHistory").on('click', function (event) {
+        /* 清除历史 */
+        localStorage.removeItem("searchHistory");
+        showToast("已清空搜素历史")
+        showSearchPage();
     });
 }
 function getSearchResult(wd) {
