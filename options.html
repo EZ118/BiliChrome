@@ -5,62 +5,64 @@
 	<title>设置 | BiliScape</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
-	<link href="./css/winui-icons.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="./css/options.css">
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/sober.min.js"></script>
 </head>
 
 <body>
-	<div class="topNav">
-		<a href="#common">
-			<p class="topNavItem">通用设置</p>
-		</a>
-		<a href="#player">
-			<p class="topNavItem">播放设置</p>
-		</a>
-		<a href="#more">
-			<p class="topNavItem">更多信息</p>
-		</a>
-	</div>
+	<s-page theme="auto">
+		<s-tab class="topNav">
+			<s-tab-item href="#common" selected="true">
+				<div slot="text">通用设置</div>
+			</s-tab-item>
+			<s-tab-item href="#player">
+				<div slot="text">播放设置</div>
+			</s-tab-item>
+			<s-tab-item href="#more">
+				<div slot="text">更多信息</div>
+			</s-tab-item>
+		</s-tab>
 
-	<div id="common_container" class="container">
-		<table id="userCard" cellpadding="0" cellspacing="0">
-			<tr>
-				<td align="left" width="80px">
-					<img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif">
-				</td>
-				<td align="left" width="5px"></td>
-				<td align="left">
+		<div id="container_0" class="container">
+			<s-card id="userCard" type="outlined">
+                <div slot="image">
+                    <img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif">
+                </div>
+                <div slot="headline">
+                    <span class="usrName">未登录</span><br/>
 					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-						<b class="usrName">未登录</b><br>
-						<i>点击此登录</i>
+						<span class="usrSign">点击按钮登录</span>
 					</a>
-				</td>
-				<td align="right" width="50px">
-					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-						<b class="usrNums icons10-angle-right">&nbsp;&nbsp;</b><br>
-					</a>
-				</td>
-			</tr>
-		</table>
-		<button id="refreshUserInfo" class="btn">刷新用户信息</button>&nbsp;
-		<button id="exportSubscription" class="btn">将订阅导出到PipePipe</button>&nbsp;
-		<button id="restorePlayerCfg" class="btn">恢复播放设置为默认</button>
-	</div>
-	<div id="player_container" class="container" style="display: none;">
-		加载中...
-	</div>
-	<div id="more_container" class="container" align="center" style="display: none;">
-		<br><br>
-		<img src="./img/icon_128x128.png" width="80px"><br />
-		<a href="https://github.com/EZ118/BiliChrome" target="_blank">
-			<h1>BiliScape</h1>
-		</a>
-		<b>第三方哔哩哔哩客户端浏览器插件</b><br><br>
-		<a href="https://github.com/EZ118/" target="_blank"><i>Developed by EZ118</i></a>
-		<br><br>
-	</div>
+                </div>
+                <div slot="subhead">
+                    <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
+                        <s-icon-button type="outlined" title="点此登录">
+                            <s-icon slot="start" type="arrow_forward"></s-icon>
+                        </s-icon-button>
+                    </a>
+                </div>
+            </s-card>
+			
+			<s-button class="btn" type="outlined" id="refreshUserInfo">刷新用户信息</s-button>&nbsp;
+			<s-button class="btn" type="outlined" id="exportSubscription">将订阅导出到PipePipe</s-button>&nbsp;
+			<s-button class="btn" type="outlined" id="restorePlayerCfg">恢复播放设置为默认</s-button>
+		</div>
+		<div id="container_1" class="container" style="display: none;">
+			加载中...
+		</div>
+		<div id="container_2" class="container" align="center" style="display: none;">
+			<br><br>
+			<img src="./img/icon_128x128.png" width="80px"><br />
+			<a href="https://github.com/EZ118/BiliChrome" target="_blank">
+				<h1>BiliScape</h1>
+			</a>
+			<b>第三方哔哩哔哩客户端浏览器插件</b><br><br>
+			<a href="https://github.com/EZ118/" target="_blank"><i>Developed by EZ118</i></a>
+			<br><br>
+		</div>
+	</s-page>
 
-	<script src="./js/jquery.min.js"></script>
 	<script src="./js/options.js"></script>
 </body>
 

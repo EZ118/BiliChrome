@@ -14,6 +14,11 @@ function areKeysEqual(dict1, dict2) {
     return true;
 }
 
+/* 自定义Toast */
+function showToast(message, duration) {
+	sober.Snackbar.show(message);
+}
+
 /* 本地存储接口 */
 function getStorage(key, callback) {
     chrome.storage.sync.get([key], (result) => {
@@ -95,17 +100,17 @@ function resetAccount() {
     })
 }
 function getJctToken(callback) {
-	/* 获取B站账号登录凭据（用于接口请求时的身份验证） */
-	chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
-		var finalVal = "";
-		for (let i = 0; i < cookies.length; i++) {
-			if (cookies[i]["name"] == "bili_jct") {
-				finalVal = cookies[i]["value"];
-				break;
-			}
-		}
-		callback(finalVal);
-	});
+    /* 获取B站账号登录凭据（用于接口请求时的身份验证） */
+    chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
+        var finalVal = "";
+        for (let i = 0; i < cookies.length; i++) {
+            if (cookies[i]["name"] == "bili_jct") {
+                finalVal = cookies[i]["value"];
+                break;
+            }
+        }
+        callback(finalVal);
+    });
 }
 function downloadFile(fileName, text) {
     const url = window.URL || window.webkitURL || window;
@@ -123,7 +128,7 @@ function saveSubscriptionForPipePipe(uid) {
     for (let i = 1; i <= 6; i++) {
         let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
             if (tjlist.data.list.length <= 0) { return; }
-            $.each(tjlist.data.list,function(index,item){
+            $.each(tjlist.data.list, function (index, item) {
                 finalList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + item.mid, "name": item.uname });
             });
         });
@@ -132,7 +137,7 @@ function saveSubscriptionForPipePipe(uid) {
     }
 
     $.when.apply($, requests).done(function () {
-        finalList = {"app_version":"3.4.3","app_version_int":105100,"subscriptions":finalList};
+        finalList = { "app_version": "3.4.3", "app_version_int": 105100, "subscriptions": finalList };
         downloadFile("pipepipe_subscriptions_" + uid + ".json", JSON.stringify(finalList));
     });
 }
@@ -143,39 +148,41 @@ function showUserCard(uid) {
     getAccount(uid, function (result) {
         if (!result.name) {
             $("#userCard").html(`
-                <tr>
-                    
-                    <td align="left" width="80px"><img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif"></td>
-                    <td align="left" width="5px"></td>
-                    <td align="left">
-                        <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-                            <b class="usrName">未登录</b><br>
-                            <i>点此登录</i>
-                        </a>
-                    </td>
-                    <td align="right" width="50px">
-                        <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-                            <b class="usrNums icons10-angle-right">&nbsp;&nbsp;</b><br>
-                        </a>
-                    </td>
-                </tr>
+                <div slot="image">
+                    <img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif">
+                </div>
+                <div slot="headline">
+                    <span class="usrName">未登录</span><br/>
+					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
+						<span class="usrSign">点击按钮登录</span>
+					</a>
+                </div>
+                <div slot="subhead">
+                    <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
+                        <s-icon-button type="outlined" title="点此登录">
+                            <s-icon slot="start" type="arrow_forward"></s-icon>
+                        </s-icon-button>
+                    </a>
+                </div>
             `);
         } else {
             $("#userCard").html(`
-                <tr>
-                    <td align="left" width="80px"><img src="` + result.face + `@256w_256h_1c.webp"></td>
-                    <td align="left" width="5px"></td>
-                    <td align="left">
-                        <b class="usrName">` + result.name + `</b>
-                        <i>` + result.sex + `</i><br>
-                        LEVEL:&nbsp;<i>` + result.level + `</i><br>
-                        <i>` + result.sign + `</i>
-                    </td>
-                    <td align="right" width="50px">
-                        <b class="usrNums">` + result.fans + `</b><br>
-                        <i>粉丝</i>
-                    </td>
-                </tr>
+                <div slot="image">
+                    <img src="` + result.face + `@256w_256h_1c.webp">
+                </div>
+                <div slot="headline">
+                    <span class="usrName">` + result.name + `</span><br/>
+                    <p class="usrSign">` + result.sign + `</p>
+                </div>
+                <div slot="subhead">
+                    <a href="https://space.bilibili.com/` + result.uid + `" target="_blank">
+                        <s-icon-button type="outlined" title="空间">
+                            <s-icon slot="start">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-120q-66 0-113-47T80-280q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm480 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm-480-80q33 0 56.5-23.5T320-280q0-33-23.5-56.5T240-360q-33 0-56.5 23.5T160-280q0 33 23.5 56.5T240-200Zm480 0q33 0 56.5-23.5T800-280q0-33-23.5-56.5T720-360q-33 0-56.5 23.5T640-280q0 33 23.5 56.5T720-200ZM480-520q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-680q0-33-23.5-56.5T480-760q-33 0-56.5 23.5T400-680q0 33 23.5 56.5T480-600Zm0-80Zm240 400Zm-480 0Z"></path></svg>
+                            </s-icon>
+                        </s-icon-button>
+                    </a>
+                </div>
             `);
         }
     });
@@ -209,7 +216,7 @@ function showPlayerPref() {
             }
         }
 
-        $("#player_container").html(htmlContent);
+        $("#container_1").html(htmlContent);
 
         // 添加事件监听
         for (const key in result) {
@@ -230,40 +237,35 @@ function showPlayerPref() {
 
 /* 设置页面操作 */
 function optRouteCtrl() {
-    var baseUrl = window.location.href + "#";
-    var data = baseUrl.split("#")[1];
-    if (data.includes("common") || !data) {
-        $("#common_container").show();
-        $("#player_container").hide();
-        $("#more_container").hide();
-    } else if (data.includes("player")) {
-        $("#common_container").hide();
-        $("#player_container").show();
-        $("#more_container").hide();
-    } else if (data.includes("more")) {
-        $("#common_container").hide();
-        $("#player_container").hide();
-        $("#more_container").show();
-    }
+    $("s-tab-item").click((evt) => {
+        const { selectedIndex } = document.querySelector('s-tab');
+
+        var tabsNumber = 3; // tab总数
+        for (i = 0; i < tabsNumber; i ++) {
+            if (i == selectedIndex) {
+                document.getElementById("container_" + i).style.display = "block";
+            } else {
+                document.getElementById("container_" + i).style.display = "none";
+            }
+        }
+    });
 }
+
 $(document).ready(function () {
     if (window.location.href.split("/").slice(-1)[0] === "options.html") {
         optRouteCtrl();
         showPlayerPref();
         showUserCard("auto");
 
-        window.addEventListener('popstate', function (event) {
-            optRouteCtrl();
-        });
         $("#refreshUserInfo").click(function () {
             $("#refreshUserInfo").hide();
-            $("#refreshUserInfo").html("刷新完成!");
+            $("#refreshUserInfo").text("刷新完成!");
             $("#refreshUserInfo").fadeIn(1000);
             resetAccount();
         });
         $("#restorePlayerCfg").click(function () {
             $("#restorePlayerCfg").hide();
-            $("#restorePlayerCfg").html("已恢复为默认!");
+            $("#restorePlayerCfg").text("已恢复为默认!");
             $("#restorePlayerCfg").fadeIn(1000);
             removeStorage("player_cfg");
             setTimeout(function () {
@@ -271,14 +273,15 @@ $(document).ready(function () {
             }, 500);
         });
 
-        $("#exportSubscription").click(function(){
+        $("#exportSubscription").click(function () {
             /* 导出订阅（pipepipe格式 -options.js） */
             $("#exportSubscription").hide();
 
             getAccount("auto", function (usrInfo) {
-                alert("【将订阅导出到PipePipe】\n该功能将会获取您的订阅列表，并导出为PipePipe兼容格式。订阅列表的获取需要5s~20s的时间，转换完成后将通过浏览器下载保存。");
+                showToast("正在获取列表，请等待2s~10s，转换完成后将通过浏览器下载保存");
                 saveSubscriptionForPipePipe(usrInfo.uid);
 
+                $("#exportSubscription").text("导出完成!");
                 $("#exportSubscription").fadeIn(1000);
             });
         })
