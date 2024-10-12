@@ -94,26 +94,45 @@
 
 		<!-- 播放器 -->
 		<div id="player_container" style="display:none;">
-			<table style="width:100%; height:100%;">
-				<tr height="42px">
-					<td align="left">
-						<b id="player_title">[视频标题]</b>
-					</td>
-					<td align="right" width="360px">
-						<s-icon-button id="player_coinBtn" title="投币">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M360-120v-80H240v-80h80v-400h-80v-80h120v-80h80v80h80v-80h80v85q52 14 86 56.5t34 98.5q0 29-10 55.5T682-497q35 21 56.5 57t21.5 80q0 66-47 113t-113 47v80h-80v-80h-80v80h-80Zm40-400h160q33 0 56.5-23.5T640-600q0-33-23.5-56.5T560-680H400v160Zm0 240h200q33 0 56.5-23.5T680-360q0-33-23.5-56.5T600-440H400v160Z">
-									</path>
-								</svg>
-							</s-icon>
-						</s-icon-button>
+			<div class="player_row" style="height:42px;">
+				<b id="player_title">[视频标题]</b>
+
+				<!-- 对话框基本功能按钮 -->
+				<s-icon-button id="player_openNewBtn" title="在新标签页打开">
+					<s-icon>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+							<path
+								d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
+							</path>
+						</svg>
+					</s-icon>
+				</s-icon-button>
+				<s-icon-button id="player_closeBtn" title="关闭 (Ctrl+Q)">
+					<s-icon type="close"></s-icon>
+				</s-icon-button>
+			</div>
+			<div class="player_row" style="height:calc(100vh - 42px);">
+				<!-- 视频播放 -->
+				<video src="" id="player_videoContainer" controls></video>
+
+				<!-- 播放器侧边栏 -->
+				<div style="width:360px; border-left: 1px solid #88888830; border-radius: 0.75em 0 0 0.75em; padding-left:5px;">
+					<!-- 功能按钮 -->
+					<div style="height:42px; display:flex; flex-direction:row; justify-content:center;">
 						<s-icon-button id="player_likeBtn" title="点赞">
 							<s-icon>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
 									<path
 										d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z">
+									</path>
+								</svg>
+							</s-icon>
+						</s-icon-button>
+						<s-icon-button id="player_coinBtn" title="投币">
+							<s-icon>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+									<path
+										d="M360-120v-80H240v-80h80v-400h-80v-80h120v-80h80v80h80v-80h80v85q52 14 86 56.5t34 98.5q0 29-10 55.5T682-497q35 21 56.5 57t21.5 80q0 66-47 113t-113 47v80h-80v-80h-80v80h-80Zm40-400h160q33 0 56.5-23.5T640-600q0-33-23.5-56.5T560-680H400v160Zm0 240h200q33 0 56.5-23.5T680-360q0-33-23.5-56.5T600-440H400v160Z">
 									</path>
 								</svg>
 							</s-icon>
@@ -145,81 +164,63 @@
 								</svg>
 							</s-icon>
 						</s-icon-button>
-						<s-icon-button id="player_openNewBtn" title="在新标签页打开">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
-									</path>
-								</svg>
-							</s-icon>
-						</s-icon-button>
-						<s-icon-button id="player_closeBtn" title="关闭 (Ctrl+Q)">
-							<s-icon type="close"></s-icon>
-						</s-icon-button>
-					</td>
-				</tr>
-				<tr>
-					<td align="center">
-						<video src="" id="player_videoContainer" controls></video>
-					</td>
-					<td align="left" style="border-left:1px solid #666; vertical-align:top;" width="360px">
-						<s-tab mode="fixed" id="player_sidebarTab">
-							<s-tab-item selected="true">
-								<div slot="text">详情&amp;评论</div>
-							</s-tab-item>
-							<s-tab-item>
-								<div slot="text" id="player_sidebarTab_2">相关推荐</div>
-							</s-tab-item>
-						</s-tab>
-						<s-scroll-view id="player_descArea">暂无</s-scroll-view>
-						<s-scroll-view id="player_videoList" style="display:none;">无视频</s-scroll-view>
-					</td>
-				</tr>
-			</table>
-			<div id="player_simpleDanmu"></div>
-		</div>
+					</div>
 
-		<!-- 自定义对话框 -->
-		<div id="dlg_container" style="display:none;">
-			<table class="dlg_container_real">
-				<tr height="42px">
-					<td align="left">
-						<b id="dlg_title">[窗口标题]</b>
-					</td>
-					<td align="right" width="130px">
-						<s-icon-button id="dlg_openNewBtn" title="在新标签页打开">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
-									</path>
-								</svg>
-							</s-icon>
-						</s-icon-button>
+					<!-- 评论 & 推荐 -->
+					<s-tab mode="fixed" id="player_sidebarTab">
+						<s-tab-item selected="true">
+							<div slot="text">详情&amp;评论</div>
+						</s-tab-item>
+						<s-tab-item>
+							<div slot="text" id="player_sidebarTab_2">相关推荐</div>
+						</s-tab-item>
+					</s-tab>
+					<s-scroll-view id="player_descArea">暂无</s-scroll-view>
+					<s-scroll-view id="player_videoList" style="display:none;">无视频</s-scroll-view>
+				</div>
+				<div id="player_simpleDanmu"></div>
+			</div>
 
-						<s-icon-button id="dlg_closeBtn" title="关闭 (Ctrl+Q)">
-							<s-icon type="close"></s-icon>
-						</s-icon-button>
-					</td>
-				</tr>
-				<tr>
-					<td align="left" colspan="2" valign="top">
-						<s-scroll-view id="dlg_content"><!-- 此处显示内容 --></s-scroll-view>
-					</td>
-				</tr>
-			</table>
-		</div>
+			<!-- 自定义对话框 -->
+			<div id="dlg_container" style="display:none;">
+				<table class="dlg_container_real">
+					<tr height="42px">
+						<td align="left">
+							<b id="dlg_title">[窗口标题]</b>
+						</td>
+						<td align="right" width="130px">
+							<s-icon-button id="dlg_openNewBtn" title="在新标签页打开">
+								<s-icon>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+										<path
+											d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
+										</path>
+									</svg>
+								</s-icon>
+							</s-icon-button>
 
-		<!-- 自定义Toast -->
-		<div id="toast_container"></div>
+							<s-icon-button id="dlg_closeBtn" title="关闭 (Ctrl+Q)">
+								<s-icon type="close"></s-icon>
+							</s-icon-button>
+						</td>
+					</tr>
+					<tr>
+						<td align="left" colspan="2" valign="top">
+							<s-scroll-view id="dlg_content"><!-- 此处显示内容 --></s-scroll-view>
+						</td>
+					</tr>
+				</table>
+			</div>
 
-		<!--附带组件-->
-		<script src="./js/options.js"></script>
-		<script src="./js/dlg.js"></script>
-		<script src="./js/player.js"></script>
-		<script src="./js/home.js"></script>
-		<script src="./js/navbar.js"></script>
+			<!-- 自定义Toast -->
+			<div id="toast_container"></div>
+
+			<!--附带组件-->
+			<script src="./js/options.js"></script>
+			<script src="./js/dlg.js"></script>
+			<script src="./js/player.js"></script>
+			<script src="./js/home.js"></script>
+			<script src="./js/navbar.js"></script>
 	</s-page>
 </body>
 

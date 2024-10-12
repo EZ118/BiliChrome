@@ -1,6 +1,5 @@
 img{ -webkit-user-drag:none; }
 a{ text-decoration:none; color:inherit; }
-.dark-theme a{ text-decoration:none; color:#FFF;}
 body{
 	background-color:#17181a;
 	user-select:none; overflow-y:auto;
@@ -12,7 +11,7 @@ html{ height:100%; width:100%; }
 /* 右侧列表通用容器 */
 #item_container{ display:block; flex-grow:1; height:100vh; overflow:hidden auto; min-width:calc(100% - 80px); }
 .flex_container{ display:flex; flex-wrap:wrap; }
-.options_frame { width:100%; height:99%; border:none; border-radius:5px; }
+.options_frame { width:100%; height:99%; min-height:200px; border:none; border-radius:5px; }
 
 /* 当前其他设备正在播放提示框 */
 .continuation_alertBox{ overflow: hidden; display:flex; flex-direction:column; width:262px; height:240px; background:#FFF; box-shadow: 1px 1px 5px #555; border:1px solid #3b3b3b3b; border-radius: 10px; padding:10px; position:fixed; top:20px; right:20px; z-index:2; }
@@ -34,16 +33,17 @@ html{ height:100%; width:100%; }
 #RefreshBtn{ position:fixed; right:24px; bottom:24px; }
 
 /* 播放器 */
-#player_container{ position:fixed; top:0px; left:0px; z-index: 103; width:100vw; height:100vh; background:#e8e8e8; }
-#player_videoContainer{ max-width:100%;outline:none;height:calc(100% - 10px); border:none; border-radius:8px; }
-#player_title{ margin-left:15px; font-size:18px; }
-#player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; white-space:pre-wrap; height:calc(100% - 53px); font-size: 16px; overflow-y:auto; }
+#player_container{ position:fixed; top:0px; left:0px; z-index: 103; width:100vw; height:100vh; background:#fffbff; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+.player_row { display:flex;width:100vw; flex-direction:row; justify-content:center; align-items:center; }
+#player_videoContainer{ max-width:calc(100vw - 360px); flex-grow: 1; outline:none;height:calc(100vh - 132px); border:none; border-radius:8px; }
+#player_title{ margin-left:15px; font-size:18px; flex-grow:1; overflow: hidden; text-overflow: ellipsis; white-space:nowrap; }
+#player_descArea{ user-select:text; word-wrap:break-word; word-break:break-all; white-space:pre-wrap; height:calc(100vh - 132px); font-size: 16px; overflow-y:auto; }
 #player_descArea hr{ margin:3px; border:none; border-bottom:1px solid #FFFFFF38; }
 #player_descArea .moreReply{padding:5px; margin:10px; border:1px dashed #646464; border-radius:8px; cursor:pointer; }
 #player_descArea .reply{margin-bottom:5px;}
 #player_descArea .reply .content{ margin-left:15px; }
 #player_descArea .reply i{ color:#8888889b; margin-left:15px; font-size:small; }
-#player_videoList{user-select:none; word-wrap:break-word; word-break:break-all; width:100%; height:calc(100% - 54px); font-size: 16px; overflow-y:auto; display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; }
+#player_videoList{user-select:none; word-wrap:break-word; word-break:break-all; width:100%; height:calc(100vh - 132px); font-size: 16px; overflow-y:auto; display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; }
 #player_simpleDanmu{ width:80%; position:fixed; top:50px; left:10px; z-index:104; font-size:16px;  }
 .player_danmuText{ width:fit-content; max-width:500px; font-size:18px; font-weight:bold; opacity:0.8; z-index:104; position:fixed; color:#EEEEEE; text-shadow:0 0 2px #000; }
 
