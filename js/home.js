@@ -530,17 +530,36 @@ function getMsgReply() {
 function getVidPlayingNow() {
     $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
-            container = document.createElement("a");
-            container.href = "#bvid_" + vidInfo.data.history.bvid;
-            container.innerHTML = `<div class="continuation_alertBox">
-                    <img src="` + vidInfo.data.cover + `@240w_135h_1c.jpg">
-                    <p class="continuation_alertBox_vt">` + vidInfo.data.title + `</p>
-                    <p class="continuation_alertBox_un">🔘&nbsp;` + vidInfo.data.author_name + `</p>
-                    <p align="right" style="font-size:10px;">（其他设备观看了该视频，4秒后关闭）</p>
-                </div>`;
-            document.body.appendChild(container);
+            var container = $('<div>', {
+                class: 'continuation_alertBox'
+            });
+            
+            // 设置 innerHTML 内容
+            container.html(`
+                <s-card clickable="true" class="common_video_card" type="outlined" title="该视频正在其他设备中播放">
+                    <div slot="image" style="overflow:hidden;">
+                        <a href="#bvid_${vidInfo.data.history.bvid}">
+                            <img src='${vidInfo.data.cover}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                        </a>
+                    </div>
+                    <div slot="subhead">
+                        <a href="#bvid_${vidInfo.data.history.bvid}_watchlater">
+                            ${vidInfo.data.title}
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#uid_${vidInfo.data.author_mid}">
+                            ${vidInfo.data.author_name}
+                        </a>
+                    </div>
+                </s-card>
+            `);
+            
+            // 将创建的元素添加到 body 中
+            container.appendTo('body');
+            
             setTimeout(function () {
-                $(container).fadeOut(700);
+                container.fadeOut(700);
             }, 3500);
         }
     });
