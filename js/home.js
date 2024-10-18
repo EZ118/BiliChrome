@@ -279,7 +279,8 @@ function getUserSpace(uid) {
                     </s-ripple>`;
             }
         });
-
+        
+        WebList = "<div class='flex_container' style='flex-direction:column; align-items:center;'>" + WebList + "</div>";
         openDlg("用户空间 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid);
     }).fail(function () {
         console.log("Error fetching data.");
