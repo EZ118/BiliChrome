@@ -297,19 +297,19 @@ function getMySpace() {
         var WebHtml = `
             <s-card class="myspace_topInfoBox" type="outlined">
                 <div slot="image">
-                    <img src="` + usrInfo.face + `@256w_256h_1c.webp">
+                    <img src="${usrInfo.face}@256w_256h_1c.webp">
                 </div>
                 <div slot="headline">
-                    <span class="usrName">` + usrInfo.name + `</span><br/>
-                    <p class="usrSign">` + usrInfo.sign + `</p>
+                    <span class="usrName">${usrInfo.name}</span><br/>
+                    <p class="usrSign">${usrInfo.sign}</p>
 
-                    <s-chip type="elevated">LV` + usrInfo.level + `</s-chip>
-                    <s-chip type="elevated">` + usrInfo.sex + `</s-chip>
-                    <s-chip type="elevated">` + usrInfo.coins + `币</s-chip>
-                    <s-chip type="elevated">` + usrInfo.fans + `粉丝</s-chip>
+                    <s-chip type="elevated">LV${usrInfo.level}</s-chip>
+                    <s-chip type="elevated">${usrInfo.sex}</s-chip>
+                    <s-chip type="elevated">${usrInfo.coins}币</s-chip>
+                    <s-chip type="elevated">${usrInfo.fans}粉丝</s-chip>
                 </div>
                 <div slot="subhead">
-                    <a href="https://space.bilibili.com/` + usrInfo.uid + `" target="_blank">
+                    <a href="https://space.bilibili.com/${usrInfo.uid}" target="_blank">
                         <s-icon-button type="outlined" title="空间">
                             <s-icon slot="start">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-120q-66 0-113-47T80-280q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm480 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm-480-80q33 0 56.5-23.5T320-280q0-33-23.5-56.5T240-360q-33 0-56.5 23.5T160-280q0 33 23.5 56.5T240-200Zm480 0q33 0 56.5-23.5T800-280q0-33-23.5-56.5T720-360q-33 0-56.5 23.5T640-280q0 33 23.5 56.5T720-200ZM480-520q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-680q0-33-23.5-56.5T480-760q-33 0-56.5 23.5T400-680q0 33 23.5 56.5T480-600Zm0-80Zm240 400Zm-480 0Z"></path></svg>
@@ -325,27 +325,27 @@ function getMySpace() {
                     <div slot="headline">
                         我的收藏
                     </div>
-                    <a href="#myfav_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#myfav_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">我的关注</div>
-                    <a href="#mysubscription_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#mysubscription_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">历史记录</div>
-                    <a href="#history_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#history_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">最近动态</div>
-                    <a href="#uid_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#uid_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">稍后再看</div>
-                    <a href="#watchlater_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#watchlater_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">评论回复</div>
-                    <a href="#replymsg_` + usrInfo.uid + `"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#replymsg_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">扩展选项</div>
@@ -649,7 +649,7 @@ $(document).ready(function () {
     getAccount("auto", function (usrInfo) {
         /* 载入用户信息 */
         currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { showToast("您未登录，建议<a href='#options'>登录</a>后使用", 5000) }
+        if (!usrInfo.uid) { showToast("您未登录，请在bilibili.com登录后再使用", 8000) }
     });
 
     getVidPlayingNow();

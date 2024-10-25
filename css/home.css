@@ -56,7 +56,7 @@ html{ height:100%; width:100%; }
 
 /* 视频列表卡片组件 */
 .common_video_card { margin:7px; width:280px; }
-.common_video_card a{ color:inherit; }
+.common_video_card a{ color:inherit; -webkit-user-drag:none; }
 .common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
