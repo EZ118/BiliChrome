@@ -17,13 +17,13 @@ function parseComments(comments, cnt = 0) {
 	let result = '';
 
 	$.each(comments, function (index, comment) {
-		const { oid, member, content, replies, ctime, like } = comment;
+		const { oid, member, content, replies, ctime, like, reply_control } = comment;
 		const timeString = new Date(ctime * 1000).toLocaleDateString();
 
 		if(index > 0) { result += "<hr>"; }
 		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
 		result += `<div class="content">${content.message}</div>`;
-		result += `<i>${like}赞 &nbsp; 日期：${timeString}</i></div>`;
+		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location.split("：")[1] || ""}</i></div>`;
 
 		if (replies && replies.length > 0) {
 			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
@@ -37,7 +37,7 @@ function parseComments(comments, cnt = 0) {
 
 function showMoreReplies(oid){
 	/* 在对话框中展示单条评论下的所有回复，oid即评论ID */
-	$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + oid, function (ReplyInfo) {
+	$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + oid, function (ReplyInfo) {
 		/* 获取评论 */
 		textAll = parseComments(ReplyInfo.data.replies);
 		openDlg("更多评论 [" + oid + "]", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
@@ -149,12 +149,12 @@ function openPlayer(option) {
 		getDanmu(cid); /* 获取弹幕 */
 		loadVideoSource(bvid, cid); /* 获取视频源 */
 
-		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
+		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
-			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'><br>");
+			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
 
-			$("#player_descArea .moreReply").click(function (evt) {
+			$(document).on('click', '.reply_container .moreReply', function (evt) {
 				/* 当用户点击了评论回复，则显示更多评论 */
 				const clickedEle = $(evt.target);
 				let oid = clickedEle.parent().parent().attr("oid") || clickedEle.parent().attr("oid") || clickedEle.attr("oid");
@@ -244,7 +244,7 @@ function doLikeVid(bvid) {
 			else { showToast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】\nB站官方点赞API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:216）");
+			showToast("【失败】B站官方点赞API限制了请求标头Origin，而Chrome扩展无权修改Origin。（player.js:247）");
 		})
 }
 
@@ -257,7 +257,7 @@ function doGiveCoin(bvid) {
 			else { showToast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】\nB站官方投币API限制了请求标头Origin，而Chrome扩展无权修改Origin。\n（player.js:229）");
+			showToast("【失败】B站官方投币API限制了请求标头Origin，而Chrome扩展无权修改Origin。（player.js:260）");
 		})
 }
 
