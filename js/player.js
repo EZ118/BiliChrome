@@ -12,7 +12,7 @@ function limitConsecutiveChars(str) {
     return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 }
 
-function parseComments(comments, cnt = 0) {
+function parseComments(comments) {
 	/* 解析评论；将评论列表中的每一项递归解析，并返回解析后的字符串（html），由主函数统一调用 */
 	let result = '';
 
@@ -23,7 +23,7 @@ function parseComments(comments, cnt = 0) {
 		if(index > 0) { result += "<hr>"; }
 		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
 		result += `<div class="content">${content.message}</div>`;
-		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location.split("：")[1] || ""}</i></div>`;
+		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location ? reply_control.location.split("：")[1] : ""}</i></div>`;
 
 		if (replies && replies.length > 0) {
 			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
@@ -99,7 +99,7 @@ function loadCidList(pages) {
 	$.each(pages, function (index, item) {
 		cidList += `<s-chip type='${(index == 0) ? "filled-tonal" : "outlined"}' class='player_cidListItem' cid-data='${item.cid}' page-num='${item.page}' title='${item.part}'>${item.part}</s-chip>`;
 	});
-	$("#player_descArea").append("<br><hr><b style='font-size:18px;'>[选集]</b><div class='flex_container'>" + cidList + "</div>");
+	$("#player_descArea").append("<br><hr><b class='player_blockTitle'>选集</b><div class='flex_container'>" + cidList + "</div>");
 	$(".player_cidListItem").click(function () {
 		var cid = $(this).attr("cid-data");
 		var page = $(this).attr("page-num");
@@ -143,7 +143,7 @@ function openPlayer(option) {
 		desc = limitConsecutiveChars(desc);
 
 		$("#player_title").html(VideoInfo["data"]["title"]);
-		$("#player_descArea").html("<b style='font-size:18px;'>[详情]</b><br>" + desc);
+		$("#player_descArea").html("<b class='player_blockTitle'>详情</b><br>" + desc);
 
 		if (cidPages.length > 1) { loadCidList(cidPages); } /* 显示分P视频列表 */
 		getDanmu(cid); /* 获取弹幕 */
@@ -152,7 +152,7 @@ function openPlayer(option) {
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);
-			$("#player_descArea").append("<hr><b style='font-size:18px;'>[评论]</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
+			$("#player_descArea").append("<br><b class='player_blockTitle'>评论</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
 
 			$(document).on('click', '.reply_container .moreReply', function (evt) {
 				/* 当用户点击了评论回复，则显示更多评论 */
@@ -174,23 +174,26 @@ function openPlayer(option) {
 			var WebList = "";
 			$.each(tjlist.data.list, function (index, item) {
 				WebList += `
-                    <s-card clickable="true" class="common_video_card">
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#bvid_` + item.bvid + `">
-                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#bvid_` + item.bvid + `">
-                                ` + item.title + `
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_` + item.owner.mid + `">
-                                ` + item.owner.name + `
-                            </a>
-                        </div>
-                    </s-card>`;
+					<s-card clickable="true" class="slim_video_card">
+						<div class="card-image">
+							<a href="#bvid_${item.bvid}_watchlater">
+								<img src='${item.pic}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+							</a>
+						</div>
+						<div class="card-content">
+							<div class="card-subhead">
+								<a href="#bvid_${item.bvid}_watchlater">
+									${item.title}
+								</a>
+							</div>
+							<div class="card-text">
+								<a href="#bvid_${item.bvid}_watchlater">
+									${item.owner.name}
+								</a>
+							</div>
+						</div>
+					</s-card>
+					`;
 			});
 			$("#player_videoList").html(WebList)
 		});
@@ -202,23 +205,26 @@ function openPlayer(option) {
 			var WebList = "";
 			$.each(res.data, function (index, item) {
 				WebList += `
-                    <s-card clickable="true" class="common_video_card">
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#bvid_` + item.bvid + `">
-                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#bvid_` + item.bvid + `">
-                                ` + item.title + `
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_` + item.owner.mid + `">
-                                ` + item.owner.name + `
-                            </a>
-                        </div>
-                    </s-card>`;
+                    <s-card clickable="true" class="slim_video_card">
+						<div class="card-image">
+							<a href="#bvid_${item.bvid}">
+								<img src='${item.pic}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+							</a>
+						</div>
+						<div class="card-content">
+							<div class="card-subhead">
+								<a href="#bvid_${item.bvid}">
+									${item.title}
+								</a>
+							</div>
+							<div class="card-text">
+								<a href="#bvid_${item.bvid}">
+									${item.owner.name}
+								</a>
+							</div>
+						</div>
+					</s-card>
+					`;
 			});
 			$("#player_videoList").html(WebList);
 		});
