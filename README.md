@@ -53,6 +53,7 @@
   - [ ] 字幕
   - [ ] 记录播放历史
   - [ ] 用户卡片
+  - [ ] 收藏
 - [x] 用户板块
   - [x] 关注用户
   - [x] 将关注列表导出至PipePipe
@@ -67,6 +68,9 @@
   - [x] 暗黑模式
   - [x] 账户基本信息
   - [ ] 播放设置（界面完成，程序尚不能应用设置）
+
+## 视频演示
+BiliBili：[前往观看 >>](https://www.bilibili.com/video/BV1SZDAYtE73/)   
 
 ## 参考与使用   
 - [jQuery](https://jquery.com/)
