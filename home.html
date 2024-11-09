@@ -30,15 +30,16 @@
 						<s-icon type="home" slot="icon"></s-icon>
 						<div slot="text">首页</div>
 					</s-navigation-item>
-					<s-navigation-item href="#nav_hot">
+					<s-navigation-item href="#nav_subscriptions">
 						<s-icon slot="icon">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
 								<path
-									d="M240-400q0 52 21 98.5t60 81.5q-1-5-1-9v-9q0-32 12-60t35-51l113-111 113 111q23 23 35 51t12 60v9q0 4-1 9 39-35 60-81.5t21-98.5q0-50-18.5-94.5T648-574q-20 13-42 19.5t-45 6.5q-62 0-107.5-41T401-690q-39 33-69 68.5t-50.5 72Q261-513 250.5-475T240-400Zm240 52-57 56q-11 11-17 25t-6 29q0 32 23.5 55t56.5 23q33 0 56.5-23t23.5-55q0-16-6-29.5T537-292l-57-56Zm0-492v132q0 34 23.5 57t57.5 23q18 0 33.5-7.5T622-658l18-22q74 42 117 117t43 163q0 134-93 227T480-80q-134 0-227-93t-93-227q0-129 86.5-245T480-840Z">
+									d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z">
 								</path>
 							</svg>
 						</s-icon>
-						<div slot="text">热门</div>
+						<div slot="text">动态</div>
+						<s-badge slot="badge"></s-badge>
 					</s-navigation-item>
 					<s-navigation-item href="#nav_search">
 						<s-icon slot="icon">
@@ -50,16 +51,15 @@
 						</s-icon>
 						<div slot="text">搜索</div>
 					</s-navigation-item>
-					<s-navigation-item href="#nav_subscriptions">
+					<s-navigation-item href="#nav_message">
 						<s-icon slot="icon">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
 								<path
-									d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z">
+									d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z">
 								</path>
 							</svg>
 						</s-icon>
-						<div slot="text">动态</div>
-						<s-badge slot="badge"></s-badge>
+						<div slot="text">消息</div>
 					</s-navigation-item>
 					<s-navigation-item href="#nav_space">
 						<s-icon slot="icon">
@@ -117,7 +117,8 @@
 				<video src="" id="player_videoContainer" controls></video>
 
 				<!-- 播放器侧边栏 -->
-				<div style="width:360px; border-left: 1px solid #88888830; border-radius: 0.75em 0 0 0.75em; padding-left:5px;">
+				<div
+					style="width:360px; border-left: 1px solid #88888830; border-radius: 0.75em 0 0 0.75em; padding-left:5px;">
 					<!-- 功能按钮 -->
 					<div style="height:42px; display:flex; flex-direction:row; justify-content:center;">
 						<s-icon-button id="player_likeBtn" title="点赞">
@@ -214,15 +215,15 @@
 			</table>
 		</div>
 
-		<!-- 自定义Toast -->
-		<div id="toast_container"></div>
-
 		<!--附带组件-->
 		<script src="./js/options.js"></script>
 		<script src="./js/dlg.js"></script>
-		<script src="./js/player.js"></script>
-		<script src="./js/home.js"></script>
-		<script src="./js/navbar.js"></script>
+
+		<script src="./js/components/home.js"></script>
+		<script src="./js/components/player.js"></script>
+		<script src="./js/components/message.js"></script>
+
+		<script src="./js/main.js"></script>
 	</s-page>
 </body>
 

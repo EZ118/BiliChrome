@@ -69,6 +69,10 @@ html{ height:100%; width:100%; }
 .slim_video_card .card-subhead{font-size:medium;color:inherit;height:40px;overflow:hidden;margin:5px 0px;}
 .slim_video_card .card-text{font-size:small;color:#AAAAAA99;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:5px 0px;}
 
+/* 顶部标签栏 */
+.tabbar{ display:flex; flex-direction:row; align-items:center; margin:10px 0px 2px 4px }
+.tabbar s-chip{ margin:0px 3px; }
+
 /* Toast提示消息 */
 s-snackbar{ position:fixed; bottom:40px; left:50%; transform:translateX(-50%); z-index:9999;}
 s-snackbar a{ color:#00AEEC; }

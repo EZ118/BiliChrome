@@ -103,77 +103,6 @@ function getSearchResult(wd) {
     });
 }
 
-function getRecommendedVideos() {
-    $("#item_container").html("");
-    $("#dynamic_loader").show();
-    var WebList = "<div class='flex_container'>";
-    var requests = [];
-
-    for (let i = 1; i <= 2; i++) {
-        let request = $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
-            $.each(tjlist.data.item, function (index, item) {
-                WebList += `
-                    <s-card clickable="true" class="common_video_card">
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#bvid_` + item.bvid + `">
-                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#bvid_` + item.bvid + `">
-                                ` + item.title + `
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_` + item.owner.mid + `">
-                                ` + item.owner.name + `
-                            </a>
-                        </div>
-                    </s-card>`;
-            });
-        });
-
-        requests.push(request);
-    }
-
-    $.when.apply($, requests).done(function () {
-        $("#item_container").html(WebList + "</div>");
-        $("#dynamic_loader").hide();
-    });
-}
-
-
-function getHotVideos() {
-    $("#item_container").html("");
-    $("#dynamic_loader").show();
-    $.get("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.list, function (index, item) {
-            var tooltipText = '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介") + (item.rcmd_reason.content ? ("\n- 推荐原因: " + item.rcmd_reason.content) : "");
-
-            WebList += `
-                <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_` + item.bvid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.owner.mid + `">
-                            ` + item.owner.name + `
-                        </a>
-                    </div>
-                </s-card>`;
-        })
-        $("#item_container").append("<div class='flex_container'>" + WebList + "</div>");
-        $("#dynamic_loader").hide();
-    });
-}
 
 async function getSubscribedVideos() {
     $("#item_container").html("");
@@ -279,7 +208,7 @@ function getUserSpace(uid) {
                     </s-ripple>`;
             }
         });
-        
+
         WebList = "<div class='flex_container' style='flex-direction:column; align-items:center;'>" + WebList + "</div>";
         openDlg("用户空间 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid);
     }).fail(function () {
@@ -504,29 +433,6 @@ function getWatchLater() {
     });
 }
 
-function getMsgReply() {
-    $.get("https://api.bilibili.com/x/msgfeed/reply?platform=web&build=0&mobi_app=web&ps=40", function (msgInfo) {
-        var WebList = "";
-        $.each(msgInfo.data.items, function (index, item) {
-            WebList += `<s-ripple class='thinstrip_msgBox'>
-                <a href="#uid_` + item.user.mid + `">
-                    <div class='thinstrip_msgBox_headline'>
-                        <img src='` + item.user.avatar + `@45w_45h_1c.webp'>
-                        <span class='thinstrip_msgBox_username'>` + item.user.nickname + `</span>
-                    </div>
-                </a>
-                <a href="#aid_` + item.item.subject_id + `">
-                    <div class='thinstrip_msgBox_contentline'>
-                        <p class='quote'>回复&nbsp;“` + item.item.root_reply_content + `”</p>
-                        <pre class='content'>` + item.item.source_content + `</pre>
-                    </div>
-                </a>
-            </s-ripple>`;
-        });
-        WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
-        openDlg("评论回复", WebList, "https://message.bilibili.com/#/reply");
-    });
-}
 
 function getVidPlayingNow() {
     $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
@@ -534,7 +440,7 @@ function getVidPlayingNow() {
             var container = $('<div>', {
                 class: 'continuation_alertBox'
             });
-            
+
             // 设置 innerHTML 内容
             container.html(`
                 <s-card clickable="true" class="common_video_card" type="outlined" title="该视频正在其他设备中播放">
@@ -555,10 +461,10 @@ function getVidPlayingNow() {
                     </div>
                 </s-card>
             `);
-            
+
             // 将创建的元素添加到 body 中
             container.appendTo('body');
-            
+
             setTimeout(function () {
                 container.fadeOut(700);
             }, 3500);
@@ -620,7 +526,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("replymsg")) {
         /* 消息中心 - 评论回复列表 */
-        getMsgReply();
+        showMsgReply();
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
@@ -629,17 +535,17 @@ function routeCtrl(isOnload, hash) {
     } else if (data[0] == "n") {
         /* 导航栏 */
         let tab = data.split("_")[1];
-        if (tab == "home") { getRecommendedVideos(); } else if (tab == "hot") { getHotVideos(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchPage(); }
+        if (tab == "home") { homeInit(); } else if (tab == "message") { messageInit(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchPage(); }
         currentTab = tab;
 
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
-        getRecommendedVideos();
+        homeInit();
     }
 
     if (isOnload == true && data[0] != "n") {
-        getRecommendedVideos();
+        homeInit();
     }
 }
 
@@ -658,9 +564,30 @@ $(document).ready(function () {
     window.addEventListener('popstate', function (event) {
         routeCtrl();
     });
+
+    /* 侧边主菜单 */
+    $("s-navigation-item").click((evt) => {
+        const link = $(evt.target).attr("href");
+        //routeCtrl(hash = link)
+        window.location.hash = link;
+    });
+
+    /* 侧栏彩蛋 */
+    var eggBtnCnt = 0;
+    $("#eggBtn").click(() => {
+        eggBtnCnt++;
+        if (eggBtnCnt == 16) {
+            showToast("这不是彩蛋...");
+        } else if (eggBtnCnt == 32) {
+            showToast("真不是彩蛋...");
+        } else if (eggBtnCnt >= 64) {
+            eggBtnCnt = 0;
+            showToast("你疯了吧！");
+        }
+    });
 });
 
 $("#RefreshBtn").click(function () {
     /* 刷新 */
-    if (currentTab == "home") { getRecommendedVideos(); } else if (currentTab == "hot") { getHotVideos(); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
+    if (currentTab == "home") { homeInit('refresh'); } else if (currentTab == "message") { messageInit(); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
 });
