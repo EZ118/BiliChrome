@@ -27,6 +27,30 @@ function showMsgReply() {
     });
 }
 
+function showAtMe() {
+    $.get("https://api.bilibili.com/x/msgfeed/at?build=0&mobi_app=web", function (msgInfo) {
+        var WebList = "";
+        $.each(msgInfo.data.items, function (index, item) {
+            WebList += `<s-ripple class='thinstrip_msgBox'>
+                <div class='thinstrip_msgBox_headline'>
+                    <a href="#uid_${item.user.mid}">
+                        <img src='${item.user.avatar}@45w_45h_1c.webp' title='${item.user.nickname}'>
+                    </a>
+                    <span class='thinstrip_msgBox_username'>在${item.item.business}中@了你</span>
+                </div>
+                <a href="#aid_${item.item.subject_id}">
+                    <div class='thinstrip_msgBox_contentline'>
+                        <pre class='content'>${item.item.source_content}</pre>
+                        <pre class='quote'>${item.item.title}<br><br>${item.item.image ? "<img src='" + item.item.image + "@412w_232h_1c.webp' style='height:60px;border-radius:6px;'>" : ""}</pre>
+                    </div>
+                </a>
+            </s-ripple>`;
+        });
+        WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
+        openDlg("@我的", WebList, "https://message.bilibili.com/#/at");
+    });
+}
+
 function showRecentLikes() {
     $.get("https://api.bilibili.com/x/msgfeed/like?platform=web&build=0&mobi_app=web", function (msgInfo) {
         var WebList = "";
@@ -127,7 +151,7 @@ function messageInit(mode) {
             showMsgReply();
         } else if (tabData === "atme") {
             // @我的
-            showToast("开发中...");
+            showAtMe();
         } else if (tabData === "likes") {
             // 收到的赞
             showRecentLikes();

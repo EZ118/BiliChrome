@@ -589,5 +589,5 @@ $(document).ready(function () {
 
 $("#RefreshBtn").click(function () {
     /* 刷新 */
-    if (currentTab == "home") { homeInit('refresh'); } else if (currentTab == "message") { messageInit(); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
+    if (currentTab == "home") { homeInit('refresh'); } else if (currentTab == "message") { messageInit('refresh'); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
 });
