@@ -21,8 +21,9 @@ html{ height:100%; width:100%; }
 .thinstrip_msgBox_headline{display:flex;vertical-align:center;line-height:31px;margin:5px 0px}
 .thinstrip_msgBox_headline img{border-radius:30px;width:30px;height:30px;margin-right:5px}
 .thinstrip_msgBox_headline span{margin-left:5px;font-weight:bold;font-size:15px}
-.thinstrip_msgBox_contentline .quote{background:#33333333;border-radius:4px;padding:5px;margin:5px 0px;border-left:4px solid #003344;width:98%;font-size:11px;font-style:italic}
+.thinstrip_msgBox_contentline .quote{background:#33333333;border-radius:4px;padding:5px;margin:5px 0px;border-left:4px solid #003344;width:98%;font-size:11px;font-style:italic;white-space:pre-wrap;word-wrap:break-word}
 .thinstrip_msgBox_contentline .content{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:12px;font-family:parent;margin:5px 0px}
+.thinstrip_msgBox_contentline .time{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:10px;font-family:parent;margin:5px 0px;opacity:0.8}
 
 /* 页面主体 */
 #dynamic_loader{ position:fixed; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); z-index:120; }
