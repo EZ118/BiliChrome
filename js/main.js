@@ -273,10 +273,6 @@ function getMySpace() {
                     <a href="#watchlater_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
-                    <div slot="headline">评论回复</div>
-                    <a href="#replymsg_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
-                </s-card>
-                <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">扩展选项</div>
                     <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
@@ -522,11 +518,6 @@ function routeCtrl(isOnload, hash) {
     } else if (data.includes("watchlater")) {
         /* 稍后再看 */
         getWatchLater();
-        getUserHistory();
-
-    } else if (data.includes("replymsg")) {
-        /* 消息中心 - 评论回复列表 */
-        showMsgReply();
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
