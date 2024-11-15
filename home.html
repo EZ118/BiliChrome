@@ -184,6 +184,71 @@
 			</div>
 		</div>
 
+		<!-- 直播间播放器 -->
+		<div id="live_container" style="display:none;">
+			<div class="player_row" style="height:42px;">
+				<b id="live_title">[直播间标题]</b>
+
+				<!-- 对话框基本功能按钮 -->
+				<s-icon-button id="player_openNewBtn" title="在新标签页打开">
+					<s-icon>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+							<path
+								d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
+							</path>
+						</svg>
+					</s-icon>
+				</s-icon-button>
+
+				<s-icon-button id="live_closeBtn" title="关闭 (Ctrl+Q)">
+					<s-icon type="close"></s-icon>
+				</s-icon-button>
+			</div>
+			<div class="player_row" style="height:calc(100vh - 42px);">
+				<!-- 视频播放 -->
+				<video src="" id="live_videoContainer" controls></video>
+
+				<!-- 播放器侧边栏 -->
+				<div
+					style="width:360px; border-left: 1px solid #88888830; border-radius: 0.75em 0 0 0.75em; padding-left:5px;">
+					<!-- 功能按钮 -->
+					<div style="height:42px; display:flex; flex-direction:row; justify-content:center;">
+						<s-icon-button id="live_qnSwitchBtn" title="切换画质">
+							<s-icon>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+									<path
+										d="M240-360h60v-80h80v80h60v-240h-60v100h-80v-100h-60v240Zm280 0h160q17 0 28.5-11.5T720-400v-160q0-17-11.5-28.5T680-600H520v240Zm60-60v-120h80v120h-80ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z">
+									</path>
+								</svg>
+							</s-icon>
+						</s-icon-button>
+						<s-icon-button id="live_pipBtn" title="画中画">
+							<s-icon>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+									<path
+										d="M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z">
+									</path>
+								</svg>
+							</s-icon>
+						</s-icon-button>
+						<s-icon-button id="live_scrSwitchBtn" title="开启/关闭实时评论">
+							<s-icon>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+									<path
+										d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM880-80 720-240H160q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v720ZM160-320h594l46 45v-525H160v480Zm0 0v-480 480Z">
+									</path>
+								</svg>
+							</s-icon>
+						</s-icon-button>
+					</div>
+
+					<!-- 详情 & 评论 -->
+					<s-scroll-view id="live_descArea">暂无1</s-scroll-view>
+					<s-scroll-view id="live_commentArea"></s-scroll-view>
+				</div>
+			</div>
+		</div>
+
 		<!-- 自定义对话框 -->
 		<div id="dlg_container" style="display:none;">
 			<table class="dlg_container_real">
@@ -221,6 +286,7 @@
 
 		<script src="./js/components/home.js"></script>
 		<script src="./js/components/player.js"></script>
+		<script src="./js/components/live_player.js"></script>
 		<script src="./js/components/message.js"></script>
 
 		<script src="./js/main.js"></script>

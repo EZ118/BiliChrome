@@ -32,7 +32,7 @@ html{ height:100%; width:100%; }
 /* 播放器 */
 #player_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:#fffbff;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .player_row{display:flex;width:100vw;flex-direction:row;justify-content:center;align-items:center}
-#player_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 132px);border:none;border-radius:8px}
+#player_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
 #player_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #player_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 132px);font-size:16px;overflow:hidden auto}
 #player_descArea hr{margin:3px;border:none;border-bottom:1px solid #FFFFFF38}
@@ -41,6 +41,14 @@ html{ height:100%; width:100%; }
 .player_danmuText{width:fit-content;max-width:500px;font-size:18px;font-weight:bold;opacity:0.8;z-index:104;position:fixed;color:#EEEEEE;text-shadow:0 0 2px #000}
 .player_cidListItem{margin:3px;width:fit-content;cursor:pointer;user-select:none;white-space:nowrap}
 .player_blockTitle{font-size:large;font-weight:400;color:var(--s-color-primary);padding:0px 10px;border:0;border-left:8px solid;margin:3px 0px;}
+
+/* 直播播放器 */
+#live_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:#fffbff;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#live_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
+#live_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#live_commentArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 84px - 80px);font-size:16px;overflow:hidden auto}
+#live_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(80px);flex-grow:1;font-size:16px;overflow:hidden auto}
+#live_descArea hr{margin:3px;border:none;border-bottom:1px solid #FFFFFF38}
 
 /* 评论回复样式 */
 .reply_container{width:calc(100% - 2px);margin-top:5px;user-select:text;font-size:16px;}
@@ -109,6 +117,9 @@ s-snackbar a{ color:#00AEEC; }
 
 	/* 播放器 */
 	#player_container{ background:#1c1b1f; }
+	
+	/* 直播 */
+	#live_container{ background:#1c1b1f; }
 
 	/* 自定义对话框 */
 	.dlg_container_real{ background: #1c1b1f; color:#FFF; }
@@ -132,6 +143,19 @@ s-snackbar a{ color:#00AEEC; }
 		min-height:1rem;
     }
 	#player_videoContainer {
+		width: 100%!important;
+		height:fit-content;
+		max-width: none;
+	}
+	
+	
+	#live_container{
+		overflow: hidden auto;
+		display: block;
+		justify-content: inherit;
+		align-items: inherit;
+	}
+	#live_videoContainer {
 		width: 100%!important;
 		height:fit-content;
 		max-width: none;

@@ -490,6 +490,11 @@ function routeCtrl(isOnload, hash) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
+    } else if (data.includes("roomid")) {
+        /* 直播roomid */
+        openLivePlayer({
+            roomid: data.split("_")[1]
+        });
     } else if (data.includes("uid")) {
         /* 用户空间 */
         getUserSpace(data.split("_")[1]);
