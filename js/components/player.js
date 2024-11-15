@@ -250,7 +250,7 @@ function doLikeVid(bvid) {
 			else { showToast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】B站官方点赞API限制了请求标头Origin，而Chrome扩展无权修改Origin。（player.js:247）");
+			showToast("点赞失败，请求被拦截");
 		})
 }
 
@@ -263,7 +263,19 @@ function doGiveCoin(bvid) {
 			else { showToast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
 		})
 		.fail(function (res) {
-			showToast("【失败】B站官方投币API限制了请求标头Origin，而Chrome扩展无权修改Origin。（player.js:260）");
+			showToast("投币失败，请求被拦截");
+		})
+}
+
+function doWatchLater(bvid) {
+	/* 投币视频 */
+	$.post("https://api.bilibili.com/x/v2/history/toview/add", "bvid=" + bvid + "&csrf=" + biliJctData)
+		.done(function (res) {
+			if (res.code == 0) { showToast("已添加到稍后再看"); }
+			else { showToast("添加失败 [" + res.code + "] \n(" + res.message + ")"); }
+		})
+		.fail(function (res) {
+			showToast("添加失败，请求被拦截");
 		})
 }
 
@@ -285,6 +297,9 @@ $(document).ready(function () {
 	});
 	$("#player_coinBtn").click(function () {
 		doGiveCoin(bvidPlayingNow); /* 投币 */
+	});
+	$("#player_watchlaterBtn").click(function () {
+		doWatchLater(bvidPlayingNow); /* 投币 */
 	});
 	$("#player_scrSwitchBtn").click(function () {
 		player_advancedDanmu = !player_advancedDanmu; /* 切换弹幕模式 */

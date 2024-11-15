@@ -11,24 +11,16 @@ function limitConsecutiveChars(str) {
     return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 }
 
-function parseComments(comments) {
+function parseLiveComments(comments) {
 	/* 解析评论；将评论列表中的每一项递归解析，并返回解析后的字符串（html），由主函数统一调用 */
 	let result = '';
 
 	$.each(comments, function (index, comment) {
-		const { oid, member, content, replies, ctime, like, reply_control } = comment;
-		const timeString = new Date(ctime * 1000).toLocaleDateString();
+		const { nickname, text, timeline } = comment;
 
 		if(index > 0) { result += "<hr>"; }
-		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
-		result += `<div class="content">${content.message}</div>`;
-		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location ? reply_control.location.split("：")[1] : ""}</i></div>`;
-
-		if (replies && replies.length > 0) {
-			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
-			result += parseComments(replies);
-			result += `</div>`;
-		}
+		result += `<div class="reply" title="${timeline}"><b>🔘&nbsp;${nickname}</b>`;
+		result += `<div class="content">${text}</div></div>`;
 	});
 
 	return result;
@@ -104,16 +96,15 @@ function openLivePlayer(option) {
 
 		$("#live_title").text(title);
 		$("#live_descArea").html("<b class='player_blockTitle'>详情</b><br>" + desc);
-		$("#live_commentArea").html("<b class='player_blockTitle'>实时评论</b><br><i>(尚不支持)</i>");
 
 		//getLiveDanmu(cid); /* 获取弹幕 */
 		loadLiveStreamSource(room_id); /* 获取视频源 */
 
-		// $.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
-		// 	/* 获取评论 */
-		// 	textAll = parseComments(ReplyInfo.data.replies);
-		// 	$("#live_descArea").append("<br><b class='player_blockTitle'>评论</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
-		// });
+		$.get("https://api.live.bilibili.com/xlive/web-room/v1/dM/gethistory?roomid=" + room_id + "&room_type=0", function (ReplyInfo) {
+			/* 获取评论 */
+			textAll = parseLiveComments(ReplyInfo.data.room);
+			$("#live_commentArea").html("<b class='player_blockTitle'>最近评论</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
+		});
 	});
 }
 
