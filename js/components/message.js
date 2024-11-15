@@ -1,5 +1,5 @@
 
-function uri2bvid(uri){
+function uri2bvid(uri) {
     return uri.split("?")[0].split("/").slice(-1)[0];
 }
 
@@ -57,7 +57,7 @@ function showRecentLikes() {
         $.each(msgInfo.data.total.items, function (index, item) {
             //列举点赞者头像
             let UserList = "";
-            $.each(item.users, function (ind, user){
+            $.each(item.users, function (ind, user) {
                 UserList += `<a href="#uid_${user.mid}">
                         <img src='${user.avatar}@45w_45h_1c.webp' title='${user.nickname}'>
                     </a>`;
@@ -100,7 +100,7 @@ function showSysMsg() {
     });
 }
 
-function getMsgUnread(callback){
+function getMsgUnread(callback) {
     $.get("https://api.bilibili.com/x/msgfeed/unread", function (msgInfo) {
         callback(msgInfo.data);
     })
@@ -114,36 +114,42 @@ function messageInit(mode) {
             <s-chip type="" class="tab" tab-data="likes">收到的赞</s-chip>
             <s-chip type="" class="tab" tab-data="system">系统通知</s-chip>
         </div>
-        <div class="tab_container">
-            <hr><br>
-            <i style="opacity:0.8;">此页仍在开发中...<br>(此处显示私聊)</i>
-        </div>
+        <s-drawer id="chat_container">
+            <div slot="start">
+                <b>近期消息</b><br/><br/>
+                <s-card class="chat_listItem" type="outlined" clickable="true">
+                    <img class="avatar" src="https://i1.hdslb.com/bfs/face/39771b05944cb5f1e95140e28cbe996375faee4b.jpg@42w_42h_1c.webp">
+                    <span class="title">ZZY_WISU</span>
+                </s-card>
+            </div>
+            <div class="dialog">
+                <div class="dialog_title">
+                    <s-icon-button><s-icon type="arrow_back"></s-icon></s-icon-button>
+                    ZZY_WISU
+                </div>
+                <div class="dialog_content">
+                    <div class="dialog_msgBubble">此处是最近的私聊信息，功能尚未开发完成。</div>
+                </div>
+            </div>
+        </s-drawer>
     `);
     $("#dynamic_loader").hide();
 
     // 为对应的图标添加badge
-    getMsgUnread(function(data){
-        if(data.reply > 0){
-            $(".tab[tab-data='reply']").append(`<s-badge slot="start">${data.reply}</s-badge>`);
-        }
-        if(data.like > 0){
-            $(".tab[tab-data='likes']").append(`<s-badge slot="start">${data.like}</s-badge>`);
-        }
-        if(data.at > 0){
-            $(".tab[tab-data='atme']").append(`<s-badge slot="start">${data.at}</s-badge>`);
-        }
-        if(data.sys_msg > 0){
-            $(".tab[tab-data='system']").append(`<s-badge slot="start">${data.sys_msg}</s-badge>`);
-        }
+    getMsgUnread(function (data) {
+        if (data.reply > 0) { $(".tab[tab-data='reply']").append(`<s-badge slot="start">${data.reply}</s-badge>`); }
+        if (data.like > 0) { $(".tab[tab-data='likes']").append(`<s-badge slot="start">${data.like}</s-badge>`); }
+        if (data.at > 0) { $(".tab[tab-data='atme']").append(`<s-badge slot="start">${data.at}</s-badge>`); }
+        if (data.sys_msg > 0) { $(".tab[tab-data='system']").append(`<s-badge slot="start">${data.sys_msg}</s-badge>`); }
     })
 
-    $(document).off("click", ".tab").on("click", ".tab", function() {
+    $(document).off("click", ".tab").on("click", ".tab", function () {
         // // 移除所有 tab 的 type 属性
         // $(".tab").attr("type", "");
-        
+
         // // 为当前点击的 tab 设置 type="filled-tonal"
         // $(this).attr("type", "filled-tonal");
-        
+
         // 获取 tab-data 值并调用对应函数
         const tabData = $(this).attr("tab-data");
         if (tabData === "reply") {
