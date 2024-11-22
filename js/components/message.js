@@ -106,6 +106,62 @@ function getMsgUnread(callback) {
     })
 }
 
+
+/* 私聊 */
+function showMsgSessionDetail(uid) {
+    /* 获取聊天信息 */
+    $.get("https://api.vc.bilibili.com/svr_sync/v1/svr_sync/fetch_session_msgs?talker_id=" + uid + "&session_type=1&size=60", function (msgInfo) {
+        $(".dialog_content").html("");
+
+        var WebList = "";
+        $.each(msgInfo.data.messages, function (index, item) {
+            let msgCard = JSON.parse(item.content);
+            let msgContent = msgCard.content || ("<a href='#aid_" + msgCard.id + "'>【视频】 " + msgCard.title + "</a>");
+            WebList = `<div class="dialog_msgBubble">${msgContent}</div>` + WebList;
+        });
+        $(".dialog_content").html(WebList + "<font size=1 color=gray>&nbsp;没有最新的咯~</font>");
+        $('.dialog_content').scrollTop($('.dialog_content').prop("scrollHeight"));
+    });
+}
+
+function getUsersInfo(uids, callback) {
+    var uidstr = "";
+    $.each(uids, (index, item) => uidstr += item + ",");
+    $.get("https://api.bilibili.com/x/polymer/pc-electron/v1/user/cards?uids=" + uidstr.slice(0, -1) + "&mobi_app=web", function (sessionInfo) {
+        callback(sessionInfo.data);
+    });
+}
+
+function showMsgSessions() {
+    /* 获取聊天列表 */
+    $.get("https://api.vc.bilibili.com/session_svr/v1/session_svr/get_sessions?session_type=1&group_fold=1&unfollow_fold=0&sort_rule=2&mobi_app=web", function (sessionInfo) {
+        var uidList = [];
+        $.each(sessionInfo.data.session_list, function (index, item) {
+            uidList.push(item.talker_id);
+        });
+        getUsersInfo(uidList, function (userInfo) {
+            $.each(sessionInfo.data.session_list, function (index, item) {
+                if (!userInfo[item.talker_id]) { return; }
+                $(".chat_list").append(`
+                    <s-card class="chat_listItem" type="outlined" clickable="true" talker-uid="${item.talker_id}">
+                        <img class="avatar" src="${userInfo[item.talker_id].face}@42w_42h_1c.webp">
+                        <span class="title">${userInfo[item.talker_id].name}</span>
+                    </s-card>
+                `)
+            })
+
+            $(document).on("click", ".chat_listItem", function (event) {
+                let talkerUid = $(this).attr("talker-uid");
+                showMsgSessionDetail(talkerUid);
+
+                $(".dialog_title").text($(this).text());
+            });
+        })
+
+    });
+}
+
+
 function messageInit(mode) {
     $("#item_container").html(`
         <div class="tabbar">
@@ -115,21 +171,16 @@ function messageInit(mode) {
             <s-chip type="" class="tab" tab-data="system">系统通知</s-chip>
         </div>
         <s-drawer id="chat_container">
-            <div slot="start">
-                <b>近期消息</b><br/><br/>
-                <s-card class="chat_listItem" type="outlined" clickable="true">
-                    <img class="avatar" src="https://i1.hdslb.com/bfs/face/39771b05944cb5f1e95140e28cbe996375faee4b.jpg@42w_42h_1c.webp">
-                    <span class="title">ZZY_WISU</span>
-                </s-card>
-            </div>
+            <s-scroll-view slot="start" class="chat_list">
+                <b>近期消息</b><br/>
+            </s-scroll-view>
             <div class="dialog">
-                <div class="dialog_title">
-                    <s-icon-button><s-icon type="arrow_back"></s-icon></s-icon-button>
-                    ZZY_WISU
+                <div class="dialog_titlebar">
+                    <s-icon-button class="chat_showListBtn"><s-icon type="menu"></s-icon></s-icon-button>
+                    <span class="dialog_title">点击左侧列表项查看对话历史</span>
                 </div>
-                <div class="dialog_content">
-                    <div class="dialog_msgBubble">此处是最近的私聊信息，功能尚未开发完成。</div>
-                </div>
+                <s-scroll-view class="dialog_content">
+                </s-scroll-view>
             </div>
         </s-drawer>
     `);
@@ -141,15 +192,14 @@ function messageInit(mode) {
         if (data.like > 0) { $(".tab[tab-data='likes']").append(`<s-badge slot="start">${data.like}</s-badge>`); }
         if (data.at > 0) { $(".tab[tab-data='atme']").append(`<s-badge slot="start">${data.at}</s-badge>`); }
         if (data.sys_msg > 0) { $(".tab[tab-data='system']").append(`<s-badge slot="start">${data.sys_msg}</s-badge>`); }
-    })
+    });
+
+    showMsgSessions();
+    $(document).on("click", ".chat_showListBtn", function () {
+        document.querySelector('#chat_container').toggle();
+    });
 
     $(document).off("click", ".tab").on("click", ".tab", function () {
-        // // 移除所有 tab 的 type 属性
-        // $(".tab").attr("type", "");
-
-        // // 为当前点击的 tab 设置 type="filled-tonal"
-        // $(this).attr("type", "filled-tonal");
-
         // 获取 tab-data 值并调用对应函数
         const tabData = $(this).attr("tab-data");
         if (tabData === "reply") {
