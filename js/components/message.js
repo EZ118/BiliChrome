@@ -149,13 +149,6 @@ function showMsgSessions() {
                     </s-card>
                 `)
             })
-
-            $(document).on("click", ".chat_listItem", function (event) {
-                let talkerUid = $(this).attr("talker-uid");
-                showMsgSessionDetail(talkerUid);
-
-                $(".dialog_title").text($(this).text());
-            });
         })
 
     });
@@ -195,9 +188,6 @@ function messageInit(mode) {
     });
 
     showMsgSessions();
-    $(document).on("click", ".chat_showListBtn", function () {
-        document.querySelector('#chat_container').toggle();
-    });
 
     $(document).off("click", ".tab").on("click", ".tab", function () {
         // 获取 tab-data 值并调用对应函数
@@ -219,3 +209,18 @@ function messageInit(mode) {
         home_tab_last_tab = tabData;
     });
 }
+
+$(document).ready(() => {
+    /* 列表伸缩按钮 */
+    $(document).on("click", ".chat_showListBtn", function () {
+        document.querySelector('#chat_container').toggle();
+    });
+
+    /* 私聊用户卡片点击操作 */
+    $(document).on("click", ".chat_listItem", function (event) {
+        let talkerUid = $(this).attr("talker-uid");
+        showMsgSessionDetail(talkerUid);
+
+        $(".dialog_title").text($(this).text());
+    });
+})
