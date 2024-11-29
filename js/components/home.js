@@ -105,9 +105,9 @@ function showLiveRooms(){
 
 
 /* ====== */
-var home_tab_last_tab = "recommend";
+var home_tab_last_tab = "recommand";
 function homeInit(refresh) {
-    if(refresh == true) {
+    if(refresh) {
         if (home_tab_last_tab === "recommand") {
             showRecommendedVideos();
         } else if (home_tab_last_tab === "hot") {
