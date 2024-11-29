@@ -237,6 +237,8 @@ function closePlayer() {
 	$("#player_videoContainer").attr("src", "");
 	player_danmuList = [];
 	player_danmuCnt = 0;
+
+	window.location.hash = "#default";
 }
 
 

@@ -81,7 +81,7 @@ function showRecentLikes() {
     });
 }
 function showSysMsg() {
-    //$.get("https://message.bilibili.com/x/sys-msg/query_unified_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) {
+    // $.get("https://message.bilibili.com/x/sys-msg/query_unified_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) { // B站的活动宣传通知API
     $.get("https://message.bilibili.com/x/sys-msg/query_user_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) {
         var WebList = "";
         $.each(msgInfo.data.system_notify_list, function (index, item) {
@@ -155,7 +155,7 @@ function showMsgSessions() {
 }
 
 
-function messageInit(mode) {
+function messageInit(refresh) {
     $("#item_container").html(`
         <div class="tabbar">
             <s-chip type="" class="tab" tab-data="reply">回复我的</s-chip>

@@ -98,3 +98,7 @@ function getSearchResult(wd) {
         $("#dynamic_loader").hide();
     });
 }
+
+function searchInit() {
+    showSearchPage();
+}

@@ -134,37 +134,13 @@ function getMySpace() {
 function getVidPlayingNow() {
     $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
-            var container = $('<div>', {
-                class: 'continuation_alertBox'
-            });
-
-            // 设置 innerHTML 内容
-            container.html(`
-                <s-card clickable="true" class="common_video_card" type="outlined" title="该视频正在其他设备中播放">
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_${vidInfo.data.history.bvid}">
-                            <img src='${vidInfo.data.cover}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_${vidInfo.data.history.bvid}_watchlater">
-                            ${vidInfo.data.title}
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_${vidInfo.data.author_mid}">
-                            ${vidInfo.data.author_name}
-                        </a>
-                    </div>
-                </s-card>
-            `);
-
-            // 将创建的元素添加到 body 中
-            container.appendTo('body');
-
-            setTimeout(function () {
-                container.fadeOut(700);
-            }, 3500);
+            showNotification(
+                vidInfo.data.title,
+                "其他设备正在播放的视频，点击继续观看",
+                "./img/cast.svg",
+                "继续浏览",
+                () => { window.location.hash = `#bvid_` + vidInfo.data.history.bvid; }
+            );
         }
     });
 }
@@ -229,19 +205,14 @@ function routeCtrl(isOnload, hash) {
         /* 显示扩展选项对话框 */
         openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options")
 
-    } else if (data[0] == "n") {
-        /* 导航栏 */
-        let tab = data.split("_")[1];
-        if (tab == "home") { homeInit(); } else if (tab == "message") { messageInit(); } else if (tab == "subscriptions") { getSubscribedVideos(); } else if (tab == "space") { getMySpace(); } else if (tab == "search") { showSearchPage(); }
-        currentTab = tab;
-
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
-        homeInit();
+        //showToast("链接错误，点击边栏按钮以重载页面");
+        //homeInit();
     }
 
-    if (isOnload == true && data[0] != "n") {
+    if (isOnload == true) {
         homeInit();
     }
 }
@@ -265,8 +236,21 @@ $(document).ready(function () {
     /* 侧边主菜单 */
     $("s-navigation-item").click((evt) => {
         const link = $(evt.target).attr("href");
-        //routeCtrl(hash = link)
-        window.location.hash = link;
+        // window.location.hash = link;
+
+        currentTab = link.substring(5);
+
+        if (currentTab == "home") {
+            homeInit();
+        } else if (currentTab == "message") {
+            messageInit();
+        } else if (currentTab == "subscriptions") {
+            getSubscribedVideos();
+        } else if (currentTab == "space") {
+            getMySpace();
+        } else if (currentTab == "search") {
+            searchInit();
+        }
     });
 
     /* 侧栏彩蛋 */
@@ -286,5 +270,13 @@ $(document).ready(function () {
 
 $("#RefreshBtn").click(function () {
     /* 刷新 */
-    if (currentTab == "home") { homeInit('refresh'); } else if (currentTab == "message") { messageInit('refresh'); } else if (currentTab == "subscriptions") { getSubscribedVideos(); } else if (currentTab == "space") { getMySpace(); }
+    if (currentTab == "home") {
+        homeInit(refresh = true);
+    } else if (currentTab == "message") {
+        messageInit(refresh = true);
+    } else if (currentTab == "subscriptions") {
+        getSubscribedVideos();
+    } else if (currentTab == "space") {
+        getMySpace();
+    }
 });

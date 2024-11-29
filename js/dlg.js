@@ -17,12 +17,11 @@ function closeDlg() {
 	$('#dlg_content').html("");
 	$('#dlg_title').html("[默认标题]");
 	dlgOpenNewNow = "";
+
+	window.location.hash = "#default";
 }
 
-/* 自定义Toast */
-function showToast(message, duration) {
-	sober.Snackbar.show(message);
-}
+
 
 /* 全局事件 */
 $(document).ready(function () {
@@ -67,3 +66,30 @@ $(document).ready(function () {
 		}
 	});
 });
+
+
+
+/* 自定义Toast */
+function showToast(message, duration) {
+	sober.Snackbar.show(message);
+}
+
+
+function showNotification(title, message, image, button, onclick) {
+    chrome.notifications.create({
+        'type': 'basic',
+        'iconUrl': image,
+        'title': title,
+        'message': message,
+        'requireInteraction': true, // 使用 requireInteraction 代替 isClickable
+        'buttons': [{
+            'title': button || '查看'
+        }]
+    });
+
+    chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex) {
+        if (buttonIndex === 0) {
+            onclick();
+        }
+    });
+}
