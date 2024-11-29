@@ -1,5 +1,6 @@
 var biliJctData = ""; /* 登录凭据 */
 var bvidPlayingNow = ""; /* 正在播放的bvid */
+var aidPlayingNow = ""; /* 正在播放的aid */
 var cidPlayingNow = ""; /* 正在播放的cid */
 var player_danmuList = []; /* 弹幕列表 */
 var player_danmuCnt = 0; /* 弹幕数量 */
@@ -17,7 +18,7 @@ function parseComments(comments) {
 	let result = '';
 
 	$.each(comments, function (index, comment) {
-		const { oid, member, content, replies, ctime, like, reply_control } = comment;
+		const { rpid, member, content, replies, ctime, like, reply_control } = comment;
 		const timeString = new Date(ctime * 1000).toLocaleDateString();
 
 		if(index > 0) { result += "<hr>"; }
@@ -26,7 +27,7 @@ function parseComments(comments) {
 		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location ? reply_control.location.split("：")[1] : ""}</i></div>`;
 
 		if (replies && replies.length > 0) {
-			result += `<div class="moreReply" oid="${oid}">回复：<br>`;
+			result += `<div class="moreReply" rpid="${rpid}">回复：<br>`;
 			result += parseComments(replies);
 			result += `</div>`;
 		}
@@ -35,12 +36,12 @@ function parseComments(comments) {
 	return result;
 }
 
-function showMoreReplies(oid){
-	/* 在对话框中展示单条评论下的所有回复，oid即评论ID */
-	$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + oid, function (ReplyInfo) {
+function showMoreReplies(rpid){
+	/* 在对话框中展示单条评论下的所有回复，rpid即评论ID */
+	$.get("https://api.bilibili.com/x/v2/reply/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aidPlayingNow + "&root=" + rpid, function (ReplyInfo) {
 		/* 获取评论 */
 		textAll = parseComments(ReplyInfo.data.replies);
-		openDlg("更多评论 [" + oid + "]", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
+		openDlg("更多评论 [" + rpid + "]", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
 	});
 }
 
@@ -88,7 +89,7 @@ function loadVideoSource(bvid, cid) {
 		/* 获取视频播放源 */
 		vidUrl = result.data.durl[0].url;
 		$("#player_videoContainer").attr("src", vidUrl);
-		bvidPlayingNow = bvid;
+
 		cidPlayingNow = cid;
 	});
 }
@@ -138,12 +139,14 @@ function openPlayer(option) {
 		var aid = VideoInfo["data"]["aid"];
 		var desc = VideoInfo["data"]["desc"] || "-";
 
-		
 		desc = desc.replace(/\n/g, "<br>");
 		desc = limitConsecutiveChars(desc);
 
 		$("#player_title").html(VideoInfo["data"]["title"]);
 		$("#player_descArea").html("<b class='player_blockTitle'>详情</b><br>" + desc);
+
+		aidPlayingNow = aid;
+		bvidPlayingNow = bvid;
 
 		if (cidPages.length > 1) { loadCidList(cidPages); } /* 显示分P视频列表 */
 		getDanmu(cid); /* 获取弹幕 */
@@ -157,8 +160,8 @@ function openPlayer(option) {
 			$(document).on('click', '.reply_container .moreReply', function (evt) {
 				/* 当用户点击了评论回复，则显示更多评论 */
 				const clickedEle = $(evt.target);
-				let oid = clickedEle.parent().parent().attr("oid") || clickedEle.parent().attr("oid") || clickedEle.attr("oid");
-				showMoreReplies(oid);
+				let rpid = clickedEle.parent().parent().attr("rpid") || clickedEle.parent().attr("rpid") || clickedEle.attr("rpid");
+				showMoreReplies(rpid);
 			});
 		});
 	});
