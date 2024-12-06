@@ -13,10 +13,12 @@
 
 <p>第三方哔哩哔哩客户端浏览器插件</p>
 
-<img src="https://ez118.github.io/biliweb/shot2.png" width="32%" alt="动态" />
-<img src="https://ez118.github.io/biliweb/shot3.png" width="32%" alt="播放" />
-<img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="搜索" /><br/>
-<img src="https://ez118.github.io/biliweb/shot1.png" width="96%" alt="首页" /><br/>
+<img src="https://ez118.github.io/biliweb/shot1.png" width="32%" alt="首页" />
+<img src="https://ez118.github.io/biliweb/shot2.png" width="32%" alt="消息" />
+<img src="https://ez118.github.io/biliweb/shot3.png" width="32%" alt="搜索" /><br/>
+<img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
+<img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="设置" />
+<img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/>
 
 </div>
 
@@ -28,8 +30,8 @@
 ## 功能   
 - [x] 推荐视频列表
 - [x] 最热视频列表
-- [ ] 直播板块
-  - [ ] 热门直播
+- [x] 直播板块
+  - [x] 热门直播
   - [ ] 观看直播
 - [ ] 番剧板块
   - [ ] 热门番剧
@@ -40,8 +42,8 @@
   - [ ] 显示用户卡片
 - [x] 搜索板块
   - [x] 搜索视频
-  - [ ] 热搜
   - [x] 搜索历史
+  - [ ] 热搜
 - [x] 视频播放板块
   - [x] 播放视频（360P / 1080P）
   - [x] 视频详情
@@ -50,6 +52,7 @@
   - [x] 点赞、投币操作
   - [x] 小窗播放
   - [x] 弹幕
+  - [x] 添加稍后再看
   - [ ] 字幕
   - [ ] 记录播放历史
   - [ ] 用户卡片

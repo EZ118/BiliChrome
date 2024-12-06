@@ -13,9 +13,6 @@ html{ height:100%; width:100%; }
 .flex_container{display:flex;flex-wrap:wrap}
 .options_frame{width:100%;height:99%;min-height:200px;border:none;border-radius:5px}
 
-/* 当前其他设备正在播放提示框 */
-.continuation_alertBox{ overflow: hidden; border-radius: 14px; width:fit-content; height:fit-content; background-color: transparent; position:fixed; top:20px; right:20px; z-index:2; border:1px solid #88888830; }
-
 /* 条形消息卡片 */
 .thinstrip_msgBox{background:transparent;border:1px solid #3b3b3b3b;border-radius:10px;padding:8px 10px;margin:5px;width:90%;margin-left:calc(5% - 10px)}
 .thinstrip_msgBox_headline{display:flex;vertical-align:center;line-height:31px;margin:5px 0px}
@@ -37,7 +34,7 @@ html{ height:100%; width:100%; }
 #player_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 132px);font-size:16px;overflow:hidden auto}
 #player_descArea hr{margin:3px;border:none;border-bottom:1px solid #FFFFFF38}
 #player_videoList{user-select:none;word-wrap:break-word;word-break:break-all;width:100%;height:calc(100vh - 132px);font-size:16px;overflow-y:auto;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center}
-#player_simpleDanmu{width:80%;position:fixed;top:50px;left:10px;z-index:104;font-size:16px}
+#player_simpleDanmu{width:fit-content;max-width:calc(100vw - 360px);position:fixed;top:50px;left:10px;z-index:104;font-size:16px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
 .player_danmuText{width:fit-content;max-width:500px;font-size:18px;font-weight:bold;opacity:0.8;z-index:104;position:fixed;color:#EEEEEE;text-shadow:0 0 2px #000}
 .player_cidListItem{margin:3px;width:fit-content;cursor:pointer;user-select:none;white-space:nowrap}
 .player_blockTitle{font-size:large;font-weight:400;color:var(--s-color-primary);padding:0px 10px;border:0;border-left:8px solid;margin:3px 0px;}

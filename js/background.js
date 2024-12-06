@@ -58,6 +58,33 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
 });
 
 /* 单独窗口 */
-chrome.action.onClicked.addListener(function(tab) {
+chrome.action.onClicked.addListener(function (tab) {
     chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
 });
+
+/* 通知推送 */
+async function checkForUpdates() {
+    try {
+        const response = await fetch("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all/update?type=video&update_baseline=0");
+        const data = await response.json();
+
+        // 假设 data.content 是你要检查的新内容
+        if (data.code == 0 && data.data.update_num > 0) {
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: '/img/notifications.svg',
+                title: '新内容提醒',
+                message: '有 ' + data.data.update_num + ' 条新视频动态'
+            });
+
+            console.log('有 ' + data.data.update_num + ' 条新视频动态');
+        } else {
+            console.log('没有新的动态');
+        }
+    } catch (error) {
+        console.error('查检新动态时无法请求服务器', error);
+    }
+}
+
+// 初始调用
+checkForUpdates();
