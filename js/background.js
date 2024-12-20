@@ -63,21 +63,24 @@ chrome.action.onClicked.addListener(function (tab) {
 });
 
 /* 通知推送 */
+var lastUpdateNum = 0;
 async function checkForUpdates() {
     try {
         const response = await fetch("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all/update?type=video&update_baseline=0");
         const data = await response.json();
 
         // 假设 data.content 是你要检查的新内容
-        if (data.code == 0 && data.data.update_num > 0) {
-            chrome.notifications.create({
+        if (data.code == 0 && data.data.update_num > 0 && data.data.update_num != lastUpdateNum) {
+            console.log('有 ' + data.data.update_num + ' 条新视频动态');
+
+            chrome.notifications.create(`notification-${Date.now()}`, {
                 type: 'basic',
-                iconUrl: '/img/notifications.svg',
+                iconUrl: chrome.runtime.getURL('/img/notifications.png'),
                 title: '新内容提醒',
                 message: '有 ' + data.data.update_num + ' 条新视频动态'
             });
 
-            console.log('有 ' + data.data.update_num + ' 条新视频动态');
+            lastUpdateNum = data.data.update_num;
         } else {
             console.log('没有新的动态');
         }
@@ -88,3 +91,5 @@ async function checkForUpdates() {
 
 // 初始调用
 checkForUpdates();
+//每过15分钟查检一次动态更新
+setInterval(checkForUpdates, 15 * 60 * 1000);

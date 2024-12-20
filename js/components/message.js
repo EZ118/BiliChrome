@@ -117,7 +117,11 @@ function showMsgSessionDetail(uid) {
         $.each(msgInfo.data.messages, function (index, item) {
             let msgCard = JSON.parse(item.content);
             let msgContent = msgCard.content || ("<a href='#aid_" + msgCard.id + "'>【视频】 " + msgCard.title + "</a>");
-            WebList = `<div class="dialog_msgBubble">${msgContent}</div>` + WebList;
+            if(item.sender_uid == currentUid) {
+                WebList = `<div class="dialog_msgBubble_me">${msgContent}</div>` + WebList;
+            } else {
+                WebList = `<div class="dialog_msgBubble">${msgContent}</div>` + WebList;
+            }
         });
         $(".dialog_content").html(WebList + "<font size=1 color=gray>&nbsp;没有最新的咯~</font>");
         $('.dialog_content').scrollTop($('.dialog_content').prop("scrollHeight"));
