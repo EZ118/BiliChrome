@@ -4,11 +4,12 @@ var live_danmuList = []; /* 实时评论列表 */
 var live_danmuCnt = 0; /* 实时评论数量 */
 var live_showDanmu = false; /* 是否显示实时评论 */
 var live_quality = 3; /* 视频画质,2：流畅 3：高清 4：原画 */
+var live_hls = null; /* hls对象 */
 
 function limitConsecutiveChars(str) {
-    /* 只允许字符串中连续出现n个相同字符 */
+	/* 只允许字符串中连续出现n个相同字符 */
 	const maxConsecutive = 10;
-    return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
+	return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 }
 
 function parseLiveComments(comments) {
@@ -18,7 +19,7 @@ function parseLiveComments(comments) {
 	$.each(comments, function (index, comment) {
 		const { nickname, text, timeline } = comment;
 
-		if(index > 0) { result += "<hr>"; }
+		if (index > 0) { result += "<hr>"; }
 		result += `<div class="reply" title="${timeline}"><b>🔘&nbsp;${nickname}</b>`;
 		result += `<div class="content">${text}</div></div>`;
 	});
@@ -27,22 +28,22 @@ function parseLiveComments(comments) {
 }
 
 function getLiveDanmu(cid) {
-    /* 获取弹幕文件，并解析内容，将所有条目按照时间顺序排序；最终存储在全局变量player_danmuList中 */
-    $.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
-        const danmuList = [];
+	/* 获取弹幕文件，并解析内容，将所有条目按照时间顺序排序；最终存储在全局变量player_danmuList中 */
+	$.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
+		const danmuList = [];
 
-        $(s).find("d").each(function () {
-            try {
-                const time = parseFloat($(this).attr("p").split(",")[0]);
-                const text = $(this).text();
-                danmuList.push({ text, time });
-            } catch (e) {
-                console.error("弹幕装填出错（解析时）", e);
-            }
-        });
+		$(s).find("d").each(function () {
+			try {
+				const time = parseFloat($(this).attr("p").split(",")[0]);
+				const text = $(this).text();
+				danmuList.push({ text, time });
+			} catch (e) {
+				console.error("弹幕装填出错（解析时）", e);
+			}
+		});
 
-        player_danmuList = danmuList.sort((a, b) => a.time - b.time);
-    });
+		player_danmuList = danmuList.sort((a, b) => a.time - b.time);
+	});
 }
 
 
@@ -66,16 +67,34 @@ function showLiveDanmu(content) {
 
 function loadLiveStreamSource(cid) {
 	/* 加载视频源，需要bvid和cid */
-    const platform = "web"; // web或h5
+	const platform = "h5"; // web或h5
 	$.get("https://api.live.bilibili.com/room/v1/Room/playUrl?cid=" + cid + "&platform=" + platform + "&quality=" + live_quality, function (result) {
 		/* 获取视频播放源 */
-		let vidUrl = result.data.durl[0].url;
-		$("#live_videoContainer").attr("src", vidUrl);
+		let videoUrl = result.data.durl[0].url;
+
+		if (Hls.isSupported()) {
+			const videoEle = $("#live_videoContainer")[0];
+			live_hls = new Hls();
+			live_hls.loadSource(videoUrl);
+			live_hls.attachMedia(videoEle);
+
+			live_hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+				videoEle.play();
+				videoEle.muted = false;
+				videoEle.controls = false;
+
+				//$("#dynamic_loader").hide();
+			});
+		} else {
+			showToast("浏览器不支持HLS播放，请更新浏览器");
+			$("#dynamic_loader").hide();
+		}
 	});
 }
 
 function openLivePlayer(option) {
 	/* 显示播放器并展示指定视频 */
+	$("#dynamic_loader").show();
 
 	/* 视频ID */
 	if (!option.roomid) {
@@ -91,8 +110,8 @@ function openLivePlayer(option) {
 		/* 获取视频信息 */
 		var { room_id, title, uid, live_time, area_name } = VideoInfo["data"];
 
-        let desc = `开播时间：${live_time} <br>直播分区：${area_name}`
-        
+		let desc = `开播时间：${live_time} <br>直播分区：${area_name}`
+
 
 		$("#live_title").text(title);
 		$("#live_descArea").html("<b class='player_blockTitle'>详情</b><br>" + desc);
@@ -110,10 +129,13 @@ function openLivePlayer(option) {
 
 function closeLivePlayer() {
 	/* 关闭播放器 */
+	live_hls.destroy();
 	$("#live_container").fadeOut(150);
-	$("#live_videoContainer").attr("src", "");
+	// $("#live_videoContainer").attr("src", "");
 	live_danmuList = [];
 	live_danmuCnt = 0;
+
+	$("#dynamic_loader").hide();
 }
 
 
@@ -136,7 +158,7 @@ $(document).ready(function () {
 		showToast((live_showDanmu ? "已启用实时评论" : "已关闭实时评论"));
 	});
 	$("#live_pipBtn").click(function () {
-		var pip = $("#live_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
+		const pip = $("#live_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
 		showToast("画中画", 1000);
 	});
 	$("#live_qnSwitchBtn").click(function () {
@@ -149,6 +171,10 @@ $(document).ready(function () {
 			showToast("已切换为较高画质", 3000);
 		}
 		loadLiveStreamSource(roomidPlayingNow);
+	});
+	$("#live_videoContainer").on('canplay', function (e) {
+		/* 视频加载完毕后隐藏加载球 */
+		$("#dynamic_loader").hide();
 	});
 
 	/* 弹幕输出 */

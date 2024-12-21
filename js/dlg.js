@@ -53,9 +53,12 @@ $(document).ready(function () {
 
 			var dlgHidden = $("#dlg_container").is(":hidden");
 			var playerHidden = $("#player_container").is(":hidden");
+			var liveHidden = $("#live_container").is(":hidden");
 
 			if (!playerHidden) {
 				closePlayer();
+			} else if (!liveHidden) {
+				closeLivePlayer();
 			} else if (!dlgHidden) {
 				closeDlg();
 			} else {
