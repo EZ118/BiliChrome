@@ -73,11 +73,22 @@ async function checkForUpdates() {
         if (data.code == 0 && data.data.update_num > 0 && data.data.update_num != lastUpdateNum) {
             console.log('有 ' + data.data.update_num + ' 条新视频动态');
 
-            chrome.notifications.create(`notification-${Date.now()}`, {
+            let myNotificationId = `notification-${Date.now()}`;
+            chrome.notifications.create(myNotificationId, {
                 type: 'basic',
                 iconUrl: chrome.runtime.getURL('/img/notifications.png'),
                 title: '新内容提醒',
-                message: '有 ' + data.data.update_num + ' 条新视频动态'
+                message: '有 ' + data.data.update_num + ' 条新视频动态',
+                'requireInteraction': true,
+                'buttons': [{
+                    'title': '前往 BiliScape'
+                }]
+            });
+
+            chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex) {
+                if (buttonIndex === 0 && notificationId == myNotificationId) {
+                    chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
+                }
             });
 
             lastUpdateNum = data.data.update_num;

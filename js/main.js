@@ -274,6 +274,8 @@ $("#RefreshBtn").click(function () {
         homeInit(refresh = true);
     } else if (currentTab == "message") {
         messageInit(refresh = true);
+    } else if (currentTab == "search") {
+        searchInit(refresh = true);
     } else if (currentTab == "subscriptions") {
         getSubscribedVideos();
     } else if (currentTab == "space") {

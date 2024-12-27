@@ -1,3 +1,6 @@
+var keywordSearchingNow = "";
+var search_currentPage = 1;
+
 function showSearchPage() {
     /* 显示搜素页 */
 
@@ -10,6 +13,8 @@ function showSearchPage() {
             WebList += `<s-chip type="elevated" class="search_histroyItem">${item}</s-chip>`;
         });
     }
+
+    search_currentPage = 1;
 
     $("#item_container").html(`
         <div align="center">
@@ -68,12 +73,21 @@ function showSearchPage() {
         showSearchPage();
     });
 }
-function getSearchResult(wd) {
-    if (!wd) { return; }
+function getSearchResult(keyword, page) {
+    if (!keyword) { return; }
+    if (!page) { page = 1; }
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    $.get("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(wd), function (tjlist) {
-        var WebList = "<p style='margin:0px 10px 0px 10px;font-size:16px;'><b style='user-select:text;'>" + wd + "</b>的搜索结果：</p>";
+    //$.get("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(keyword), function (tjlist) {
+    $.get("https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=" + encodeURI(keyword) + "&page=" + page, function (tjlist) {
+        keywordSearchingNow = keyword;
+
+        var WebList = `
+            <div class="search_titlebar">
+                <s-icon-button class="search_backBtn" title="返回"><s-icon type="arrow_back"></s-icon></s-icon-button>
+                <span class="search_title">${keyword}</span>
+            </div>`;
+
         $.each(tjlist.data.result[11].data, function (index, item) {
             WebList += `
                 <s-card clickable="true" class="common_video_card">
@@ -94,11 +108,48 @@ function getSearchResult(wd) {
                     </div>
                 </s-card>`;
         });
+
+        WebList += `
+            <br/>
+            <s-segmented-button class="search_pageSwitcher">
+                <s-segmented-button-item selectable="false" id="search_prevPageBtn">
+                    <s-icon type="chevron_left"></s-icon>
+                </s-segmented-button-item>
+                <s-segmented-button-item selected="true"> ${tjlist.data.page}/${tjlist.data.numPages} </s-segmented-button-item>
+                <s-segmented-button-item selectable="false" id="search_nextPageBtn">
+                    <s-icon type="chevron_right"></s-icon>
+                </s-segmented-button-item>
+            </s-segmented-button>
+        `;
+
         $("#item_container").html(WebList);
         $("#dynamic_loader").hide();
     });
 }
 
-function searchInit() {
+function searchInit(refresh) {
+    if (refresh) {
+        getSearchResult(keywordSearchingNow);
+        return;
+    }
+
     showSearchPage();
 }
+
+$(document).ready(function () {
+    $(document).on("click", ".search_backBtn", function () {
+        showSearchPage();
+    });
+    $(document).on("click", "#search_prevPageBtn", function () {
+        if(search_currentPage > 1) {
+            search_currentPage -= 1;
+            getSearchResult(keywordSearchingNow, search_currentPage);
+        } else {
+            showToast("已经是第一页了~");
+        }
+    });
+    $(document).on("click", "#search_nextPageBtn", function () {
+        search_currentPage += 1;
+        getSearchResult(keywordSearchingNow, search_currentPage);
+    });
+});
