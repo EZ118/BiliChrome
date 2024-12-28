@@ -114,22 +114,20 @@ s-snackbar a{ color:#00AEEC; }
 .chat_listItem .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
 .chat_listItem .title {  font-weight:lighter; font-size:medium;}
 #chat_container .dialog { font-size:medium; display:flex; flex-direction:column; }
-#chat_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-container-high); }
+#chat_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
 #chat_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; }
 #chat_container .dialog_msgBubble { width:fit-content; max-width:80%; padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:0 12px 12px 12px; margin:5px 3px; user-select:text;  }
 #chat_container .dialog_msgBubble_me { width:fit-content; max-width:80%; padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:12px 0px 12px 12px; margin:5px 3px; margin-left:auto; user-select:text; }
 
 /* 搜索页 */
 .search_pageSwitcher { margin:10px auto; position:relative; left:50%; transform: translateX(-50%); }
-.search_titlebar { font-size:medium; font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-container-high); }
+.search_typeTab { justify-content:left; }
+.search_titlebar { font-size:medium; font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
 .search_title {margin-top:5px; user-select:text; text-decoration:underline; }
 .search_backBtn {}
 .keyword { color:var(--s-color-secondary); font-style: normal; }
 
 @media (prefers-color-scheme: dark) {
-	/* 当前其他设备正在播放提示框 */
-	.continuation_alertBox{ background:#222222; }
-
 	/* 播放器 */
 	#player_container{ background:#1c1b1f; }
 	

@@ -23,8 +23,12 @@ function getUserSpace(uid) {
                 VidDesc = card_json.modules.module_dynamic.desc.text;
                 if (dynamicType === 'DYNAMIC_TYPE_DRAW' && card_json.modules.module_dynamic.major) {
                     /* 如果动态内容含图片 */
-                    var imageUrl = card_json.modules.module_dynamic.major.draw.items[0].src;
-                    ImgUrl = `<a href="#img-` + encodeURI(imageUrl) + `"><img class="dailypic" src="` + imageUrl + `@256w_256h_1e_1c_!web-dynamic.jpg"></a>`;
+                    $.each(card_json.modules.module_dynamic.major.draw.items, function (index, item) {
+                        ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg"></a>`;
+                        if(index % 3 == 2) {
+                            ImgUrl += "<br>";
+                        }
+                    });
                 }
             }
 

@@ -1,5 +1,6 @@
 var keywordSearchingNow = "";
 var search_currentPage = 1;
+var search_currentType = "video";
 
 function showSearchPage() {
     /* 显示搜素页 */
@@ -14,8 +15,11 @@ function showSearchPage() {
         });
     }
 
+    /* 变量初始化 */
     search_currentPage = 1;
+    search_currentType = "video";
 
+    /* 显示搜索界面 */
     $("#item_container").html(`
         <div align="center">
             <div style='margin-top:30vh; margin-bottom:35px; display:flex; justify-content:center; align-items:flex-end;'>
@@ -73,41 +77,101 @@ function showSearchPage() {
         showSearchPage();
     });
 }
-function getSearchResult(keyword, page) {
+function getSearchResult(keyword, page, type) {
     if (!keyword) { return; }
     if (!page) { page = 1; }
+    if (!type) { type = "video"; }
+
     $("#item_container").html("");
     $("#dynamic_loader").show();
-    //$.get("https://api.bilibili.com/x/web-interface/search/all/v2?keyword=" + encodeURI(keyword), function (tjlist) {
-    $.get("https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=" + encodeURI(keyword) + "&page=" + page, function (tjlist) {
+    $.get("https://api.bilibili.com/x/web-interface/wbi/search/type?search_type=" + type + "&keyword=" + encodeURI(keyword) + "&page=" + page, function (tjlist) {
         keywordSearchingNow = keyword;
 
         var WebList = `
             <div class="search_titlebar">
                 <s-icon-button class="search_backBtn" title="返回"><s-icon type="arrow_back"></s-icon></s-icon-button>
                 <span class="search_title">${keyword}</span>
-            </div>`;
+            </div>
+            <s-tab class="search_typeTab">
+                <s-tab-item value="video">
+                    <div slot="text">视频</div>
+                </s-tab-item>
+                <s-tab-item value="bili_user">
+                    <div slot="text">用户</div>
+                </s-tab-item>
+                <s-tab-item value="live_room">
+                    <div slot="text">直播</div>
+                </s-tab-item>
+            </s-tab>`;
 
-        $.each(tjlist.data.result[11].data, function (index, item) {
-            WebList += `
-                <s-card clickable="true" class="common_video_card">
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#aid_` + item.aid + `">
-                            <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#aid_` + item.aid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
+        switch (type) {
+            case "video":
+                $.each(tjlist.data.result, function (index, item) {
+                    WebList += `
+                        <s-card clickable="true" class="common_video_card">
+                            <div slot="image" style="overflow:hidden;">
+                                <a href="#bvid_` + item.bvid + `">
+                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                                </a>
+                            </div>
+                            <div slot="subhead">
+                                <a href="#bvid_` + item.bvid + `">
+                                    ` + item.title + `
+                                </a>
+                            </div>
+                            <div slot="text">
+                                <a href="#uid_` + item.mid + `">
+                                    ` + item.author + `
+                                </a>
+                            </div>
+                        </s-card>`;
+                });
+                break;
+            case "bili_user":
+                $.each(tjlist.data.result, function (index, item) {
+                    WebList += `
                         <a href="#uid_` + item.mid + `">
-                            ` + item.author + `
-                        </a>
-                    </div>
-                </s-card>`;
-        });
+                            <s-card clickable="true" class="common_video_card">
+                                <div slot="image" style="height:30px;overflow:hidden;">
+                                    <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='https:` + item.upic + `@45w_45h_1c.webp'>
+                                </div>
+                                <div slot="subhead">
+                                    ` + item.uname + `
+                                </div>
+                                <div slot="text">
+                                    [简介] ` + (item.usign || "<i>无</i>") + `
+                                </div>
+                            </s-card>
+                        </a>`;
+                });
+                break;
+            case "live_room":
+                $.each(tjlist.data.result, function (index, item) {
+                    WebList += `
+                        <s-card clickable="true" class="common_video_card">
+                            <div slot="image" style="overflow:hidden;">
+                                <a href="#roomid_` + item.roomid + `">
+                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                                </a>
+                            </div>
+                            <div slot="subhead">
+                                <a href="#roomid_` + item.roomid + `">
+                                    ` + item.title + `
+                                </a>
+                            </div>
+                            <div slot="text">
+                                <a href="#uid_` + item.uid + `">
+                                    ` + item.uname + `
+                                </a>
+                            </div>
+                        </s-card>`;
+                });
+                break;
+            default:
+                showToast("不支持的搜索类型");
+                break;
+        }
+
 
         WebList += `
             <br/>
@@ -124,6 +188,10 @@ function getSearchResult(keyword, page) {
 
         $("#item_container").html(WebList);
         $("#dynamic_loader").hide();
+
+        setTimeout(function () {
+            $("s-tab-item[value='" + type + "']").attr("selected", "true");
+        }, 200);
     });
 }
 
@@ -141,15 +209,20 @@ $(document).ready(function () {
         showSearchPage();
     });
     $(document).on("click", "#search_prevPageBtn", function () {
-        if(search_currentPage > 1) {
+        if (search_currentPage > 1) {
             search_currentPage -= 1;
-            getSearchResult(keywordSearchingNow, search_currentPage);
+            getSearchResult(keywordSearchingNow, search_currentPage, search_currentType);
         } else {
             showToast("已经是第一页了~");
         }
     });
     $(document).on("click", "#search_nextPageBtn", function () {
         search_currentPage += 1;
-        getSearchResult(keywordSearchingNow, search_currentPage);
+        getSearchResult(keywordSearchingNow, search_currentPage, search_currentType);
+    });
+
+    $(document).on("click", ".search_typeTab s-tab-item", function (event) {
+        search_currentType = $(event.currentTarget).attr("value");
+        getSearchResult(keywordSearchingNow, search_currentPage, search_currentType);
     });
 });
