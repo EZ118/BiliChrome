@@ -47,13 +47,31 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener(function (item, tab) {
-    var url = item.pageUrl + "?";
+    let url = item.pageUrl + "?";
     url = url.split("?")[0];
-    var purl = url.split("/");
-    if (item.menuItemId == "viewInExt" && purl[3] == "video" && purl[4]) {
-        var cmd = 'bvid_' + purl[4];
-        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + cmd });
-        //chrome.windows.create({ url: 'home.html#' + cmd, type: 'popup', width: 1220, height: 620 });
+    url = url.replace("/s/", "/");
+
+    if (url.indexOf("?") === -1) { url += "?"; }
+
+    if (item.menuItemId == "viewInExt" && url.includes("bilibili.com/video/")) {
+        const vid = url.split("/")[4].replace(url.substring(url.lastIndexOf("?")), "");
+
+        let newOption = "";
+
+        if (vid.includes("av")) { newOption = "aid_" + vid.replace("av", ""); }
+        else { newOption = "bvid_" + vid; }
+
+        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + newOption });
+        // chrome.windows.create({ url: 'home.html#' + newOption, type: 'popup', width: 1220, height: 620 });
+
+    } else if (item.menuItemId == "viewInExt" && url.includes("live.bilibili.com/") && !url.includes("live.bilibili.com/p/")) {
+        const vid = url.split("/")[3].replace(url.substring(url.lastIndexOf("?")), "");
+
+        if (vid == null || vid == "") { return; }
+
+        let newOption = "roomid_" + vid;
+
+        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + newOption });
     }
 });
 
@@ -85,7 +103,7 @@ async function checkForUpdates() {
                 }]
             });
 
-            chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex) {
+            chrome.notifications.onButtonClicked.addListener(function (notificationId, buttonIndex) {
                 if (buttonIndex === 0 && notificationId == myNotificationId) {
                     chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
                 }

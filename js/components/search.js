@@ -38,7 +38,7 @@ function showSearchPage() {
                 <s-chip title="清空搜素历史" id="search_clearHistory" type="elevated"><s-icon type="close"></s-icon></s-chip>
             </div>
         </div>`);
-    $("#dynamic_loader").hide();
+    
     var inputObject = $("#item_container").find("input.app-input-text");
 
     inputObject.off('keydown');
@@ -189,9 +189,7 @@ function getSearchResult(keyword, page, type) {
         $("#item_container").html(WebList);
         $("#dynamic_loader").hide();
 
-        setTimeout(function () {
-            $("s-tab-item[value='" + type + "']").attr("selected", "true");
-        }, 200);
+        $('s-tab-item[value="' + type + '"]').prop("selected", true);
     });
 }
 
