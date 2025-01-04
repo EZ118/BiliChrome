@@ -104,7 +104,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("img-")) {
         /* 图片查看 */
-        openDlg("浏览图片", `<img src="` + data.split("-")[1] + `" width="100%">`, data.split("-")[1]);
+        openDlg("浏览图片", `<s-icon-button class="historyBackButton"><s-icon type="arrow_back"></s-icon></s-icon-button><img src="` + data.split("-")[1] + `" width="100%" />`, data.split("-")[1]);
 
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
@@ -191,6 +191,10 @@ $(document).ready(function () {
             eggBtnCnt = 0;
             showToast("你疯了吧！");
         }
+    });
+
+    $(document).on("click", ".historyBackButton", function () {
+        window.history.back();
     });
 });
 
