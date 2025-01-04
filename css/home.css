@@ -45,7 +45,7 @@ html{ height:100%; width:100%; }
 #live_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #live_commentArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 84px - 80px);font-size:16px;overflow:hidden auto}
 #live_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(80px);flex-grow:1;font-size:16px;overflow:hidden auto}
-#live_descArea hr{margin:3px;border:none;border-bottom:1px solid #FFFFFF38}
+#live_commentArea .messageBubble{width:fit-content;max-width:calc(100% - 20px);padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:0 12px 12px 12px; margin:5px 3px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
 
 /* 评论回复样式 */
 .reply_container{width:calc(100% - 2px);margin-top:5px;user-select:text;font-size:16px;}
