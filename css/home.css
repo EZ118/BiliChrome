@@ -45,7 +45,8 @@ html{ height:100%; width:100%; }
 #live_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #live_commentArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 84px - 80px);font-size:16px;overflow:hidden auto}
 #live_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(80px);flex-grow:1;font-size:16px;overflow:hidden auto}
-#live_commentArea .messageBubble{width:fit-content;max-width:calc(100% - 20px);padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:0 12px 12px 12px; margin:5px 3px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
+#live_commentArea .messageBubble{width:fit-content;max-width:calc(100% - 20px);padding:6px 9px; background:var(--s-color-surface-container-high);border-radius:0 12px 12px 12px;margin:5px 3px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
+#live_commentArea .messageBubble_sys{width:fit-content;max-width:calc(100% - 20px);color:var(--s-color-on-surface-variant);padding:0;margin:5px 3px;font-style:italic;font-size:small;}
 
 /* 评论回复样式 */
 .reply_container{width:calc(100% - 2px);margin-top:5px;user-select:text;font-size:16px;}
@@ -54,6 +55,7 @@ html{ height:100%; width:100%; }
 .reply_container .reply{margin-bottom:5px;max-width:400px;position:relative;top:0;left:50%;transform:translateX(-50%);max-width:400px}
 .reply_container .reply .content{margin-left:15px}
 .reply_container .reply i{color:#8888889b;margin-left:15px;font-size:small}
+.reply_container .reply .image{width:80px;height:80px;border-radius:8px;margin:3px;}
 
 /* 自定义对话框 */
 #dlg_container{position:fixed;top:0px;left:0;z-index:102;width:100vw;height:100vh;background:rgba(0,0,0,0.3)}

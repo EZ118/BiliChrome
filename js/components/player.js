@@ -22,8 +22,17 @@ function parseComments(comments) {
 		const timeString = new Date(ctime * 1000).toLocaleDateString();
 
 		if(index > 0) { result += "<hr>"; }
+
+		/* 显示评论图片 */
+		let pictureList = "";
+		if(content.pictures && content.pictures.length > 0) {
+			$.each(content.pictures, function (index, pic) {
+				pictureList += `<img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='lazy' />`;
+			});
+		}
+
 		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
-		result += `<div class="content">${content.message}</div>`;
+		result += `<div class="content">${content.message}<br/>${pictureList}</div>`;
 		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location ? reply_control.location.split("：")[1] : ""}</i></div>`;
 
 		if (replies && replies.length > 0) {

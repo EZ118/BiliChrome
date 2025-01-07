@@ -4,7 +4,7 @@ var live_danmuList = []; /* 实时评论列表 */
 var live_danmuShowDelay = null; /* 实时评论输出延迟 */
 const live_danmuReqRrequency = 6000; /* 实时评论获取频率（请求1次/6000毫秒） */
 const live_danmuMaxSum = 60; // 最大显示弹幕数量
-var live_showDanmu = false; /* 是否显示实时评论 */
+var live_showDanmu = true; /* 是否显示实时评论 */
 var live_quality = 3; /* 视频画质,2：流畅 3：高清 4：原画 */
 var live_hls = null; /* hls对象 */
 
@@ -161,7 +161,13 @@ $(document).ready(function () {
 	});
 	$("#live_scrSwitchBtn").click(function () {
 		live_showDanmu = !live_showDanmu; /* 切换弹幕模式 */
-		showToast((live_showDanmu ? "已启用实时评论" : "已关闭实时评论"));
+		showToast((live_showDanmu ? "已启用实时弹幕" : "已关闭实时弹幕"));
+
+		if (live_showDanmu) {
+			$("#live_commentArea").append("<p class='messageBubble_sys'>实时弹幕已启用</p>");
+		} else {
+			setTimeout(() => $("#live_commentArea").append("<p class='messageBubble_sys'>实时弹幕已暂停</p>"), live_danmuReqRrequency);
+		}
 	});
 	$("#live_pipBtn").click(function () {
 		const pip = $("#live_videoContainer")[0].requestPictureInPicture(); /* 切换画中画 */
@@ -171,10 +177,10 @@ $(document).ready(function () {
 		/* 切换高画质 */
 		if (live_quality == 3) {
 			live_quality = 2;
-			showToast("已切换为普通画质", 3000);
+			showToast("已切换为普通画质（重新打开直播生效）", 3000);
 		} else {
 			live_quality = 3;
-			showToast("已切换为较高画质", 3000);
+			showToast("已切换为较高画质（重新打开直播生效）", 3000);
 		}
 		loadLiveStreamSource(roomidPlayingNow);
 	});
@@ -185,7 +191,7 @@ $(document).ready(function () {
 
 	/* 弹幕输出 */
 	setInterval(function () {
-		if (!live_danmuList || live_danmuList.length == 0) { return; }
+		if (!live_danmuShowDelay || !live_showDanmu) { return; }
 		else {
 			getLiveDanmu(roomidPlayingNow);
 		}

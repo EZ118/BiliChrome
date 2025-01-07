@@ -11,12 +11,13 @@ function openDlg(title, html, url, isTop) {
 	dlgOpenNewNow = url;
 }
 function closeDlg() {
-	if($('#dlg_container').css("z-index") === "104") { $('#dlg_container').css("z-index", "") }
+	$('#dlg_container').fadeOut(200, () => {
+		if($('#dlg_container').css("z-index") == "104") { $('#dlg_container').css("z-index", "") }
 
-	$('#dlg_container').fadeOut(200);
-	$('#dlg_content').html("");
-	$('#dlg_title').html("[默认标题]");
-	dlgOpenNewNow = "";
+		$('#dlg_content').html("");
+		$('#dlg_title').html("[默认标题]");
+		dlgOpenNewNow = "";
+	});
 
 	window.location.hash = "#default";
 }
