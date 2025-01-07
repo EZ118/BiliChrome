@@ -111,7 +111,7 @@ function getSearchResult(keyword, page, type) {
                         <s-card clickable="true" class="common_video_card">
                             <div slot="image" style="overflow:hidden;">
                                 <a href="#bvid_` + item.bvid + `">
-                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                                 </a>
                             </div>
                             <div slot="subhead">
@@ -133,7 +133,7 @@ function getSearchResult(keyword, page, type) {
                         <a href="#uid_` + item.mid + `">
                             <s-card clickable="true" class="common_video_card">
                                 <div slot="image" style="height:30px;overflow:hidden;">
-                                    <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='https:` + item.upic + `@45w_45h_1c.webp'>
+                                    <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='https:` + item.upic + `@45w_45h_1c.webp' loading="lazy" />
                                 </div>
                                 <div slot="subhead">
                                     ` + item.uname + `
@@ -151,7 +151,7 @@ function getSearchResult(keyword, page, type) {
                         <s-card clickable="true" class="common_video_card">
                             <div slot="image" style="overflow:hidden;">
                                 <a href="#roomid_` + item.roomid + `">
-                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                                 </a>
                             </div>
                             <div slot="subhead">

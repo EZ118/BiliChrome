@@ -10,7 +10,7 @@ function showMsgReply() {
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <a href="#uid_` + item.user.mid + `">
                     <div class='thinstrip_msgBox_headline'>
-                        <img src='` + item.user.avatar + `@45w_45h_1c.webp'>
+                        <img src='` + item.user.avatar + `@45w_45h_1c.webp' loading="lazy" />
                         <span class='thinstrip_msgBox_username'>` + item.user.nickname + `</span>
                     </div>
                 </a>
@@ -34,7 +34,7 @@ function showAtMe() {
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <div class='thinstrip_msgBox_headline'>
                     <a href="#uid_${item.user.mid}">
-                        <img src='${item.user.avatar}@45w_45h_1c.webp' title='${item.user.nickname}'>
+                        <img src='${item.user.avatar}@45w_45h_1c.webp' title='${item.user.nickname}' loading="lazy" />
                     </a>
                     <span class='thinstrip_msgBox_username'>在${item.item.business}中@了你</span>
                 </div>
@@ -51,6 +51,7 @@ function showAtMe() {
     });
 }
 
+/* 获取最近点赞 */
 function showRecentLikes() {
     $.get("https://api.bilibili.com/x/msgfeed/like?platform=web&build=0&mobi_app=web", function (msgInfo) {
         var WebList = "";
@@ -59,16 +60,18 @@ function showRecentLikes() {
             let UserList = "";
             $.each(item.users, function (ind, user) {
                 UserList += `<a href="#uid_${user.mid}">
-                        <img src='${user.avatar}@45w_45h_1c.webp' title='${user.nickname}'>
+                        <img src='${user.avatar}@45w_45h_1c.webp' title='${user.nickname}' loading="lazy" />
                     </a>`;
             });
+
+            let itemId = item.item.uri.split("/")[4]; // item.item.item_id;
 
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <div class='thinstrip_msgBox_headline'>
                     ${UserList}
                     <span class='thinstrip_msgBox_username'>点赞了你的${item.item.business}</span>
                 </div>
-                <a href="#aid_${item.item.item_id}">
+                <a href="#bvid_${itemId}">
                     <div class='thinstrip_msgBox_contentline'>
                         <pre class='quote'>${item.item.title}</pre>
                         <pre class='time'>${item.item.desc}</pre>
@@ -80,6 +83,8 @@ function showRecentLikes() {
         openDlg("最近收到的赞", WebList, "https://message.bilibili.com/#/system");
     });
 }
+
+/* 获取系统通知 */
 function showSysMsg() {
     // $.get("https://message.bilibili.com/x/sys-msg/query_unified_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) { // B站的活动宣传通知API
     $.get("https://message.bilibili.com/x/sys-msg/query_user_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) {
@@ -100,6 +105,7 @@ function showSysMsg() {
     });
 }
 
+/* 获取未读消息数量（通知角标） */
 function getMsgUnread(callback) {
     $.get("https://api.bilibili.com/x/msgfeed/unread", function (msgInfo) {
         callback(msgInfo.data);
@@ -128,6 +134,7 @@ function showMsgSessionDetail(uid) {
     });
 }
 
+/* 通过Uid列表，集中获取多个用户的简单信息 */
 function getUsersInfo(uids, callback) {
     var uidstr = "";
     $.each(uids, (index, item) => uidstr += item + ",");
@@ -148,7 +155,7 @@ function showMsgSessions() {
                 if (!userInfo[item.talker_id]) { return; }
                 $(".chat_list").append(`
                     <s-card class="chat_listItem" type="outlined" clickable="true" talker-uid="${item.talker_id}">
-                        <img class="avatar" src="${userInfo[item.talker_id].face}@42w_42h_1c.webp">
+                        <img class="avatar" src="${userInfo[item.talker_id].face}@42w_42h_1c.webp" loading="lazy" />
                         <span class="title">${userInfo[item.talker_id].name}</span>
                     </s-card>
                 `)

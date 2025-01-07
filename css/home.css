@@ -18,16 +18,16 @@ html{ height:100%; width:100%; }
 .thinstrip_msgBox_headline{display:flex;vertical-align:center;line-height:31px;margin:5px 0px}
 .thinstrip_msgBox_headline img{border-radius:30px;width:30px;height:30px;margin-right:5px}
 .thinstrip_msgBox_headline span{margin-left:5px;font-weight:bold;font-size:15px}
-.thinstrip_msgBox_contentline .quote{background:#33333333;border-radius:4px;padding:5px;margin:5px 0px;border-left:4px solid #003344;width:98%;font-size:11px;font-style:italic;white-space:pre-wrap;word-wrap:break-word}
-.thinstrip_msgBox_contentline .content{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:12px;font-family:parent;margin:5px 0px}
-.thinstrip_msgBox_contentline .time{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:10px;font-family:parent;margin:5px 0px;opacity:0.8}
+.thinstrip_msgBox_contentline .quote{background:#33333333;border-radius:4px;padding:5px;margin:5px 0px;border-left:4px solid #003344;width:98%;font-size:12px;font-style:italic;white-space:pre-wrap;word-wrap:break-word;font-family:inherit;}
+.thinstrip_msgBox_contentline .content{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:13px;font-family:inherit;margin:5px 0px}
+.thinstrip_msgBox_contentline .time{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:11px;font-family:inherit;margin:5px 0px;opacity:0.8}
 
 /* 页面主体 */
 #dynamic_loader{ position:fixed; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); z-index:120; }
 #RefreshBtn{ position:fixed; right:24px; bottom:24px; z-index:101; }
 
 /* 播放器 */
-#player_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:#fffbff;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#player_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:var(--s-color-surface-container-low);display:flex;flex-direction:column;justify-content:center;align-items:center}
 .player_row{display:flex;width:100vw;flex-direction:row;justify-content:center;align-items:center}
 #player_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
 #player_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -40,7 +40,7 @@ html{ height:100%; width:100%; }
 .player_blockTitle{font-size:large;font-weight:400;color:var(--s-color-primary);padding:0px 10px;border:0;border-left:8px solid;margin:3px 0px;}
 
 /* 直播播放器 */
-#live_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:#fffbff;display:flex;flex-direction:column;justify-content:center;align-items:center}
+#live_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:var(--s-color-surface-container-low);display:flex;flex-direction:column;justify-content:center;align-items:center}
 #live_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
 #live_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #live_commentArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 84px - 80px);font-size:16px;overflow:hidden auto}
@@ -59,8 +59,8 @@ html{ height:100%; width:100%; }
 
 /* 自定义对话框 */
 #dlg_container{position:fixed;top:0px;left:0;z-index:102;width:100vw;height:100vh;background:rgba(0,0,0,0.3)}
-.dlg_container_real{position:relative;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:clamp(300px,65%,1200px);height:calc(100% - 140px);background:#e8e8e8;border-radius:8px;border:1px solid rgba(197,217,241,0.063)}
-#dlg_content{width:100%;height:100%;background:#e8e8e8;overflow-y:auto;overflow-x:hidden}
+.dlg_container_real{position:relative;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:clamp(300px,65%,1200px);height:calc(100% - 140px);background:var(--s-color-surface-container-low);color:var(--s-color-on-surface);border-radius:8px;border:1px solid rgba(197,217,241,0.063)}
+#dlg_content{width:100%;height:100%;background:var(--s-color-surface-container-low);overflow-y:auto;overflow-x:hidden;color:var(--s-color-on-surface)}
 #dlg_title{margin-left:15px;font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* 视频卡片组件（封面突出） */
@@ -101,7 +101,7 @@ s-snackbar a{ color:#00AEEC; }
 .myspace_subSection a { margin:10px; flex-grow:1; }
 
 /* 用户空间动态 */
-.space_singlebox{ margin-top:20px; width:60%; min-width:200px; max-width: 550px; font-size:16px; overflow:hidden; border-radius:12px; padding:5px; cursor:pointer; }
+.space_singlebox{ margin-top:20px; width:60%; min-width:200px; max-width: 550px; font-size:16px; overflow:hidden; border-radius:12px; padding:5px; cursor:pointer; color:var(--s-color-on-surface) }
 .space_singlebox .videopic{ width:100%; border-radius:10px; -webkit-user-drag:none; }
 .space_singlebox .dailypic{ width:100px; height:100px; object-fit:contain; border-radius:5px; -webkit-user-drag:none; margin:5px; }
 .space_singlebox_un{ color:#84848484; font-size:14px; width:100%; overflow:hidden }
@@ -128,21 +128,6 @@ s-snackbar a{ color:#00AEEC; }
 .search_title {margin-top:5px; user-select:text; text-decoration:underline; }
 .search_backBtn {}
 .keyword { color:var(--s-color-secondary); font-style: normal; }
-
-@media (prefers-color-scheme: dark) {
-	/* 播放器 */
-	#player_container{ background:#1c1b1f; }
-	
-	/* 直播 */
-	#live_container{ background:#1c1b1f; }
-
-	/* 自定义对话框 */
-	.dlg_container_real{ background: #1c1b1f; color:#FFF; }
-	#dlg_content{ width:100%; height:100%; background:#1c1b1f; color:#FFF; overflow-y:auto; overflow-x:hidden; }
-
-	/* 用户空间动态 */
-	.space_singlebox{color:#FFF;}
-}
 
 @media screen and (max-width:400px) {
 	#player_container{

@@ -19,7 +19,7 @@ function getUserSpace(uid) {
                 /* 如果动态内容是视频 */
                 var video = card_json.modules.module_dynamic.major.archive;
                 VidDesc = video.title;
-                ImgUrl = '<img class="videopic" src="' + video.cover + '@530w_300h_1c.webp" onerror="this.remove()">';
+                ImgUrl = '<img class="videopic" src="' + video.cover + '@530w_300h_1c.webp" onerror="this.remove()" loading="lazy" />';
                 LinkUrl = "bvid_" + video.bvid;
             } else if (dynamicType === 'DYNAMIC_TYPE_WORD' || dynamicType === 'DYNAMIC_TYPE_DRAW') {
                 /* 如果动态内容是文字 */
@@ -27,7 +27,7 @@ function getUserSpace(uid) {
                 if (dynamicType === 'DYNAMIC_TYPE_DRAW' && card_json.modules.module_dynamic.major) {
                     /* 如果动态内容含图片 */
                     $.each(card_json.modules.module_dynamic.major.draw.items, function (index, item) {
-                        ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg"></a>`;
+                        ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg" loading="lazy" /></a>`;
                         if(index % 3 == 2) {
                             ImgUrl += "<br>";
                         }
@@ -72,7 +72,7 @@ function getUserHistory() {
                 <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.history.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                         </a>
                     </div>
                     <div slot="subhead">
@@ -156,7 +156,7 @@ function getCollectionById(fid, mediaCount) {
                 <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                         </a>
                     </div>
                     <div slot="subhead">
@@ -184,7 +184,7 @@ function getWatchLater() {
                 <s-card clickable="true" class="common_video_card">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `_watchlater">
-                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                         </a>
                     </div>
                     <div slot="subhead">
@@ -264,8 +264,8 @@ function spaceInit(refresh) {
             </div>
             
             <center style="margin-top:calc(40vh - 120px); z-index: -1;">
-                <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;">前往Github查看项目</a><br>
-                <font color="#888">提示：ctrl+Q可快速关闭视频等窗口</font>
+                <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;" target="_blank">前往Github查看项目</a><br>
+                <font color="#888">提示：Ctrl+Q可快速关闭视频等窗口</font>
             </center>
         `);
     });

@@ -11,7 +11,7 @@ function showRecommendedVideos() {
                     <s-card clickable="true" class="common_video_card">
                         <div slot="image" style="overflow:hidden;">
                             <a href="#bvid_` + item.bvid + `">
-                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                             </a>
                         </div>
                         <div slot="subhead">
@@ -49,7 +49,7 @@ function showHotVideos() {
                 <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
                     <div slot="image" style="overflow:hidden;">
                         <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                         </a>
                     </div>
                     <div slot="subhead">
@@ -82,7 +82,7 @@ function showLiveRooms(){
                 <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
                     <div slot="image" style="overflow:hidden;">
                         <a href="#roomid_` + item.roomid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
+                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
                         </a>
                     </div>
                     <div slot="subhead">
