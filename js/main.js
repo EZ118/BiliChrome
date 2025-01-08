@@ -1,62 +1,6 @@
 var currentTab = "home";
 var lastDynamicOffset = null;
 
-
-async function getSubscribedVideos() {
-    $("#item_container").html("");
-    $("#dynamic_loader").show();
-
-    var WebList = "<div class='flex_container'>";
-
-    for (let i = 1; i <= 3; i++) {
-        // 构建请求的 URL，包含当前的 offset
-        const url = `https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all?timezone_offset=-480&offset=${lastDynamicOffset || ""}&type=video&platform=web&page=${i}`;
-
-        try {
-            // 等待请求完成并获取数据
-            let response = await $.get(url);
-            let tjlist = response;
-
-            // 处理获取到的数据
-            $.each(tjlist.data.items, function (index, item) {
-                var card = item.modules;
-                var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
-                var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
-
-                WebList += `
-                    <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
-                                <img src='` + card.module_dynamic.major.archive.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#aid_` + card.module_dynamic.major.archive.aid + `">
-                                ` + card.module_dynamic.major.archive.title + `
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_` + card.module_author.mid + `">
-                                ` + card.module_author.name + `
-                            </a>
-                        </div>
-                    </s-card>`;
-            });
-
-            // 更新 lastDynamicOffset
-            lastDynamicOffset = tjlist.data.offset;
-        } catch (error) {
-            console.error("[ERROR] 近期关注UP视频动态获取失败", error);
-            break; // 如果请求失败，则退出循环
-        }
-    }
-
-    // 所有请求完成后更新页面内容
-    $("#item_container").html(WebList + "</div>");
-    $("#dynamic_loader").hide();
-}
-
-
 function getVidPlayingNow() {
     $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
         if (vidInfo.data != null) {
@@ -171,7 +115,7 @@ $(document).ready(function () {
         } else if (currentTab == "message") {
             messageInit();
         } else if (currentTab == "subscriptions") {
-            getSubscribedVideos();
+            dynamicInit();
         } else if (currentTab == "space") {
             spaceInit();
         } else if (currentTab == "search") {
@@ -207,7 +151,7 @@ $("#RefreshBtn").click(function () {
     } else if (currentTab == "search") {
         searchInit(refresh = true);
     } else if (currentTab == "subscriptions") {
-        getSubscribedVideos();
+        dynamicInit(refresh = true);
     } else if (currentTab == "space") {
         spaceInit(refresh = true);
     }

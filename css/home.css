@@ -85,6 +85,17 @@ html{ height:100%; width:100%; }
 s-snackbar{ position:fixed; bottom:40px; left:50%; transform:translateX(-50%); z-index:9999;}
 s-snackbar a{ color:#00AEEC; }
 
+/* 动态页 - UP主列表 */
+#dynamic_container { margin:0; width:100%; height:100%; border:0; padding:0; }
+.dynamic_list {}
+.dynamic_listItem { width:calc(100% - 10px); display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; }
+.dynamic_listItem .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
+.dynamic_listItem .title {  font-weight:lighter; font-size:medium; flex-grow:1; }
+.dynamic_listItem .badge { margin-right:10px; }
+#dynamic_container .dialog { font-size:medium; display:flex; flex-direction:column; }
+#dynamic_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
+#dynamic_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; }
+
 /* 用户个人空间 */
 .myspace_topInfoBox{ margin:10px; width:calc(100% - 30px); height:120px; min-width:300px; max-width:none; display:inline-flex; }
 .myspace_topInfoBox div[slot="image"]{height:100%; width:fit-content; margin-right:5px; }
