@@ -1,7 +1,40 @@
 
 var currentUid = "114514";
 
-function getUserSpace(uid) {
+function getUserCard(uid, callback) {
+    $.get("https://api.bilibili.com/x/web-interface/card?mid=" + uid, function (usrInfo) {
+        const {mid, name, sex, face, sign, level_info, fans, attention } = usrInfo.data.card;
+
+        const newData = {
+            uid: mid,
+            name: name,
+            sex: sex,
+            face: face,
+            sign: sign,
+            level: level_info.current_level,
+            fans: fans,
+            subscribe_sum: attention
+        }
+
+        const WebList = `<s-card class="common_user_card_slim" type="outlined">
+                <img src="${newData.face}@48w_48h_1c.webp" class="avatar" />
+                <div class="right">
+                    <span class="name">
+                        ${newData.name}
+                        <span class="level">LV${newData.level}</span>
+                        <span class="level">粉丝：${newData.fans}</span>
+                    </span>
+                    <span class="sign">${newData.sign}</span>
+                </div>
+            </s-card>`;
+        callback({
+            data: newData,
+            html: WebList
+        });
+    });
+}
+
+function getUserSpace(uid, isTop) {
     var WebList = "";
     $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=" + uid, function (data) {
         $.each(data.data.items, function (index, item) {
@@ -56,11 +89,13 @@ function getUserSpace(uid) {
             }
         });
 
-        WebList = "<div class='flex_container' style='flex-direction:column; align-items:center;'>" + WebList + "</div>";
-        openDlg("用户空间 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid);
+        getUserCard(uid, function (usrInfo) {
+            WebList = "<div class='flex_container' style='flex-direction:column; align-items:center;'>" + usrInfo.html + WebList + "</div>";
+            openDlg("用户动态 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid, isTop);
+        });
     }).fail(function () {
         console.log("Error fetching data.");
-        showToast("个人空间加载失败")
+        showToast("用户空间加载失败")
     });
 }
 
@@ -102,15 +137,13 @@ function getUserSubscription(uid) {
 
             $.each(tjlist.data.list, function (index, item) {
                 WebList += `<a href="#uid_` + item.mid + `">
-                        <s-card clickable="true" class="common_video_card">
-                            <div slot="image" style="height:30px;overflow:hidden;">
-                                <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='` + item.face + `@45w_45h_1c.webp'>
-                            </div>
-                            <div slot="subhead">
-                                ` + item.uname + `
-                            </div>
-                            <div slot="text">
-                                [简介] ` + (item.sign || "<i>无</i>") + `
+                        <s-card class="common_user_card_slim" type="outlined" title="${item.sign}">
+                            <img src="${item.face}@48w_48h_1c.webp" class="avatar" />
+                            <div class="right">
+                                <span class="name">
+                                    ${item.uname}
+                                </span>
+                                <span class="sign">${item.sign}</span>
                             </div>
                         </s-card>
                     </a>`;
@@ -120,7 +153,7 @@ function getUserSubscription(uid) {
     }
     $.when.apply($, requests).done(function () {
         setTimeout(function () {
-            $("#item_container").html("<p style='margin:0px 10px 0px 10px;font-size:16px;'>关注列表：</p><div class='flex_container'>" + WebList + "</div>");
+            $("#item_container").html("<div class='search_titlebar'><s-icon-button class='subscription_backBtn' title='返回'><s-icon type='arrow_back'></s-icon></s-icon-button><span class='search_title'>关注列表</span></div><div class='flex_container'>" + WebList + "</div>");
             $("#dynamic_loader").hide();
         }, 400);
     });
@@ -270,3 +303,15 @@ function spaceInit(refresh) {
         `);
     });
 }
+
+$(document).ready(function () {
+    $(document).on("click", ".subscription_backBtn", function () {
+        if(currentTab == "space") {
+            spaceInit();
+        } else if (currentTab == "subscriptions") {
+            dynamicInit();
+        } else {
+            homeInit();
+        }
+    });
+});

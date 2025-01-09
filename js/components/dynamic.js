@@ -112,6 +112,9 @@ function showSubscribedUps() {
                 </s-card>
             `);
         });
+
+
+        $(".dynamic_list").append(`<a href="#mysubscription"><s-button type="text"><s-icon slot="start" type="more_horiz"></s-icon>查看所有</s-button></a><br/><br/>`);
     });
 }
 

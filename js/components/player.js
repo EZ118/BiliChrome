@@ -161,6 +161,11 @@ function openPlayer(option) {
 		getDanmu(cid); /* 获取弹幕 */
 		loadVideoSource(bvid, cid); /* 获取视频源 */
 
+		getUserCard(VideoInfo["data"]["owner"]["mid"], function (card) {
+			/* 获取UP主卡片 */
+			$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">` + limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"') + `</a>`);
+		});
+
 		$.get("https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aid, function (ReplyInfo) {
 			/* 获取评论 */
 			textAll = parseComments(ReplyInfo.data.replies);

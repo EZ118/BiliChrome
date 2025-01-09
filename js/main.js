@@ -44,7 +44,7 @@ function routeCtrl(isOnload, hash) {
         });
     } else if (data.includes("uid")) {
         /* 用户空间 */
-        getUserSpace(data.split("_")[1]);
+        getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
 
     } else if (data.includes("img-")) {
         /* 图片查看 */

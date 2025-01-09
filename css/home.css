@@ -87,7 +87,7 @@ s-snackbar a{ color:#00AEEC; }
 
 /* 动态页 - UP主列表 */
 #dynamic_container { margin:0; width:100%; height:100%; border:0; padding:0; }
-.dynamic_list {}
+.dynamic_list { }
 .dynamic_listItem { width:calc(100% - 10px); display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; }
 .dynamic_listItem .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
 .dynamic_listItem .title {  font-weight:lighter; font-size:medium; flex-grow:1; }
@@ -120,6 +120,14 @@ s-snackbar a{ color:#00AEEC; }
 .space_singlebox_un label{ position:relative; top:-10px; left:5px }
 .space_singlebox_vt{ width:100%; margin:5px 0px }
 
+/* UP主/用户卡片（少量信息） */
+.common_user_card_slim { width:280px; display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; }
+.common_user_card_slim .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
+.common_user_card_slim .right { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; flex-grow:1; }
+.common_user_card_slim .right .name { display:block; width:100%; font-weight:lighter; font-size:medium; }
+.common_user_card_slim .right .level { padding:0px 4px; margin:0px 1px; font-size:12px; border-radius:3px; background:var(--s-color-secondary-container); }
+.common_user_card_slim .right .sign { margin:0; font-size:small; color:var(--s-color-on-surface-variant); text-overflow:ellipsis; overflow:hidden; white-space:nowrap; display:inline-block; width:215px; }
+
 /* 消息页 - 私聊框 */
 #chat_container { margin:6px 0px 0px 7px; width:calc(100% - 24px); height:calc(100% - 68px); border:solid 1px #777680; border-radius:8px; padding:5px; }
 .chat_list {}
@@ -140,6 +148,8 @@ s-snackbar a{ color:#00AEEC; }
 .search_backBtn {}
 .keyword { color:var(--s-color-secondary); font-style: normal; }
 
+
+/* 宽度自适应 */
 @media screen and (max-width:400px) {
 	#player_container{
 		overflow: hidden auto;
