@@ -13,31 +13,15 @@ async function showSubscribedVideosAll() {
             let response = await $.get(url);
             let tjlist = response;
 
-            // 处理获取到的数据
-            $.each(tjlist.data.items, function (index, item) {
-                var card = item.modules;
-                var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
-                var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
-
-                WebList += `
-                    <s-card clickable="true" class="common_video_card" title='${tooltipText}'>
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#aid_${card.module_dynamic.major.archive.aid}">
-                                <img src='${card.module_dynamic.major.archive.cover}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#aid_${card.module_dynamic.major.archive.aid}">
-                                ${card.module_dynamic.major.archive.title}
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_${card.module_author.mid}">
-                                ${card.module_author.name}
-                            </a>
-                        </div>
-                    </s-card>`;
-            });
+            vidList = tjlist.data.items.map(item => ({
+                bvid: item.modules.module_dynamic.major.archive.bvid,
+                aid: item.modules.module_dynamic.major.archive.aid,
+                pic: item.modules.module_dynamic.major.archive.cover,
+                title: item.modules.module_dynamic.major.archive.title,
+                desc: (item.modules.module_dynamic.desc ? ("动态内容: " + item.modules.module_dynamic.desc.text + "\n") : "") + '点赞数量: ' + item.modules.module_stat.like.count + '\n视频简介: ' + item.modules.module_dynamic.major.archive.desc,
+                author: { uid: item.modules.module_author.mid, name: item.modules.module_author.name }
+            }));
+            WebList += card.video(vidList);
 
             // 更新 lastDynamicOffset
             lastDynamicOffset = tjlist.data.offset;
@@ -56,34 +40,17 @@ function showSubscribedVideosSingle(upUid) {
     $(".dialog_content").empty();
     $("#dynamic_loader").show();
 
-    var WebList = "<div class='flex_container'>";
     $.get(`https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?offset=&host_mid=${upUid}&timezone_offset=-480&platform=web&type=video`, function (dynamicList) {
-        $.each(dynamicList.data.items, function (index, item) {
-            var card = item.modules;
-            var dynamicDesc = card.module_dynamic.desc ? ("动态内容: " + card.module_dynamic.desc.text + "\n") : "";
-            var tooltipText = dynamicDesc + '点赞数量: ' + card.module_stat.like.count + '\n视频简介: ' + card.module_dynamic.major.archive.desc;
-
-            WebList += `
-                <s-card clickable="true" class="common_video_card" title='${tooltipText}'>
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#aid_${card.module_dynamic.major.archive.aid}">
-                            <img src='${card.module_dynamic.major.archive.cover}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#aid_${card.module_dynamic.major.archive.aid}">
-                            ${card.module_dynamic.major.archive.title}
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_${card.module_author.mid}">
-                            ${card.module_author.name}
-                        </a>
-                    </div>
-                </s-card>`;
-        });
-
-        $(".dialog_content").html(WebList + "</div>");
+        vidList = dynamicList.data.items.map(item => ({
+            bvid: item.modules.module_dynamic.major.archive.bvid,
+            aid: item.modules.module_dynamic.major.archive.aid,
+            pic: item.modules.module_dynamic.major.archive.cover,
+            title: item.modules.module_dynamic.major.archive.title,
+            desc: (item.modules.module_dynamic.desc ? ("动态内容: " + item.modules.module_dynamic.desc.text + "\n") : "") + '点赞数量: ' + item.modules.module_stat.like.count + '\n视频简介: ' + item.modules.module_dynamic.major.archive.desc,
+            author: { uid: item.modules.module_author.mid, name: item.modules.module_author.name }
+        }));
+        
+        $(".dialog_content").html("<div class='flex_container'>" + card.video(vidList) + "</div>");
         $("#dynamic_loader").hide();
     });
 }

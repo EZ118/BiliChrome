@@ -101,28 +101,15 @@ function getUserSpace(uid, isTop) {
 
 function getUserHistory() {
     $.get("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.list, function (index, item) {
-            WebList += `
-                <s-card clickable="true" class="common_video_card">
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_` + item.history.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_` + item.history.bvid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.author_mid + `">
-                            ` + item.author_name + `
-                        </a>
-                    </div>
-                </s-card>`;
-        });
-        openDlg("观看历史（近30条）", "<div class='flex_container'>" + WebList + "</div>", "https://www.bilibili.com/account/history");
+        vidList = tjlist.data.list.map(item => ({
+            bvid: item.history.bvid,
+            aid: item.oid,
+            pic: item.cover,
+            title: item.title,
+            desc: item.title,
+            author: { uid: item.author_mid, name: item.author_name }
+        }));
+        openDlg("观看历史（近30条）", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/account/history");
     });
 }
 
@@ -134,20 +121,14 @@ function getUserSubscription(uid) {
     for (let i = 1; i <= 6; i++) {
         let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
             if (tjlist.data.list.length <= 0) { return; }
-
-            $.each(tjlist.data.list, function (index, item) {
-                WebList += `<a href="#uid_` + item.mid + `">
-                        <s-card class="common_user_card_slim" type="outlined" title="${item.sign}">
-                            <img src="${item.face}@48w_48h_1c.webp" class="avatar" />
-                            <div class="right">
-                                <span class="name">
-                                    ${item.uname}
-                                </span>
-                                <span class="sign">${item.sign}</span>
-                            </div>
-                        </s-card>
-                    </a>`;
-            });
+            usrList = tjlist.data.list.map(item => ({
+                uid: item.mid,
+                name: item.uname,
+                pic: item.face,
+                desc: item.sign,
+                sign: item.sign
+            }));
+            WebList += card.user(usrList);
         });
         requests.push(request);
     }
@@ -183,56 +164,35 @@ function getCollectionById(fid, mediaCount) {
     mediaCount = parseInt(mediaCount);
     $.get("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
         if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
-        var WebList = "<a href='#myfav'><s-icon-button><s-icon type='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>";
-        $.each(tjlist.data.medias, function (index, item) {
-            WebList += `
-                <s-card clickable="true" class="common_video_card">
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_` + item.bvid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.upper.mid + `">
-                            ` + item.upper.name + `
-                        </a>
-                    </div>
-                </s-card>`;
-        });
-        openDlg("收藏夹 [FID:" + fid + "]", WebList + "</div>", "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create");
+        vidList = tjlist.data.medias.map(item => ({
+            bvid: item.bvid,
+            aid: item.id,
+            pic: item.cover,
+            title: item.title,
+            desc: item.intro,
+            author: { uid: item.upper.mid, name: item.upper.name }
+        }));
+        openDlg(
+            "收藏夹 [FID:" + fid + "]",
+            "<a href='#myfav'><s-icon-button><s-icon type='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>" + card.video(vidList) + "</div>",
+            "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create"
+        );
     });
 }
 
 function getWatchLater() {
     $.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
         if (tjlist.code == -400) { showToast("暂时无法查看"); return; }
-        var WebList = "";
-        $.each(tjlist.data.list, function (index, item) {
-            WebList += `
-                <s-card clickable="true" class="common_video_card">
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_` + item.bvid + `_watchlater">
-                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_` + item.bvid + `_watchlater">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.owner.mid + `">
-                            ` + item.owner.name + `
-                        </a>
-                    </div>
-                </s-card>`;
-        });
-        openDlg("稍后再看", "<div class='flex_container'>" + WebList + "</div>", "https://www.bilibili.com/watchlater/#/list");
+
+        vidList = tjlist.data.list.map(item => ({
+            bvid: item.bvid,
+            aid: item.aid,
+            pic: item.pic,
+            title: item.title,
+            desc: item.desc,
+            author: { uid: item.owner.mid, name: item.owner.name }
+        }));
+        openDlg("稍后再看", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/watchlater/#/list");
     });
 }
 

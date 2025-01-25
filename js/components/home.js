@@ -6,26 +6,15 @@ function showRecommendedVideos() {
 
     for (let i = 1; i <= 2; i++) {
         let request = $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", function (tjlist) {
-            $.each(tjlist.data.item, function (index, item) {
-                WebList += `
-                    <s-card clickable="true" class="common_video_card">
-                        <div slot="image" style="overflow:hidden;">
-                            <a href="#bvid_` + item.bvid + `">
-                                <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                            </a>
-                        </div>
-                        <div slot="subhead">
-                            <a href="#bvid_` + item.bvid + `">
-                                ` + item.title + `
-                            </a>
-                        </div>
-                        <div slot="text">
-                            <a href="#uid_` + item.owner.mid + `">
-                                ` + item.owner.name + `
-                            </a>
-                        </div>
-                    </s-card>`;
-            });
+            vidList = tjlist.data.item.map(item => ({
+                bvid: item.bvid,
+                aid: item.id,
+                pic: item.pic,
+                title: item.title,
+                desc: item.title,
+                author: { uid: item.owner.mid, name: item.owner.name }
+            }));
+            WebList += card.video(vidList);
         });
 
         requests.push(request);
@@ -41,30 +30,16 @@ function showHotVideos() {
     $(".tab_container").html("");
     $("#dynamic_loader").show();
     $.get("https://api.bilibili.com/x/web-interface/popular?ps=40&pn=1", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.list, function (index, item) {
-            var tooltipText = '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介") + (item.rcmd_reason.content ? ("\n- 推荐原因: " + item.rcmd_reason.content) : "");
+        vidList = tjlist.data.list.map(item => ({
+            bvid: item.bvid,
+            aid: item.aid,
+            pic: item.pic,
+            title: item.title,
+            desc: '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介") + (item.rcmd_reason.content ? ("\n- 推荐原因: " + item.rcmd_reason.content) : ""),
+            author: { uid: item.owner.mid, name: item.owner.name }
+        }));
 
-            WebList += `
-                <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#bvid_` + item.bvid + `">
-                            <img src='` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#bvid_` + item.bvid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.owner.mid + `">
-                            ` + item.owner.name + `
-                        </a>
-                    </div>
-                </s-card>`;
-        })
-        $(".tab_container").html(WebList);
+        $(".tab_container").html(card.video(vidList));
         $("#dynamic_loader").hide();
     });
 }
@@ -74,30 +49,14 @@ function showLiveRooms(){
     $("#dynamic_loader").show();
 
     $.get("https://api.live.bilibili.com/xlive/web-interface/v1/second/getUserRecommend?page=1&page_size=30&platform=web", function (tjlist) {
-        var WebList = "";
-        $.each(tjlist.data.list, function (index, item) {
-            var tooltipText = '- 分区: ' + item.parent_name + '/' + item.area_name;
-
-            WebList += `
-                <s-card clickable="true" class="common_video_card" title='` + tooltipText + `'>
-                    <div slot="image" style="overflow:hidden;">
-                        <a href="#roomid_` + item.roomid + `">
-                            <img src='` + item.cover + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                        </a>
-                    </div>
-                    <div slot="subhead">
-                        <a href="#roomid_` + item.roomid + `">
-                            ` + item.title + `
-                        </a>
-                    </div>
-                    <div slot="text">
-                        <a href="#uid_` + item.uid + `">
-                            ` + item.uname + `
-                        </a>
-                    </div>
-                </s-card>`;
-        })
-        $(".tab_container").html(WebList);
+        vidList = tjlist.data.list.map(item => ({
+            roomid: item.roomid,
+            pic: item.cover,
+            title: item.title,
+            desc: '- 分区: ' + item.parent_name + '/' + item.area_name,
+            author: { uid: item.uid, name: item.uname }
+        }));
+        $(".tab_container").html(card.live(vidList));
         $("#dynamic_loader").hide();
     });
 }

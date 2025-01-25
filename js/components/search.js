@@ -102,70 +102,40 @@ function getSearchResult(keyword, page, type) {
                 <s-tab-item value="live_room">
                     <div slot="text">直播</div>
                 </s-tab-item>
-            </s-tab>`;
+            </s-tab>
+            <div class="flex_container">`;
 
         switch (type) {
             case "video":
-                $.each(tjlist.data.result, function (index, item) {
-                    WebList += `
-                        <s-card clickable="true" class="common_video_card">
-                            <div slot="image" style="overflow:hidden;">
-                                <a href="#bvid_` + item.bvid + `">
-                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                                </a>
-                            </div>
-                            <div slot="subhead">
-                                <a href="#bvid_` + item.bvid + `">
-                                    ` + item.title + `
-                                </a>
-                            </div>
-                            <div slot="text">
-                                <a href="#uid_` + item.mid + `">
-                                    ` + item.author + `
-                                </a>
-                            </div>
-                        </s-card>`;
-                });
+                vidList = tjlist.data.result.map(item => ({
+                    bvid: item.bvid,
+                    aid: item.aid,
+                    pic: item.pic.includes("://") ? item.pic : "https:" + item.pic,
+                    title: item.title,
+                    desc: item.description,
+                    author: { uid: item.mid, name: item.author }
+                }));
+                WebList += card.video(vidList);
                 break;
             case "bili_user":
-                $.each(tjlist.data.result, function (index, item) {
-                    WebList += `
-                        <a href="#uid_` + item.mid + `">
-                            <s-card clickable="true" class="common_video_card">
-                                <div slot="image" style="height:30px;overflow:hidden;">
-                                    <img style='height:30px;width:30px;border-radius:10px 0 0 0' src='https:` + item.upic + `@45w_45h_1c.webp' loading="lazy" />
-                                </div>
-                                <div slot="subhead">
-                                    ` + item.uname + `
-                                </div>
-                                <div slot="text">
-                                    [简介] ` + (item.usign || "<i>无</i>") + `
-                                </div>
-                            </s-card>
-                        </a>`;
-                });
+                usrList = tjlist.data.result.map(item => ({
+                    uid: item.mid,
+                    name: item.uname,
+                    pic: item.upic.includes("://") ? item.upic : "https:" + item.upic,
+                    desc: item.usign,
+                    sign: item.usign
+                }));
+                WebList += card.user(usrList);
                 break;
             case "live_room":
-                $.each(tjlist.data.result, function (index, item) {
-                    WebList += `
-                        <s-card clickable="true" class="common_video_card">
-                            <div slot="image" style="overflow:hidden;">
-                                <a href="#roomid_` + item.roomid + `">
-                                    <img src='https:` + item.pic + `@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="lazy" />
-                                </a>
-                            </div>
-                            <div slot="subhead">
-                                <a href="#roomid_` + item.roomid + `">
-                                    ` + item.title + `
-                                </a>
-                            </div>
-                            <div slot="text">
-                                <a href="#uid_` + item.uid + `">
-                                    ` + item.uname + `
-                                </a>
-                            </div>
-                        </s-card>`;
-                });
+                vidList = tjlist.data.result.map(item => ({
+                    roomid: item.roomid,
+                    pic: item.pic.includes("://") ? item.pic : "https:" + item.pic,
+                    title: item.title,
+                    desc: '- 开始时间: ' + item.live_time,
+                    author: { uid: item.uid, name: item.uname }
+                }));
+                WebList += card.live(vidList);
                 break;
             default:
                 showToast("不支持的搜索类型");
@@ -174,6 +144,7 @@ function getSearchResult(keyword, page, type) {
 
 
         WebList += `
+            </div>
             <br/>
             <s-segmented-button class="search_pageSwitcher">
                 <s-segmented-button-item selectable="false" id="search_prevPageBtn">
