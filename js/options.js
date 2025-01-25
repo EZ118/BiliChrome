@@ -21,7 +21,7 @@ function showToast(message, duration) {
 
 /* 本地存储接口 */
 function getStorage(key, callback) {
-    chrome.storage.sync.get([key], (result) => {
+    chrome.storage.local.get([key], (result) => {
         if (result[key]) {
             callback(result[key]);
         } else {
@@ -29,11 +29,13 @@ function getStorage(key, callback) {
         }
     });
 }
+
 function setStorage(key, value) {
-    chrome.storage.sync.set({ [key]: value });
+    chrome.storage.local.set({ [key]: value });
 }
+
 function removeStorage(key, callback) {
-    chrome.storage.sync.remove(key, () => {
+    chrome.storage.local.remove(key, () => {
         if (callback) {
             callback();
         }
@@ -41,11 +43,16 @@ function removeStorage(key, callback) {
 }
 
 function getConfig(item, callback) {
-    var checkList = { "account": "account", "player": "player_cfg" };
-    chrome.storage.sync.get(checkList[item], function (result) {
-        if (result[item]) {
-            callback(result[item]);
-        } else {
+    const itemFamily = item.split(".")[0];
+    const itemKey = item.split(".")[1];
+    chrome.storage.local.get([itemFamily], function (result) {
+        try {
+            if (result[itemFamily] && result[itemFamily][itemKey]) {
+                callback(result[itemFamily][itemKey]);
+            } else {
+                callback(null);
+            }
+        } catch {
             callback(null);
         }
     });
@@ -189,12 +196,12 @@ function showUserCard(uid) {
 }
 
 function showPlayerPref() {
-    getStorage("player_cfg", function (result) {
+    getStorage("player", function (result) {
         // 如果没有存储的设置，使用默认值
-        var defaultResult = { "AutoPlay": true, "DanMu": true, "DanMuColor": "#FFFFFF" };
+        var defaultResult = { "HD_Quality_As_Default": false, "Advanced_DanMu_As_Default": false, "DanMu_Color": "white" };
         if (!result || !areKeysEqual(result, defaultResult)) {
             result = defaultResult;
-            setStorage("player_cfg", result);
+            setStorage("player", result);
         }
 
         // 生成HTML内容
@@ -216,19 +223,19 @@ function showPlayerPref() {
             }
         }
 
-        $("#container_1").html(htmlContent);
+        $("#container_1").html(htmlContent + `<br/><i>* 提示：选项修改后会自动保存，页面刷新后才能应用全部设置。</i>`);
 
         // 添加事件监听
         for (const key in result) {
             if (typeof result[key] === 'boolean') {
                 $(`#${key}`).change(function () {
                     result[key] = this.checked;
-                    setStorage("player_cfg", result);
+                    setStorage("player", result);
                 });
             } else if (typeof result[key] === 'string') {
                 $(`#${key}`).blur(function () {
                     result[key] = this.value;
-                    setStorage("player_cfg", result);
+                    setStorage("player", result);
                 });
             }
         }
@@ -267,7 +274,7 @@ $(document).ready(function () {
             $("#restorePlayerCfg").hide();
             $("#restorePlayerCfg").text("已恢复为默认!");
             $("#restorePlayerCfg").fadeIn(1000);
-            removeStorage("player_cfg");
+            removeStorage("player");
             setTimeout(function () {
                 showPlayerPref();
             }, 500);

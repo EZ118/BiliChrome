@@ -4,6 +4,7 @@ var aidPlayingNow = ""; /* 正在播放的aid */
 var cidPlayingNow = ""; /* 正在播放的cid */
 var player_danmuList = []; /* 弹幕列表 */
 var player_danmuCnt = 0; /* 弹幕数量 */
+var player_danmuColor = ""; /* 弹幕颜色 */
 var player_advancedDanmu = false; /* 高级弹幕显示模式 */
 var player_highQuality = 0; /* 视频高画质Flag,1为开启,0为关闭 */
 
@@ -86,6 +87,7 @@ function showDanmu(content) {
 
 	newSpan.css("left", (containerWidth - newSpan.innerWidth() + 20));
 	newSpan.css("top", pageH);
+	newSpan.css("color", player_danmuColor);
 	//弹幕动画
 	newSpan.animate({ "left": -500 }, 10000, "linear", function () {
 		$(this).remove();
@@ -303,6 +305,18 @@ $(document).ready(function () {
 	getJctToken(function (token) {
 		biliJctData = token;
 	});
+
+	/* 加载预设 */
+	getConfig("player.HD_Quality_As_Default", function (value) {
+		if(value) { player_highQuality = 1; }
+	});
+	getConfig("player.Advanced_DanMu_As_Default", function (value) {
+		if(value) { player_advancedDanmu = true; }
+	});
+	getConfig("player.DanMu_Color", function (value) {
+		if(value) { player_danmuColor = value; }
+	});
+
 
 	/* 按钮事件监听 */
 	$("#player_openNewBtn").click(function () {

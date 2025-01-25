@@ -67,7 +67,8 @@
   - [x] 暗黑模式
   - [x] 账户基本信息
   - [x] 将关注列表导出至PipePipe
-  - [ ] 播放设置（界面完成，程序尚不能应用设置）
+  - [x] 播放设置
+  - [ ] 批量取关
 
 ## 视频演示
 BiliBili：[前往观看 >>](https://www.bilibili.com/video/BV1SZDAYtE73/)   
