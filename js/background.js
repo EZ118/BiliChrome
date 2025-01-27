@@ -7,33 +7,34 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 /* 为每一次API请求添加Referer请求头（Origin因为权限原因无法修改，目前未能解决） */
-chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [
-        {
-            "id": 1,
-            "priority": 1,
-            "action": {
-                "type": 'modifyHeaders',
-                "requestHeaders": [
-                    {
-                        "header": 'Referer',
-                        "operation": 'set',
-                        "value": 'https://www.bilibili.com/'
-                    },
-                    {
-                        "header": 'Origin',
-                        "operation": 'set',
-                        "value": 'https://www.bilibili.com/'
-                    }
-                ]
-            },
-            "condition": {
-                "urlFilter": 'https://*.bilibili.com/*',
-                "resourceTypes": ["xmlhttprequest"]
-            }
-        }
-    ]
-});
+// chrome.declarativeNetRequest.updateDynamicRules({
+//     addRules: [
+//         {
+//             "id": 1,
+//             "priority": 1,
+//             "action": {
+//                 "type": 'modifyHeaders',
+//                 "requestHeaders": [
+//                     {
+//                         "header": 'Referer',
+//                         "operation": 'set',
+//                         "value": 'https://www.bilibili.com/'
+//                     },
+//                     {
+//                         "header": 'Origin',
+//                         "operation": 'set',
+//                         "value": 'https://www.bilibili.com/'
+//                     }
+//                 ]
+//             },
+//             "condition": {
+//                 "urlFilter": 'https://*.bilibili.com/*',
+//                 "resourceTypes": ["xmlhttprequest"]
+//             }
+//         }
+//     ]
+// });
+// 已注释，这段代码可能会导致正常网页请求被拦截
 
 
 
@@ -54,6 +55,7 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
     if (url.indexOf("?") === -1) { url += "?"; }
 
     if (item.menuItemId == "viewInExt" && url.includes("bilibili.com/video/")) {
+        /* 如果当前页面是视频播放页面,那么取得bvid或aid */
         const vid = url.split("/")[4].replace(url.substring(url.lastIndexOf("?")), "");
 
         let newOption = "";
@@ -65,6 +67,7 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
         // chrome.windows.create({ url: 'home.html#' + newOption, type: 'popup', width: 1220, height: 620 });
 
     } else if (item.menuItemId == "viewInExt" && url.includes("live.bilibili.com/") && !url.includes("live.bilibili.com/p/")) {
+        /* 如果当前页面是直播间页面,那么取得房间号 */
         const vid = url.split("/")[3].replace(url.substring(url.lastIndexOf("?")), "");
 
         if (vid == null || vid == "") { return; }
@@ -120,5 +123,5 @@ async function checkForUpdates() {
 
 // 初始调用
 checkForUpdates();
-//每过15分钟查检一次动态更新
-setInterval(checkForUpdates, 15 * 60 * 1000);
+//每过20分钟查检一次动态更新
+setInterval(checkForUpdates, 20 * 60 * 1000);

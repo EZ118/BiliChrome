@@ -87,7 +87,7 @@ function showRecentLikes() {
 /* 获取系统通知 */
 function showSysMsg() {
     // $.get("https://message.bilibili.com/x/sys-msg/query_unified_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) { // B站的活动宣传通知API
-    $.get("https://message.bilibili.com/x/sys-msg/query_user_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) {
+    $.get("https://message.bilibili.com/x/sys-msg/query_user_notify?page_size=20&build=0&mobi_app=web", function (msgInfo) {
         var WebList = "";
         $.each(msgInfo.data.system_notify_list, function (index, item) {
             WebList += `<s-ripple class='thinstrip_msgBox'>
