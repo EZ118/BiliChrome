@@ -78,7 +78,7 @@ function getUserSpace(uid, isTop) {
                         <a>
                             <div class="space_singlebox_un">
                                 <img class="userpic" src='${avatarUrl}@45w_45h_1c.webp'>
-                                <label>&nbsp;${username}</label>
+                                <span>&nbsp;${username}</span>
                             </div>
                         </a>
                         <a href='#${LinkUrl}'>

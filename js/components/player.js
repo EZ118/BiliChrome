@@ -9,9 +9,9 @@ var player_advancedDanmu = false; /* 高级弹幕显示模式 */
 var player_highQuality = 0; /* 视频高画质Flag,1为开启,0为关闭 */
 
 function limitConsecutiveChars(str) {
-    /* 只允许字符串中连续出现n个相同字符 */
+	/* 只允许字符串中连续出现n个相同字符 */
 	const maxConsecutive = 10;
-    return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
+	return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 }
 
 function parseComments(comments) {
@@ -22,56 +22,72 @@ function parseComments(comments) {
 		const { rpid, member, content, replies, ctime, like, reply_control } = comment;
 		const timeString = new Date(ctime * 1000).toLocaleDateString();
 
-		if(index > 0) { result += "<hr>"; }
-
 		/* 显示评论图片 */
 		let pictureList = "";
-		if(content.pictures && content.pictures.length > 0) {
+		if (content.pictures && content.pictures.length > 0) {
 			$.each(content.pictures, function (index, pic) {
 				pictureList += `<img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='lazy' />`;
 			});
 		}
 
-		result += `<div class="reply"><b>🔘&nbsp;${member.uname}</b><br>`;
-		result += `<div class="content">${content.message}<br/>${pictureList}</div>`;
-		result += `<i>${like}赞 &nbsp; ${timeString} &nbsp; ${reply_control.location ? reply_control.location.split("：")[1] : ""}</i></div>`;
-
+		/* 显示评论回复 */
+		let replyList = "";
 		if (replies && replies.length > 0) {
-			result += `<div class="moreReply" rpid="${rpid}">回复：<br>`;
-			result += parseComments(replies);
-			result += `</div>`;
+			replyList += `<div class="more_reply" rpid="${rpid}">`;
+			$.each(replies, (idx, cmt) => {
+				replyList += `<s-ripple class="more_reply_item">
+						<span class="username">${cmt.member.uname}: </span>
+						<span>${cmt.content.message}</span>
+					</s-ripple>`;
+			})
+			replyList += `</div>`;
 		}
-	});
 
+		result += `<div class="reply_item">
+				<a class="username" href="#uid_${member.mid}_top">${member.uname}</a><br>
+				<div class="content">
+					${content.message}<br/>
+					${pictureList}
+				</div>
+				<i class="other_detail">
+					${like}赞
+					 &nbsp; 
+					${timeString}
+					 &nbsp; 
+					${reply_control.location ? reply_control.location.split("：")[1] : ""}
+				</i>
+				${replyList}
+			</div>`;
+	});
 	return result;
 }
 
-function showMoreReplies(rpid){
+function showMoreReplies(rpid) {
 	/* 在对话框中展示单条评论下的所有回复，rpid即评论ID */
 	$.get("https://api.bilibili.com/x/v2/reply/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=" + aidPlayingNow + "&root=" + rpid, function (ReplyInfo) {
 		/* 获取评论 */
 		textAll = parseComments(ReplyInfo.data.replies);
-		openDlg("更多评论 [" + rpid + "]", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
+		openDlg("更多评论", "<div class='reply_container'>" + textAll + "</div>", "https://www.bilibili.com/video/" + bvidPlayingNow, isTop = true);
 	});
 }
 
 function getDanmu(cid) {
-    /* 获取弹幕文件，并解析内容，将所有条目按照时间顺序排序；最终存储在全局变量player_danmuList中 */
-    $.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
-        const danmuList = [];
+	/* 获取弹幕文件，并解析内容，将所有条目按照时间顺序排序；最终存储在全局变量player_danmuList中 */
+	$.get(`https://comment.bilibili.com/${cid}.xml`, function (s) {
+		const danmuList = [];
 
-        $(s).find("d").each(function () {
-            try {
-                const time = parseFloat($(this).attr("p").split(",")[0]);
-                const text = $(this).text();
-                danmuList.push({ text, time });
-            } catch (e) {
-                console.error("弹幕装填出错（解析时）", e);
-            }
-        });
+		$(s).find("d").each(function () {
+			try {
+				const time = parseFloat($(this).attr("p").split(",")[0]);
+				const text = $(this).text();
+				danmuList.push({ text, time });
+			} catch (e) {
+				console.error("弹幕装填出错（解析时）", e);
+			}
+		});
 
-        player_danmuList = danmuList.sort((a, b) => a.time - b.time);
-    });
+		player_danmuList = danmuList.sort((a, b) => a.time - b.time);
+	});
 }
 
 
@@ -173,7 +189,7 @@ function openPlayer(option) {
 			textAll = parseComments(ReplyInfo.data.replies);
 			$("#player_descArea").append("<br><b class='player_blockTitle'>评论</b><br><div class='reply_container'>" + textAll + "<hr style='border-bottom:2px dashed #91919160;'></div>");
 
-			$(document).on('click', '.reply_container .moreReply', function (evt) {
+			$(document).on('click', '.reply_container .more_reply', function (evt) {
 				/* 当用户点击了评论回复，则显示更多评论 */
 				const clickedEle = $(evt.target);
 				let rpid = clickedEle.parent().parent().attr("rpid") || clickedEle.parent().attr("rpid") || clickedEle.attr("rpid");
@@ -308,13 +324,13 @@ $(document).ready(function () {
 
 	/* 加载预设 */
 	getConfig("player.HD_Quality_As_Default", function (value) {
-		if(value) { player_highQuality = 1; }
+		if (value) { player_highQuality = 1; }
 	});
 	getConfig("player.Advanced_DanMu_As_Default", function (value) {
-		if(value) { player_advancedDanmu = true; }
+		if (value) { player_advancedDanmu = true; }
 	});
 	getConfig("player.DanMu_Color", function (value) {
-		if(value) { player_danmuColor = value; }
+		if (value) { player_danmuColor = value; }
 	});
 
 
@@ -359,7 +375,7 @@ $(document).ready(function () {
 	/* 侧边栏标签切换 */
 	$("#player_sidebarTab").click(() => {
 		const { selectedIndex } = document.querySelector('#player_sidebarTab');
-		if(selectedIndex == 0) {
+		if (selectedIndex == 0) {
 			$("#player_descArea").show();
 			$("#player_videoList").hide();
 		} else {

@@ -8,21 +8,21 @@ function showMsgReply() {
         var WebList = "";
         $.each(msgInfo.data.items, function (index, item) {
             WebList += `<s-ripple class='thinstrip_msgBox'>
-                <a href="#uid_` + item.user.mid + `">
+                <a href="#uid_${item.user.mid}">
                     <div class='thinstrip_msgBox_headline'>
-                        <img src='` + item.user.avatar + `@45w_45h_1c.webp' loading="lazy" />
-                        <span class='thinstrip_msgBox_username'>` + item.user.nickname + `</span>
+                        <img src='${item.user.avatar}@45w_45h_1c.webp' loading="lazy" />
+                        <span class='thinstrip_msgBox_username'>${item.user.nickname}</span>
                     </div>
                 </a>
-                <a href="#aid_` + item.item.subject_id + `">
+                <a href="#aid_${item.item.subject_id}">
                     <div class='thinstrip_msgBox_contentline'>
-                        <p class='quote'>回复&nbsp;“` + item.item.root_reply_content + `”</p>
-                        <pre class='content'>` + item.item.source_content + `</pre>
+                        <p class='quote'>回复&nbsp;“${item.item.root_reply_content}”</p>
+                        <pre class='content'>${item.item.source_content}</pre>
                     </div>
                 </a>
             </s-ripple>`;
         });
-        WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
+        WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>";
         openDlg("评论回复", WebList, "https://message.bilibili.com/#/reply");
     });
 }
@@ -64,7 +64,7 @@ function showRecentLikes() {
                     </a>`;
             });
 
-            let itemId = item.item.uri.split("/")[4]; // item.item.item_id;
+            let itemId = item.item.uri.split("/")[4];
 
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <div class='thinstrip_msgBox_headline'>
@@ -86,17 +86,16 @@ function showRecentLikes() {
 
 /* 获取系统通知 */
 function showSysMsg() {
-    // $.get("https://message.bilibili.com/x/sys-msg/query_unified_notify?page_size=30&build=0&mobi_app=web", function (msgInfo) { // B站的活动宣传通知API
     $.get("https://message.bilibili.com/x/sys-msg/query_user_notify?page_size=20&build=0&mobi_app=web", function (msgInfo) {
         var WebList = "";
         $.each(msgInfo.data.system_notify_list, function (index, item) {
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <div class='thinstrip_msgBox_headline'>
-                    <span class='thinstrip_msgBox_username'>` + item.title + `</span>
+                    <span class='thinstrip_msgBox_username'>${item.title}</span>
                 </div>
                 <div class='thinstrip_msgBox_contentline'>
-                    <pre class='content'>` + item.content + `</pre>
-                    <pre class='time'>` + item.time_at + `</pre>
+                    <pre class='content'>${item.content}</pre>
+                    <pre class='time'>${item.time_at}</pre>
                 </div>
             </s-ripple>`;
         });

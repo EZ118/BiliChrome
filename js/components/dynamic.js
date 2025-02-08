@@ -105,6 +105,9 @@ function dynamicInit(refresh) {
 
     showSubscribedUps();
     showSubscribedVideosAll();
+
+    // 已阅（不知道管不管用）
+    $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/nav", (a) => {});
 }
 
 $(document).ready(() => {
