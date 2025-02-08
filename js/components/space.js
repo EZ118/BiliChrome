@@ -134,7 +134,7 @@ function getUserSubscription(uid) {
     }
     $.when.apply($, requests).done(function () {
         setTimeout(function () {
-            $("#item_container").html("<div class='search_titlebar'><s-icon-button class='subscription_backBtn' title='返回'><s-icon type='arrow_back'></s-icon></s-icon-button><span class='search_title'>关注列表</span></div><div class='flex_container'>" + WebList + "</div>");
+            $("#item_container").html("<div class='search_titlebar'><s-icon-button class='subscription_backBtn' title='返回'><s-icon name='arrow_back'></s-icon></s-icon-button><span class='search_title'>关注列表</span></div><div class='flex_container'>" + WebList + "</div>");
             $("#dynamic_loader").hide();
         }, 400);
     });
@@ -174,7 +174,7 @@ function getCollectionById(fid, mediaCount) {
         }));
         openDlg(
             "收藏夹 [FID:" + fid + "]",
-            "<a href='#myfav'><s-icon-button><s-icon type='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>" + card.video(vidList) + "</div>",
+            "<a href='#myfav'><s-icon-button><s-icon name='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>" + card.video(vidList) + "</div>",
             "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create"
         );
     });
@@ -232,27 +232,27 @@ function spaceInit(refresh) {
                     <div slot="headline">
                         我的收藏
                     </div>
-                    <a href="#myfav_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#myfav_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">我的关注</div>
-                    <a href="#mysubscription_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#mysubscription_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">历史记录</div>
-                    <a href="#history_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#history_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">最近动态</div>
-                    <a href="#uid_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#uid_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">稍后再看</div>
-                    <a href="#watchlater_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#watchlater_${usrInfo.uid}"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
                 <s-card class="myspace_subSection" type="outlined">
                     <div slot="headline">扩展选项</div>
-                    <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon type="arrow_forward"></s-icon></s-icon-button></a>
+                    <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
             </div>
             

@@ -81,7 +81,7 @@ function showSubscribedUps() {
         });
 
 
-        $(".dynamic_list").append(`<a href="#mysubscription"><s-button type="text"><s-icon slot="start" type="more_horiz"></s-icon>查看所有</s-button></a><br/><br/>`);
+        $(".dynamic_list").append(`<a href="#mysubscription"><s-button type="text"><s-icon slot="start" name="more_horiz"></s-icon>查看所有</s-button></a><br/><br/>`);
     });
 }
 
@@ -93,7 +93,7 @@ function dynamicInit(refresh) {
             </s-scroll-view>
             <div class="dialog">
                 <div class="dialog_titlebar">
-                    <s-icon-button class="dynamic_showListBtn"><s-icon type="menu"></s-icon></s-icon-button>
+                    <s-icon-button class="dynamic_showListBtn"><s-icon name="menu"></s-icon></s-icon-button>
                     <span class="dialog_title">全部动态</span>
                 </div>
                 <s-scroll-view class="dialog_content">
@@ -105,9 +105,6 @@ function dynamicInit(refresh) {
 
     showSubscribedUps();
     showSubscribedVideosAll();
-
-    // 已阅（不知道管不管用）
-    $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/nav", (a) => {});
 }
 
 $(document).ready(() => {

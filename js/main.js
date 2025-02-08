@@ -48,7 +48,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("img-")) {
         /* 图片查看 */
-        openDlg("浏览图片", `<s-icon-button class="historyBackButton"><s-icon type="arrow_back"></s-icon></s-icon-button><img src="` + data.split("-")[1] + `" width="100%" />`, data.split("-")[1]);
+        openDlg("浏览图片", `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button><img src="` + data.split("-")[1] + `" width="100%" />`, data.split("-")[1]);
 
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
@@ -105,8 +105,7 @@ $(document).ready(function () {
 
     /* 侧边主菜单 */
     $("s-navigation-item").click((evt) => {
-        const link = $(evt.target).attr("href");
-        // window.location.hash = link;
+        const link = $(evt.currentTarget).attr("href");
 
         currentTab = link.substring(5);
 

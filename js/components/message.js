@@ -179,7 +179,7 @@ function messageInit(refresh) {
             </s-scroll-view>
             <div class="dialog">
                 <div class="dialog_titlebar">
-                    <s-icon-button class="chat_showListBtn"><s-icon type="menu"></s-icon></s-icon-button>
+                    <s-icon-button class="chat_showListBtn"><s-icon name="menu"></s-icon></s-icon-button>
                     <span class="dialog_title">点击左侧列表项查看对话历史</span>
                 </div>
                 <s-scroll-view class="dialog_content">

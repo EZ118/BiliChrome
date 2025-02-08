@@ -167,7 +167,7 @@ function showUserCard(uid) {
                 <div slot="subhead">
                     <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
                         <s-icon-button type="outlined" title="点此登录">
-                            <s-icon slot="start" type="arrow_forward"></s-icon>
+                            <s-icon slot="start" name="arrow_forward"></s-icon>
                         </s-icon-button>
                     </a>
                 </div>

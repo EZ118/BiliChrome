@@ -75,7 +75,8 @@ $(document).ready(function () {
 
 /* 自定义Toast */
 function showToast(message, duration) {
-	sober.Snackbar.show(message);
+	// sober.Snackbar.show(message);
+	sober.Snackbar.builder(message);
 }
 
 

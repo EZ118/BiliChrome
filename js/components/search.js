@@ -27,19 +27,22 @@ function showSearchPage() {
                 <span style="color:#00AEEC;font-size:xx-large">&nbsp;|&nbsp;搜索</span>
             </div>
             <br>
-            <s-search style="width:300px;">
-                <s-icon type="search" slot="start"></s-icon>
-                <input type="text" class="app-input-text" placeholder="回车以搜索">
+            <s-search style="width:300px;" placeholder="搜索关键字" class="app-input-text">
+                <s-icon name="search" slot="start"></s-icon>
+                <s-icon-button slot="end">
+                    <s-icon name="close"></s-icon>
+                </s-icon-button>
             </s-search>
+
             <br>
             <div style="width:350px; margin-top:20px;" title="搜素历史" class="search_history">
                 ${WebList}
                 <br><br>
-                <s-chip title="清空搜素历史" id="search_clearHistory" type="elevated"><s-icon type="close"></s-icon></s-chip>
+                <s-chip title="清空搜素历史" id="search_clearHistory" type="elevated"><s-icon name="close"></s-icon></s-chip>
             </div>
         </div>`);
-    
-    var inputObject = $("#item_container").find("input.app-input-text");
+
+    var inputObject = $("#item_container").find(".app-input-text");
 
     inputObject.off('keydown');
     $("#item_container .search_history .search_histroyItem").off();
@@ -89,7 +92,7 @@ function getSearchResult(keyword, page, type) {
 
         var WebList = `
             <div class="search_titlebar">
-                <s-icon-button class="search_backBtn" title="返回"><s-icon type="arrow_back"></s-icon></s-icon-button>
+                <s-icon-button class="search_backBtn" title="返回"><s-icon name="arrow_back"></s-icon></s-icon-button>
                 <span class="search_title">${keyword}</span>
             </div>
             <s-tab class="search_typeTab">
@@ -148,11 +151,11 @@ function getSearchResult(keyword, page, type) {
             <br/>
             <s-segmented-button class="search_pageSwitcher">
                 <s-segmented-button-item selectable="false" id="search_prevPageBtn">
-                    <s-icon type="chevron_left"></s-icon>
+                    <s-icon name="chevron_left"></s-icon>
                 </s-segmented-button-item>
                 <s-segmented-button-item selected="true"> ${tjlist.data.page}/${tjlist.data.numPages} </s-segmented-button-item>
                 <s-segmented-button-item selectable="false" id="search_nextPageBtn">
-                    <s-icon type="chevron_right"></s-icon>
+                    <s-icon name="chevron_right"></s-icon>
                 </s-segmented-button-item>
             </s-segmented-button>
         `;
