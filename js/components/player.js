@@ -26,7 +26,7 @@ function parseComments(comments) {
 		let pictureList = "";
 		if (content.pictures && content.pictures.length > 0) {
 			$.each(content.pictures, function (index, pic) {
-				pictureList += `<img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='lazy' />`;
+				pictureList += `<a href="#img-${pic.img_src}-top"><img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='lazy' /></a>`;
 			});
 		}
 

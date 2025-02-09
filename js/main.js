@@ -48,7 +48,9 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("img-")) {
         /* 图片查看 */
-        openDlg("浏览图片", `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button><img src="` + data.split("-")[1] + `" width="100%" />`, data.split("-")[1]);
+        let imgVewerHtml = `<img src="${data.split("-")[1]}" width="100%" />`;
+        if (!data.includes("-top")) { imgVewerHtml = `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button>` + imgVewerHtml; }
+        openDlg("浏览图片", imgVewerHtml, data.split("-")[1], isTop = data.includes("-top"));
 
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
