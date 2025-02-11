@@ -53,7 +53,7 @@ html{ height:100%; width:100%; }
 .reply_container hr{margin:3px;color:var(--s-color-surface-container-high);border:none;border-bottom:1px solid #848484;position:relative;top:0;left:calc(50% + 6px);transform:translateX(-50%);max-width:400px}
 .reply_container .reply_item{margin-bottom:5px;padding:5px 0;max-width:400px;position:relative;top:0;left:50%;transform:translateX(-50%);max-width:400px;border-bottom:1px solid var(--s-color-surface-container-high);width:(100% - 5px);}
 .reply_container .reply_item>.username{font-size:inherit;font-weight:bold;display:inline-flex;flex-direction:row;}
-.reply_container .reply_item>.username::before{display:block;content:'';background:var(--s-color-on-surface);width:10px;height:10px;border-radius:30px;margin:5px;}
+.reply_container .reply_item>.username::before{display:block;content:'';background:var(--s-color-on-surface);width:10px;height:10px;border-radius:30px;margin:5px 5px 5px 0px;}
 .reply_container .reply_item .content{margin-left:15px;width:calc(98% - 20px);word-wrap:break-word;}
 .reply_container .reply_item .other_detail{color:var(--s-color-on-surface-variant);margin-left:15px;font-size:small;font-weight:lighter;}
 .reply_container .reply_item .image{width:80px;height:80px;border-radius:8px;margin:3px;}

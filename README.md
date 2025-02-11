@@ -65,10 +65,16 @@
   - [ ] 关注/取关
 - [x] 设置板块
   - [x] 暗黑模式
+  - [x] 安装JS插件
   - [x] 账户基本信息
   - [x] 将关注列表导出至PipePipe
   - [x] 播放设置
-  - [ ] 批量取关
+
+## 关于JS插件
+插件基于`eval5.js`实现，仅支持`ES5`标准，若报错请留意语法。   
+插件脚本在页面加载完成后执行，可访问 **所有数据/函数/变量/DOM** 。   
+功能测试中，不确定是否能通过审核。   
+导入插件前 **务必确认插件是否安全** ，用户需自行承担 由插件造成的数据泄露、功能不可用 的责任。   
 
 ## 视频演示
 BiliBili：[前往观看 >>](https://www.bilibili.com/video/BV1SZDAYtE73/)   
@@ -79,3 +85,4 @@ BiliBili：[前往观看 >>](https://www.bilibili.com/video/BV1SZDAYtE73/)
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [apprat/sober](https://soberjs.com/)
 - [video-dev/hls.js](https://github.com/video-dev/hls.js/)
+- [bplok20010/eval5](https://github.com/bplok20010/eval5/)
