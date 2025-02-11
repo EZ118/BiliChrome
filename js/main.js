@@ -75,8 +75,8 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
-        openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options")
-
+        openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
+        
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
@@ -141,6 +141,9 @@ $(document).ready(function () {
     $(document).on("click", ".historyBackButton", function () {
         window.history.back();
     });
+
+    /* 插件初始化 */
+    pluginInit();
 });
 
 $("#RefreshBtn").click(function () {

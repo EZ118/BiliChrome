@@ -3,7 +3,7 @@ var currentUid = "114514";
 
 function getUserCard(uid, callback) {
     $.get("https://api.bilibili.com/x/web-interface/card?mid=" + uid, function (usrInfo) {
-        const {mid, name, sex, face, sign, level_info, fans, attention } = usrInfo.data.card;
+        const { mid, name, sex, face, sign, level_info, fans, attention } = usrInfo.data.card;
 
         const newData = {
             uid: mid,
@@ -61,7 +61,7 @@ function getUserSpace(uid, isTop) {
                     /* 如果动态内容含图片 */
                     $.each(card_json.modules.module_dynamic.major.draw.items, function (index, item) {
                         ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg" loading="lazy" /></a>`;
-                        if(index % 3 == 2) {
+                        if (index % 3 == 2) {
                             ImgUrl += "<br>";
                         }
                     });
@@ -254,6 +254,11 @@ function spaceInit(refresh) {
                     <div slot="headline">扩展选项</div>
                     <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
+
+                <s-card class="myspace_subSection" type="outlined">
+                    <div slot="headline">${localStorage.getItem(pluginStorageKey) ? "移除JS插件" : "导入JS插件"}</div>
+                    <a class="plugin_operateBtn" href="#default"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
+                </s-card>
             </div>
             
             <center style="margin-top:calc(40vh - 120px); z-index: -1;">
@@ -266,12 +271,20 @@ function spaceInit(refresh) {
 
 $(document).ready(function () {
     $(document).on("click", ".subscription_backBtn", function () {
-        if(currentTab == "space") {
+        if (currentTab == "space") {
             spaceInit();
         } else if (currentTab == "subscriptions") {
             dynamicInit();
         } else {
             homeInit();
+        }
+    });
+
+    $(document).on("click", ".plugin_operateBtn", function () {
+        if (localStorage.getItem(pluginStorageKey)) {
+            removePlugin();
+        } else {
+            importPlugin();
         }
     });
 });
