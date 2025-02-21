@@ -1,44 +1,14 @@
-// background.js
-
-/* 插件安装成功后，跳转到介绍页面 */
-chrome.runtime.onInstalled.addListener(function () {
-    console.log('BliScape Extension Installed!');
-    chrome.tabs.create({ url: "https://ez118.github.io/biliweb/#installed" });
+/* 插件安装成功事件 */
+chrome.runtime.onInstalled.addListener(function() {
+    const version = chrome.runtime.getManifest().version;
+    chrome.tabs.create({ 
+        url: `https://ez118.github.io/biliweb/installed.html#${version}`
+    });
 });
 
-/* 为每一次API请求添加Referer请求头（Origin因为权限原因无法修改，目前未能解决） */
-// chrome.declarativeNetRequest.updateDynamicRules({
-//     addRules: [
-//         {
-//             "id": 1,
-//             "priority": 1,
-//             "action": {
-//                 "type": 'modifyHeaders',
-//                 "requestHeaders": [
-//                     {
-//                         "header": 'Referer',
-//                         "operation": 'set',
-//                         "value": 'https://www.bilibili.com/'
-//                     },
-//                     {
-//                         "header": 'Origin',
-//                         "operation": 'set',
-//                         "value": 'https://www.bilibili.com/'
-//                     }
-//                 ]
-//             },
-//             "condition": {
-//                 "urlFilter": 'https://*.bilibili.com/*',
-//                 "resourceTypes": ["xmlhttprequest"]
-//             }
-//         }
-//     ]
-// });
-// 已注释，这段代码可能会导致正常网页请求被拦截
 
 
-
-/* 右键菜单 */
+/* 注册右键菜单 */
 chrome.contextMenus.create({
     title: '在 BiliScape 观看',
     id: 'viewInExt',
@@ -47,6 +17,7 @@ chrome.contextMenus.create({
     documentUrlPatterns: ['*://*.bilibili.com/*']
 });
 
+/* 右键菜单触发事件 */
 chrome.contextMenus.onClicked.addListener(function (item, tab) {
     let url = item.pageUrl + "?";
     url = url.split("?")[0];
@@ -75,15 +46,42 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
         let newOption = "roomid_" + vid;
 
         chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + newOption });
+    } else if (item.menuItemId == "viewInExt" && url.includes("space.bilibili.com/")) {
+        /* 如果当前页面是用户空间页面,那么取得用户UID */
+        const vid = url.split("/")[3].replace(url.substring(url.lastIndexOf("?")), "");
+
+        if (vid == null || vid == "") { return; }
+
+        let newOption = "uid_" + vid;
+
+        chrome.tabs.create({ url: chrome.runtime.getURL('home.html') + "#" + newOption });
     }
 });
 
-/* 单独窗口 */
+
+/* 扩展图标点击事件，打开单独窗口 */
 chrome.action.onClicked.addListener(function (tab) {
     chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
 });
 
+
 /* 通知推送 */
+function getConfig(item, callback) {
+    const itemFamily = item.split(".")[0];
+    const itemKey = item.split(".")[1];
+    chrome.storage.local.get([itemFamily], function (result) {
+        try {
+            if (result[itemFamily] && result[itemFamily][itemKey]) {
+                callback(result[itemFamily][itemKey]);
+            } else {
+                callback(null);
+            }
+        } catch {
+            callback(null);
+        }
+    });
+}
+
 var lastUpdateNum = 0;
 async function checkForUpdates() {
     try {
@@ -121,7 +119,10 @@ async function checkForUpdates() {
     }
 }
 
-// 初始调用
-checkForUpdates();
-//每过20分钟查检一次动态更新
-setInterval(checkForUpdates, 20 * 60 * 1000);
+/* 获取扩展设置（扩展重新载入时生效） */
+getConfig("player.Notify_Dynamic_Update", function(value){
+    if(value) {
+        checkForUpdates();
+        setInterval(checkForUpdates, 20 * 60 * 1000);
+    }
+});

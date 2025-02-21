@@ -198,7 +198,7 @@ function showUserCard(uid) {
 function showPlayerPref() {
     getStorage("player", function (result) {
         // 如果没有存储的设置，使用默认值
-        var defaultResult = { "HD_Quality_As_Default": false, "Advanced_DanMu_As_Default": false, "DanMu_Color": "white" };
+        var defaultResult = { "HD_Quality_As_Default": false, "Advanced_DanMu_As_Default": false, "DanMu_Color": "white", "Notify_Dynamic_Update": false };
         if (!result || !areKeysEqual(result, defaultResult)) {
             result = defaultResult;
             setStorage("player", result);

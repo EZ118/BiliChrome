@@ -38,6 +38,7 @@ html{ height:100%; width:100%; }
 .player_danmuText{width:fit-content;max-width:500px;font-size:18px;font-weight:bold;opacity:0.8;z-index:104;position:fixed;color:#EEEEEE;text-shadow:0 0 2px #000}
 .player_cidListItem{margin:3px;width:fit-content;cursor:pointer;user-select:none;white-space:nowrap}
 .player_blockTitle{font-size:large;font-weight:400;color:var(--s-color-primary);padding:0px 10px;border:0;border-left:8px solid;margin:3px 0px;}
+#player_sidebarTab{background-color:inherit;}
 
 /* 直播播放器 */
 #live_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:var(--s-color-surface-container-low);display:flex;flex-direction:column;justify-content:center;align-items:center}
@@ -99,7 +100,7 @@ s-snackbar a{ color:#00AEEC; }
 .dynamic_listItem .badge { margin-right:10px; }
 #dynamic_container .dialog { font-size:medium; display:flex; flex-direction:column; }
 #dynamic_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
-#dynamic_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; }
+#dynamic_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; overflow:hidden auto; height:calc(100vh - 50px); }
 
 /* 用户个人空间 */
 .myspace_topInfoBox{ margin:10px; width:calc(100% - 30px); height:120px; min-width:300px; max-width:none; display:inline-flex; }
@@ -126,7 +127,7 @@ s-snackbar a{ color:#00AEEC; }
 .space_singlebox_vt{ width:100%; margin:5px 0px }
 
 /* UP主/用户卡片（少量信息） */
-.common_user_card_slim { width:280px; display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; }
+.common_user_card_slim { width:280px; display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; background-color:inherit; }
 .common_user_card_slim .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
 .common_user_card_slim .right { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; flex-grow:1; }
 .common_user_card_slim .right .name { display:block; width:100%; font-weight:lighter; font-size:medium; }
@@ -141,7 +142,7 @@ s-snackbar a{ color:#00AEEC; }
 .chat_listItem .title {  font-weight:lighter; font-size:medium;}
 #chat_container .dialog { font-size:medium; display:flex; flex-direction:column; }
 #chat_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
-#chat_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; }
+#chat_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; height:calc(100vh - 50px - 70px); }
 #chat_container .dialog_msgBubble { width:fit-content; max-width:80%; padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:0 12px 12px 12px; margin:5px 3px; user-select:text;  }
 #chat_container .dialog_msgBubble_me { width:fit-content; max-width:80%; padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:12px 0px 12px 12px; margin:5px 3px; margin-left:auto; user-select:text; }
 

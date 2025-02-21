@@ -89,6 +89,7 @@ function getSearchResult(keyword, page, type) {
     $("#dynamic_loader").show();
     $.get("https://api.bilibili.com/x/web-interface/wbi/search/type?search_type=" + type + "&keyword=" + encodeURI(keyword) + "&page=" + page, function (tjlist) {
         keywordSearchingNow = keyword;
+        search_currentPage = page;
 
         var WebList = `
             <div class="search_titlebar">
@@ -107,6 +108,16 @@ function getSearchResult(keyword, page, type) {
                 </s-tab-item>
             </s-tab>
             <div class="flex_container">`;
+        
+        if(!tjlist.data.result || tjlist.data.result.length == 0) {
+            WebList += "</div><br/><i>无搜索结果</i>";
+
+            $("#item_container").html(WebList);
+            $("#dynamic_loader").hide();
+
+            $('s-tab-item[value="' + type + '"]').prop("selected", true);
+            return;
+        }
 
         switch (type) {
             case "video":
@@ -195,6 +206,6 @@ $(document).ready(function () {
 
     $(document).on("click", ".search_typeTab s-tab-item", function (event) {
         search_currentType = $(event.currentTarget).attr("value");
-        getSearchResult(keywordSearchingNow, search_currentPage, search_currentType);
+        getSearchResult(keywordSearchingNow, 1, search_currentType);
     });
 });
