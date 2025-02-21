@@ -1,6 +1,6 @@
 {
   "name": "BiliScape",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "哔哩哔哩第三方浏览器客户端，对接B站API实现，Material You样式，所有客户端在线内容来自哔哩哔哩官方。",
   "manifest_version": 3,
   "icons": {
@@ -35,7 +35,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "bilifire@ez118",
-      "strict_min_version": "109.0"
+      "strict_min_version": "107.0"
     }
   }
 }
