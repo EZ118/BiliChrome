@@ -29,7 +29,7 @@ html{ height:100%; width:100%; }
 /* 播放器 */
 #player_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:var(--s-color-surface-container-low);display:flex;flex-direction:column;justify-content:center;align-items:center}
 .player_row{display:flex;width:100vw;flex-direction:row;justify-content:center;align-items:center}
-#player_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
+#player_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 40px);border:none;border-radius:8px}
 #player_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #player_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 132px);font-size:16px;overflow:hidden auto}
 #player_descArea hr{margin:3px;border:none;border-bottom:1px solid var(--s-color-surface-container-high)}
@@ -42,7 +42,7 @@ html{ height:100%; width:100%; }
 
 /* 直播播放器 */
 #live_container{position:fixed;top:0px;left:0px;z-index:103;width:100vw;height:100vh;background:var(--s-color-surface-container-low);display:flex;flex-direction:column;justify-content:center;align-items:center}
-#live_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 42px);border:none;border-radius:8px}
+#live_videoContainer{max-width:calc(100vw - 360px);flex-grow:1;outline:none;height:calc(100vh - 40px);border:none;border-radius:8px}
 #live_title{margin-left:15px;font-size:18px;flex-grow:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #live_commentArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 84px - 80px);font-size:16px;overflow:hidden auto}
 #live_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(80px);flex-grow:1;font-size:16px;overflow:hidden auto}

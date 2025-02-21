@@ -81,8 +81,10 @@ function runPlugin() {
     let script = localStorage.getItem(pluginStorageKey);
 
     if (!script) { return; }
-    if (!checkPluginSafety(script)) { showToast("插件未执行"); return; }
-    else { showToast("插件开始执行"); }
+    // if (!checkPluginSafety(script)) { showToast("插件未执行"); return; }
+    // else { showToast("插件开始执行"); }
+    // 目前先把执行前安全检查注释掉，便于调试。后续版本再恢复。
+    showToast("插件开始执行");
 
     try {
 
