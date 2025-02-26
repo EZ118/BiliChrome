@@ -18,8 +18,8 @@
 <img src="https://ez118.github.io/biliweb/shot3.png" width="32%" alt="搜索" /><br/>
 <img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
 <img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="设置" />
-<img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/>
-
+<img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/><br/>
+QQ群：1023133212
 </div>
 
 ## 安装   
