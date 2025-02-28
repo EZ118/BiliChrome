@@ -57,13 +57,13 @@ $(document).ready(function () {
 			var liveHidden = $("#live_container").is(":hidden");
 
 			if (!playerHidden) {
-				closePlayer();
+				player.close();
 			} else if (!liveHidden) {
-				closeLivePlayer();
+				live_player.close();
 			} else if (!dlgHidden) {
 				closeDlg();
 			} else {
-				closePlayer();
+				player.close();
 			}
 
 			return false;
