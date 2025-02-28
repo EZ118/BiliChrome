@@ -1,8 +1,12 @@
+var biliJctData = "";
+var player = null; // 播放器实例
+var live_player = null; // 直播间实例
+
 var currentTab = "home";
 var lastDynamicOffset = null;
 
 function getVidPlayingNow() {
-    $.get("https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200", function (vidInfo) {
+    $.get(`https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200`, (vidInfo) => {
         if (vidInfo.data != null) {
             showNotification(
                 vidInfo.data.title,
@@ -25,21 +29,21 @@ function routeCtrl(isOnload, hash) {
 
     if (data.includes("bvid")) {
         /* 视频播放bvid */
-        openPlayer({
+        player.open({
             bvid: data.split("_")[1],
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
     } else if (data.includes("aid")) {
         /* 视频播放aid */
-        openPlayer({
+        player.open({
             aid: data.split("_")[1],
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
     } else if (data.includes("roomid")) {
         /* 直播roomid */
-        openLivePlayer({
+        live_player.open({
             roomid: data.split("_")[1]
         });
     } else if (data.includes("uid")) {
@@ -76,7 +80,7 @@ function routeCtrl(isOnload, hash) {
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
         openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
-        
+
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
@@ -89,21 +93,26 @@ function routeCtrl(isOnload, hash) {
     }
 }
 
-$(document).ready(function () {
+$(document).ready(() => {
+    // 初始化组件
+    player = new VideoPlayer();
+    live_player = new LivePlayer();
+
     document.referrer = "https://www.bilibili.com/";
 
-    getAccount("auto", function (usrInfo) {
+    getAccount("auto", (usrInfo) => {
         /* 载入用户信息 */
         currentUid = usrInfo.uid;
         if (!usrInfo.uid) { showToast("您未登录，请在bilibili.com登录后再使用", 8000) }
     });
 
+    /* 获取登录token */
+    getJctToken((token) => biliJctData = token);
+
     getVidPlayingNow();
     routeCtrl(isOnload = true);
 
-    window.addEventListener('popstate', function (event) {
-        routeCtrl();
-    });
+    window.addEventListener('popstate', (event) => routeCtrl());
 
     /* 侧边主菜单 */
     $("s-navigation-item").click((evt) => {
@@ -138,7 +147,8 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", ".historyBackButton", function () {
+    $(document).on("click", ".historyBackButton", () => {
+        // 全局返回按钮
         window.history.back();
     });
 
@@ -146,7 +156,7 @@ $(document).ready(function () {
     pluginInit();
 });
 
-$("#RefreshBtn").click(function () {
+$("#RefreshBtn").click(() => {
     /* 刷新 */
     if (currentTab == "home") {
         homeInit(refresh = true);
