@@ -254,10 +254,9 @@ function spaceInit(refresh) {
                     <div slot="headline">扩展选项</div>
                     <a href="#options"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
-
                 <s-card class="myspace_subSection" type="outlined">
-                    <div slot="headline">${localStorage.getItem(pluginStorageKey) ? "移除JS插件" : "导入JS插件"}</div>
-                    <a class="plugin_operateBtn" href="#default"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
+                    <div slot="headline">插件管理</div>
+                    <a href="#plugins"><s-icon-button slot="action" type="filled-tonal"><s-icon name="arrow_forward"></s-icon></s-icon-button></a>
                 </s-card>
             </div>
             
@@ -277,14 +276,6 @@ $(document).ready(function () {
             dynamicInit();
         } else {
             homeInit();
-        }
-    });
-
-    $(document).on("click", ".plugin_operateBtn", function () {
-        if (localStorage.getItem(pluginStorageKey)) {
-            removePlugin();
-        } else {
-            importPlugin();
         }
     });
 });

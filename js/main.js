@@ -81,6 +81,10 @@ function routeCtrl(isOnload, hash) {
         /* 显示扩展选项对话框 */
         openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
 
+    } else if (data.includes("plugins")) {
+        /* 显示插件管理器对话框 */
+        showPluginManager();
+
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {

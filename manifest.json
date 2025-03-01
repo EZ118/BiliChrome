@@ -17,11 +17,9 @@
         "scripting",
         "storage"
     ],
-    "optional_host_permissions": [
-        "*://*.bilibili.com/*"
-    ],
     "host_permissions": [
-        "*://*.bilibili.com/*"
+        "*://*.bilibili.com/*",
+        "*://gitee.com/*/*/raw/*"
     ],
     "action": {
         "default_title": "BiliScape"
