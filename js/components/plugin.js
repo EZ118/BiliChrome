@@ -129,7 +129,8 @@ function showPluginManager() {
                 <font size=5 slot="trigger">在线插件</font>
                 <span id="plugin_tooltip">源简介</span>
             </s-tooltip><br/>
-            <font size=2 color=gray>您可以在线获取 BiliScape 项目作者提供的受信任插件</font><br/><br/>
+            <font size=2 color=gray>您可以在线获取 BiliScape 项目作者提供的受信任插件</font><br/>
+            <font size=2 color=gray>插件源: ${pluginRemoteSourceURL}</font><br/><br/>
             <s-table style="overflow:auto;width:calc(100% - 4px);" slot="text">
                 <s-thead>
                     <s-tr>
@@ -199,7 +200,6 @@ function showPluginManager() {
 }
 
 function pluginInit() {
-    showPluginManager()
     interpreter = new eval5.Interpreter(window);
     runPlugin();
 }
