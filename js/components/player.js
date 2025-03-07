@@ -44,17 +44,17 @@ class VideoPlayer {
 
 		$("#player_scrSwitchBtn").click(() => {
 			this.config.Advanced_DanMu_As_Default = !this.config.Advanced_DanMu_As_Default; // 切换弹幕模式
-			showToast("弹幕模式已切换，当前模式：" + (this.config.Advanced_DanMu_As_Default ? "滚动弹幕模式" : "简单弹幕模式"));
+			modal.toast("弹幕模式已切换，当前模式：" + (this.config.Advanced_DanMu_As_Default ? "滚动弹幕模式" : "简单弹幕模式"));
 			$("#player_simpleDanmu").text("");
 		});
 		$("#player_pipBtn").click(() => {
 			var pip = $("#player_videoContainer")[0].requestPictureInPicture(); // 切换画中画
-			showToast("画中画", 1000);
+			modal.toast("画中画", 1000);
 		});
 		$("#player_highQnBtn").click(() => {
 			/* 切换高画质 */
 			this.config.HD_Quality_As_Default = !this.config.HD_Quality_As_Default;
-			showToast("已切换至" + (this.config.Advanced_DanMu_As_Default ? "高画质" : "低画质"), 5000);
+			modal.toast("已切换至" + (this.config.Advanced_DanMu_As_Default ? "高画质" : "低画质"), 5000);
 			this.loadVideoSource(this.bvid, this.cid);
 		});
 
@@ -98,8 +98,10 @@ class VideoPlayer {
 		this.ele_videoContainer.bind('ended', function () {
 			$("#player_videoContainer")[0].currentTime = 0;
 			this.danmuCnt = 0;
-			showToast("视频播放完毕", 1000);
+			modal.toast("视频播放完毕", 1000);
 		});
+
+		console.log("[VideoPlayer] 已初始化");
 	}
 
 	open(option) {
@@ -114,7 +116,7 @@ class VideoPlayer {
 			urlStr = "aid=" + option.aid;
 		} else {
 			console.log("[ERROR] 播放器参数错误：缺少一个可用的bvid或aid");
-			showToast("播放器参数错误");
+			modal.toast("播放器参数错误");
 			return;
 		}
 
@@ -295,7 +297,7 @@ class VideoPlayer {
 	showMoreReplies(rpid) {
 		// 在对话框中展示单条评论下的所有回复，rpid即评论ID
 		$.get(`https://api.bilibili.com/x/v2/reply/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=${this.aid}&root=${rpid}`, (ReplyInfo) => {
-			openDlg(
+			modal.open(
 				"更多评论",
 				`<div class='reply_container'>${this.parseComments(ReplyInfo.data.replies)}</div>`,
 				`https://www.bilibili.com/video/${this.bvid}`,
@@ -351,7 +353,7 @@ class VideoPlayer {
 			$(".player_cidListItem").attr("type", "outlined");
 			$(this).attr("type", "filled-tonal");
 
-			showToast("正在加载分P视频 [P" + page + "]");
+			modal.toast("正在加载分P视频 [P" + page + "]");
 			this.loadVideoSource(this.bvid, cid);
 			this.getDanmu(cid);
 		});
@@ -361,12 +363,12 @@ class VideoPlayer {
 		// 点赞视频
 		$.post(`https://api.bilibili.com/x/web-interface/archive/like`, `bvid=${bvid}&like=1&csrf=${biliJctData}`)
 			.done((res) => {
-				if (res.code == 0) { showToast("点赞成功"); }
-				else if (res.code == 65006) { showToast("已赞过"); }
-				else { showToast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
+				if (res.code == 0) { modal.toast("点赞成功"); }
+				else if (res.code == 65006) { modal.toast("已赞过"); }
+				else { modal.toast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
 			})
 			.fail((res) => {
-				showToast("点赞失败，请求被拦截");
+				modal.toast("点赞失败，请求被拦截");
 			})
 	}
 
@@ -374,12 +376,12 @@ class VideoPlayer {
 		// 投币视频 
 		$.post(`https://api.bilibili.com/x/web-interface/coin/add`, `bvid=${bvid}&upid=114514&multiply=1&avtype=1&csrf=${biliJctData}`)
 			.done((res) => {
-				if (res.code == 0) { showToast("投币成功"); }
-				else if (res.code == 65006) { showToast("已投过"); }
-				else { showToast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
+				if (res.code == 0) { modal.toast("投币成功"); }
+				else if (res.code == 65006) { modal.toast("已投过"); }
+				else { modal.toast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
 			})
 			.fail((res) => {
-				showToast("投币失败，请求被拦截");
+				modal.toast("投币失败，请求被拦截");
 			})
 	}
 
@@ -387,11 +389,11 @@ class VideoPlayer {
 		// 投币视频
 		$.post(`https://api.bilibili.com/x/v2/history/toview/add`, `bvid=${bvid}&csrf=${biliJctData}`)
 			.done((res) => {
-				if (res.code == 0) { showToast("已添加到稍后再看"); }
-				else { showToast("添加失败 [" + res.code + "] \n(" + res.message + ")"); }
+				if (res.code == 0) { modal.toast("已添加到稍后再看"); }
+				else { modal.toast("添加失败 [" + res.code + "] \n(" + res.message + ")"); }
 			})
 			.fail((res) => {
-				showToast("添加失败，请求被拦截");
+				modal.toast("添加失败，请求被拦截");
 			})
 	}
 }

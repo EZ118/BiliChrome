@@ -23,7 +23,7 @@ function showMsgReply() {
             </s-ripple>`;
         });
         WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>";
-        openDlg("评论回复", WebList, "https://message.bilibili.com/#/reply");
+        modal.open("评论回复", WebList, "https://message.bilibili.com/#/reply");
     });
 }
 
@@ -47,7 +47,7 @@ function showAtMe() {
             </s-ripple>`;
         });
         WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
-        openDlg("@我的", WebList, "https://message.bilibili.com/#/at");
+        modal.open("@我的", WebList, "https://message.bilibili.com/#/at");
     });
 }
 
@@ -80,7 +80,7 @@ function showRecentLikes() {
             </s-ripple>`;
         });
         WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
-        openDlg("最近收到的赞", WebList, "https://message.bilibili.com/#/system");
+        modal.open("最近收到的赞", WebList, "https://message.bilibili.com/#/system");
     });
 }
 
@@ -100,7 +100,7 @@ function showSysMsg() {
             </s-ripple>`;
         });
         WebList += "<p align='center'>点击“在新标签页打开”以查看更多</p>"
-        openDlg("系统通知", WebList, "https://message.bilibili.com/#/system");
+        modal.open("系统通知", WebList, "https://message.bilibili.com/#/system");
     });
 }
 

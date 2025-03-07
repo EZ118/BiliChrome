@@ -31,6 +31,8 @@ class LivePlayer {
 				this.getDanmu(this.roomid);
 			}
 		}, this.config.danmuReqFrequency);
+
+		console.log("[LivePlayer] 已初始化");
 	}
 
 	initEventListeners() {
@@ -117,7 +119,7 @@ class LivePlayer {
 					videoEle.controls = false;
 				});
 			} else {
-				showToast("浏览器不支持 HLS 播放，请更新浏览器");
+				modal.toast("浏览器不支持 HLS 播放，请更新浏览器");
 				$("#dynamic_loader").hide();
 			}
 		});
@@ -127,7 +129,7 @@ class LivePlayer {
 		// 显示播放器并展示指定视频
 		if (!option.roomid) {
 			console.log("[ERROR] 直播播放器参数错误：缺少一个可用的 roomid");
-			showToast("直播播放器参数错误");
+			modal.toast("直播播放器参数错误");
 			return;
 		}
 
@@ -171,7 +173,7 @@ class LivePlayer {
 	toggleDanmu() {
 		// 切换弹幕模式
 		this.config.showDanmu = !this.config.showDanmu;
-		showToast(this.config.showDanmu ? "已启用实时弹幕" : "已关闭实时弹幕");
+		modal.toast(this.config.showDanmu ? "已启用实时弹幕" : "已关闭实时弹幕");
 
 		if (this.config.showDanmu) {
 			this.ele_commentArea.append("<p class='messageBubble_sys'>实时弹幕已启用</p>");
@@ -183,13 +185,13 @@ class LivePlayer {
 	togglePictureInPicture() {
 		// 切换画中画
 		const pip = this.ele_videoContainer[0].requestPictureInPicture();
-		showToast("画中画", 1000);
+		modal.toast("画中画", 1000);
 	}
 
 	toggleQuality() {
 		// 切换画质
 		this.config.quality = this.config.quality === 3 ? 2 : 3;
-		showToast(`已切换为${this.config.quality === 3 ? "较高" : "普通"}画质（重新打开直播生效）`, 3000);
+		modal.toast(`已切换为${this.config.quality === 3 ? "较高" : "普通"}画质（重新打开直播生效）`, 3000);
 		this.loadStreamSource(this.roomid);
 	}
 }

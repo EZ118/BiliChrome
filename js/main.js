@@ -1,6 +1,7 @@
 var biliJctData = "";
 var player = null; // 播放器实例
 var live_player = null; // 直播间实例
+var modal = null; // 模态实例
 
 var currentTab = "home";
 var lastDynamicOffset = null;
@@ -8,7 +9,7 @@ var lastDynamicOffset = null;
 function getVidPlayingNow() {
     $.get(`https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200`, (vidInfo) => {
         if (vidInfo.data != null) {
-            showNotification(
+            modal.notification(
                 vidInfo.data.title,
                 "其他设备正在播放的视频，点击继续观看",
                 "./img/cast.svg",
@@ -54,7 +55,7 @@ function routeCtrl(isOnload, hash) {
         /* 图片查看 */
         let imgVewerHtml = `<img src="${data.split("-")[1]}" width="100%" />`;
         if (!data.includes("-top")) { imgVewerHtml = `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button>` + imgVewerHtml; }
-        openDlg("浏览图片", imgVewerHtml, data.split("-")[1], isTop = data.includes("-top"));
+        modal.open("浏览图片", imgVewerHtml, data.split("-")[1], isTop = data.includes("-top"));
 
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
@@ -79,7 +80,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
-        openDlg("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
+        modal.open("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
 
     } else if (data.includes("plugins")) {
         /* 显示插件管理器对话框 */
@@ -88,7 +89,7 @@ function routeCtrl(isOnload, hash) {
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
-        //showToast("链接错误，点击边栏按钮以重载页面");
+        //modal.toast("链接错误，点击边栏按钮以重载页面");
         //homeInit();
     }
 
@@ -101,13 +102,14 @@ $(document).ready(() => {
     // 初始化组件
     player = new VideoPlayer();
     live_player = new LivePlayer();
+    modal = new Modal();
 
     document.referrer = "https://www.bilibili.com/";
 
     getAccount("auto", (usrInfo) => {
         /* 载入用户信息 */
         currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { showToast("您未登录，请在bilibili.com登录后再使用", 8000) }
+        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后再使用", 8000) }
     });
 
     /* 获取登录token */
@@ -142,12 +144,12 @@ $(document).ready(() => {
     $("#eggBtn").click(() => {
         eggBtnCnt++;
         if (eggBtnCnt == 16) {
-            showToast("这不是彩蛋...");
+            modal.toast("这不是彩蛋...");
         } else if (eggBtnCnt == 32) {
-            showToast("真不是彩蛋...");
+            modal.toast("真不是彩蛋...");
         } else if (eggBtnCnt >= 64) {
             eggBtnCnt = 0;
-            showToast("你疯了吧！");
+            modal.toast("你疯了吧！");
         }
     });
 

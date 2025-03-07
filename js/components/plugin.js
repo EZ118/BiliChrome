@@ -70,7 +70,7 @@ function importPlugin(callback) {
                 if (checkPluginSafety(content)) {
                     localStorage.setItem(plugin_storageKey_script, content);
                     localStorage.setItem(plugin_storageKey_hash, hash(content));
-                    showToast("插件已导入，刷新后生效");
+                    modal.toast("插件已导入，刷新后生效");
 
                     if(callback) { callback(); }
                 }
@@ -88,23 +88,23 @@ function importPlugin(callback) {
 function removePlugin() {
     localStorage.removeItem(plugin_storageKey_script);
     localStorage.removeItem(plugin_storageKey_hash);
-    showToast("插件已被移除，刷新后生效");
+    modal.toast("插件已被移除，刷新后生效");
 }
 
 function runPlugin() {
     let script = localStorage.getItem(plugin_storageKey_script);
 
     if (!script) { return; }
-    // if (!checkPluginSafety(script)) { showToast("插件未执行"); return; }
-    // else { showToast("插件开始执行"); }
+    // if (!checkPluginSafety(script)) { modal.toast("插件未执行"); return; }
+    // else { modal.toast("插件开始执行"); }
     // 目前先把执行前安全检查注释掉，便于调试。后续版本再恢复。
-    showToast("插件开始执行");
+    modal.toast("插件开始执行");
 
     try {
 
         interpreter.evaluate(script);
     } catch (e) {
-        showToast("插件执行出错");
+        modal.toast("插件执行出错");
         console.error(e);
     }
 }
@@ -142,7 +142,7 @@ function showPluginManager() {
         </div>
     `;
 
-    openDlg("插件管理", pluginManager, "https://github.com/EZ118/BiliChromePlugin");
+    modal.open("插件管理", pluginManager, "https://github.com/EZ118/BiliChromePlugin");
 
     $("#plugin_importBtn").click(() => {
         importPlugin(showPluginManager);
@@ -191,7 +191,7 @@ function showPluginManager() {
                 if (checkPluginSafety(script)) {
                     localStorage.setItem(plugin_storageKey_script, script);
                     localStorage.setItem(plugin_storageKey_hash, hash(pluginRemoteSourceURL + purl));
-                    showToast("插件已安装，刷新后生效");
+                    modal.toast("插件已安装，刷新后生效");
                     showPluginManager();
                 }
             });

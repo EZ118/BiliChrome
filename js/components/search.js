@@ -76,7 +76,7 @@ function showSearchPage() {
     $("#item_container .search_history #search_clearHistory").on('click', function (event) {
         /* 清除历史 */
         localStorage.removeItem("searchHistory");
-        showToast("已清空搜索历史")
+        modal.toast("已清空搜索历史")
         showSearchPage();
     });
 }
@@ -152,7 +152,7 @@ function getSearchResult(keyword, page, type) {
                 WebList += card.live(vidList);
                 break;
             default:
-                showToast("不支持的搜索类型");
+                modal.toast("不支持的搜索类型");
                 break;
         }
 
@@ -196,7 +196,7 @@ $(document).ready(function () {
             search_currentPage -= 1;
             getSearchResult(keywordSearchingNow, search_currentPage, search_currentType);
         } else {
-            showToast("已经是第一页了~");
+            modal.toast("已经是第一页了~");
         }
     });
     $(document).on("click", "#search_nextPageBtn", function () {

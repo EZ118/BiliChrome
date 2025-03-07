@@ -91,11 +91,11 @@ function getUserSpace(uid, isTop) {
 
         getUserCard(uid, function (usrInfo) {
             WebList = "<div class='flex_container' style='flex-direction:column; align-items:center;'>" + usrInfo.html + WebList + "</div>";
-            openDlg("用户动态 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid, isTop);
+            modal.open("用户动态 [UID:" + uid + "]", WebList, "https://space.bilibili.com/" + uid, isTop);
         });
     }).fail(function () {
         console.log("Error fetching data.");
-        showToast("用户空间加载失败")
+        modal.toast("用户空间加载失败")
     });
 }
 
@@ -109,7 +109,7 @@ function getUserHistory() {
             desc: item.title,
             author: { uid: item.author_mid, name: item.author_name }
         }));
-        openDlg("观看历史（近30条）", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/account/history");
+        modal.open("观看历史（近30条）", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/account/history");
     });
 }
 
@@ -156,14 +156,14 @@ function getMyCollectionList() {
                     </s-card>
                 </a>`;
         });
-        openDlg("所有收藏夹", "<div class='flex_container'>" + WebList + "</div>", "https://space.bilibili.com/" + currentUid + "/favlist");
+        modal.open("所有收藏夹", "<div class='flex_container'>" + WebList + "</div>", "https://space.bilibili.com/" + currentUid + "/favlist");
     });
 }
 
 function getCollectionById(fid, mediaCount) {
     mediaCount = parseInt(mediaCount);
     $.get("https://api.bilibili.com/x/v3/fav/resource/list?media_id=" + fid + "&ps=" + (mediaCount) + "&pn=1", function (tjlist) {
-        if (tjlist.code == -400) { showToast("该收藏夹未被公开，暂时无法查看"); return; }
+        if (tjlist.code == -400) { modal.toast("该收藏夹未被公开，暂时无法查看"); return; }
         vidList = tjlist.data.medias.map(item => ({
             bvid: item.bvid,
             aid: item.id,
@@ -172,7 +172,7 @@ function getCollectionById(fid, mediaCount) {
             desc: item.intro,
             author: { uid: item.upper.mid, name: item.upper.name }
         }));
-        openDlg(
+        modal.open(
             "收藏夹 [FID:" + fid + "]",
             "<a href='#myfav'><s-icon-button><s-icon name='arrow_back'></s-icon></s-icon-button></a><div class='flex_container'>" + card.video(vidList) + "</div>",
             "https://space.bilibili.com/" + currentUid + "/favlist?fid=" + fid + "&ftype=create"
@@ -182,7 +182,7 @@ function getCollectionById(fid, mediaCount) {
 
 function getWatchLater() {
     $.get("https://api.bilibili.com/x/v2/history/toview", function (tjlist) {
-        if (tjlist.code == -400) { showToast("暂时无法查看"); return; }
+        if (tjlist.code == -400) { modal.toast("暂时无法查看"); return; }
 
         vidList = tjlist.data.list.map(item => ({
             bvid: item.bvid,
@@ -192,7 +192,7 @@ function getWatchLater() {
             desc: item.desc,
             author: { uid: item.owner.mid, name: item.owner.name }
         }));
-        openDlg("稍后再看", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/watchlater/#/list");
+        modal.open("稍后再看", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/watchlater/#/list");
     });
 }
 
