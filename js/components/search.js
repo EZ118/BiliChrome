@@ -11,7 +11,7 @@ function showSearchPage() {
     if (searchHistory) {
         let searchHistoryArray = JSON.parse(searchHistory);
         $.each(searchHistoryArray, function (index, item) {
-            WebList += `<s-chip type="elevated" class="search_histroyItem">${item}</s-chip>`;
+            WebList += `<s-chip class="search_histroyItem">${item}</s-chip>`;
         });
     }
 
@@ -38,7 +38,7 @@ function showSearchPage() {
             <div style="width:350px; margin-top:20px;" title="搜素历史" class="search_history">
                 ${WebList}
                 <br><br>
-                <s-chip title="清空搜素历史" id="search_clearHistory" type="elevated"><s-icon name="close"></s-icon></s-chip>
+                <s-icon-button id="search_clearHistory" title="清空搜素历史" type="filled-tonal"><s-icon name="close"></s-icon></s-icon-button>
             </div>
         </div>`);
 
@@ -190,6 +190,7 @@ function searchInit(refresh) {
 $(document).ready(function () {
     $(document).on("click", ".search_backBtn", function () {
         showSearchPage();
+        keywordSearchingNow = "";
     });
     $(document).on("click", "#search_prevPageBtn", function () {
         if (search_currentPage > 1) {
