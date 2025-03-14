@@ -346,12 +346,12 @@ class VideoPlayer {
 			cidList += `<s-chip type='${(index == 0) ? "filled-tonal" : "outlined"}' class='player_cidListItem' cid-data='${item.cid}' page-num='${item.page}' title='${item.part}'>${item.part}</s-chip>`;
 		});
 		this.ele_descArea.append("<br><hr><b class='player_blockTitle'>选集</b><div class='flex_container'>" + cidList + "</div>");
-		$(".player_cidListItem").click(() => {
-			var cid = $(this).attr("cid-data");
-			var page = $(this).attr("page-num");
+		$(".player_cidListItem").click((evt) => {
+			var cid = $(evt.currentTarget).attr("cid-data");
+			var page = $(evt.currentTarget).attr("page-num");
 
 			$(".player_cidListItem").attr("type", "outlined");
-			$(this).attr("type", "filled-tonal");
+			$(evt.currentTarget).attr("type", "filled-tonal");
 
 			modal.toast("正在加载分P视频 [P" + page + "]");
 			this.loadVideoSource(this.bvid, cid);
