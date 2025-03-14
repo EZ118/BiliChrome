@@ -175,7 +175,7 @@ function messageInit(refresh) {
         </div>
         <s-drawer id="chat_container">
             <s-scroll-view slot="start" class="chat_list">
-                <b>近期消息</b><br/>
+                <!-- 最近消息 -->
             </s-scroll-view>
             <div class="dialog">
                 <div class="dialog_titlebar">

@@ -61,7 +61,11 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
 
 /* 扩展图标点击事件，打开单独窗口 */
 chrome.action.onClicked.addListener(function (tab) {
-    chrome.windows.create({ url: 'home.html', type: 'popup', width: 1000, height: 600 });
+    chrome.windows.create({
+        url: 'home.html',
+        type: "popup",
+        state: "maximized"
+    });
 });
 
 
