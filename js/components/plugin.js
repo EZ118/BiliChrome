@@ -4,14 +4,6 @@ const pluginRemoteSourceURL = "https://gitee.com/EZ118/BiliChromePlugin/raw/main
 const plugin_storageKey_script = "single_plugin";
 const plugin_storageKey_hash = "single_plugin_hash";
 
-function hash(str) {
-    let hash = 5381;
-    for (let i = 0; i < str.length; i++) {
-        hash = (hash * 33) ^ str.charCodeAt(i);
-    }
-    return (hash >>> 0).toString();
-}
-
 function checkPluginSafety(codeString) {
     let checks = [];
     const maxLineLength = 200;

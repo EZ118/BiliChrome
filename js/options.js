@@ -1,61 +1,6 @@
-function areKeysEqual(dict1, dict2) {
-    const keys1 = Object.keys(dict1);
-    const keys2 = Object.keys(dict2);
-
-    if (keys1.length !== keys2.length) {
-        return false;
-    }
-    const keySet1 = new Set(keys1);
-    for (const key of keys2) {
-        if (!keySet1.has(key)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 /* 自定义Toast */
 function showToast(message, duration) {
 	sober.Snackbar.show(message);
-}
-
-/* 本地存储接口 */
-function getStorage(key, callback) {
-    chrome.storage.local.get([key], (result) => {
-        if (result[key]) {
-            callback(result[key]);
-        } else {
-            callback(null);
-        }
-    });
-}
-
-function setStorage(key, value) {
-    chrome.storage.local.set({ [key]: value });
-}
-
-function removeStorage(key, callback) {
-    chrome.storage.local.remove(key, () => {
-        if (callback) {
-            callback();
-        }
-    });
-}
-
-function getConfig(item, callback) {
-    const itemFamily = item.split(".")[0];
-    const itemKey = item.split(".")[1];
-    chrome.storage.local.get([itemFamily], function (result) {
-        try {
-            if (result[itemFamily] && result[itemFamily][itemKey]) {
-                callback(result[itemFamily][itemKey]);
-            } else {
-                callback(null);
-            }
-        } catch {
-            callback(null);
-        }
-    });
 }
 
 function getAccount(uid, callback) {
@@ -119,15 +64,7 @@ function getJctToken(callback) {
         callback(finalVal);
     });
 }
-function downloadFile(fileName, text) {
-    const url = window.URL || window.webkitURL || window;
-    const blob = new Blob([text]);
-    const saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
-    saveLink.href = url.createObjectURL(blob);
-    // 设置 download 属性
-    saveLink.download = fileName;
-    saveLink.click();
-}
+
 function saveSubscriptionForPipePipe(uid) {
     var requests = [];
     var finalList = [];

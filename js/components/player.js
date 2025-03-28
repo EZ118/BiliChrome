@@ -133,7 +133,7 @@ class VideoPlayer {
 			var desc = VideoInfo["data"]["desc"] || "-";
 		
 			desc = desc.replace(/\n/g, "<br>");
-			desc = this.limitConsecutiveChars(desc);
+			desc = limitConsecutiveChars(desc);
 		
 			this.ele_title.html(VideoInfo["data"]["title"]);
 			this.ele_descArea.html("<b class='player_blockTitle'>详情</b><br>" + desc);
@@ -147,7 +147,7 @@ class VideoPlayer {
 		
 			getUserCard(VideoInfo["data"]["owner"]["mid"], (card) => {
 				/* 获取UP主卡片 */
-				$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">` + this.limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"') + `</a>`);
+				$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">` + limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"') + `</a>`);
 			});
 		
 			$.get(`https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=${aid}`, (ReplyInfo) => {
@@ -243,12 +243,6 @@ class VideoPlayer {
 		this.option = {};
 
 		window.location.hash = "#default";
-	}
-
-	limitConsecutiveChars(str) {
-		// 只允许字符串中连续出现n个相同字符
-		const maxConsecutive = 10;
-		return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
 	}
 
 	parseComments(comments) {
