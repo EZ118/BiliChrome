@@ -3,8 +3,10 @@ var player = null; // 播放器实例
 var live_player = null; // 直播间实例
 var modal = null; // 模态实例
 var search = null; // 搜索实例
+var plugin = null; // 插件实例
 
 var currentTab = "home";
+var currentUid = null;
 var lastDynamicOffset = null;
 
 function getVidPlayingNow() {
@@ -104,22 +106,28 @@ $(document).ready(() => {
     player = new VideoPlayer();
     live_player = new LivePlayer();
     modal = new Modal();
+    plugin = new JsPlugin();
+
+    // 初始化页面
     search = new Search();
 
     document.referrer = "https://www.bilibili.com/";
 
     getAccount("auto", (usrInfo) => {
-        /* 载入用户信息 */
+        // 载入用户信息
         currentUid = usrInfo.uid;
         if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后再使用", 8000) }
     });
 
-    /* 获取登录token */
+    // 获取登录token
     getJctToken((token) => biliJctData = token);
 
+    // 初始动作
     getVidPlayingNow();
     routeCtrl(isOnload = true);
+    plugin.run();
 
+    // 控制路由
     window.addEventListener('popstate', (event) => routeCtrl());
 
     /* 侧边主菜单 */
@@ -159,9 +167,6 @@ $(document).ready(() => {
         // 全局返回按钮
         window.history.back();
     });
-
-    /* 插件初始化 */
-    pluginInit();
 });
 
 $("#RefreshBtn").click(() => {
