@@ -147,6 +147,7 @@ s-snackbar a{ color:#00AEEC; }
 #chat_container .dialog_msgBubble_me { width:fit-content; max-width:80%; padding:6px 9px; background:var(--s-color-surface-container-high); border-radius:12px 0px 12px 12px; margin:5px 3px; margin-left:auto; user-select:text; }
 
 /* 搜索页 */
+.search_historyItem { margin:2px 3px; }
 .search_pageSwitcher { margin:10px auto; position:relative; left:50%; transform: translateX(-50%); }
 .search_typeTab { justify-content:left; }
 .search_titlebar { font-size:medium; font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }

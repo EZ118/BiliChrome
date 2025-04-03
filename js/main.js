@@ -2,6 +2,7 @@ var biliJctData = "";
 var player = null; // 播放器实例
 var live_player = null; // 直播间实例
 var modal = null; // 模态实例
+var search = null; // 搜索实例
 
 var currentTab = "home";
 var lastDynamicOffset = null;
@@ -103,6 +104,7 @@ $(document).ready(() => {
     player = new VideoPlayer();
     live_player = new LivePlayer();
     modal = new Modal();
+    search = new Search();
 
     document.referrer = "https://www.bilibili.com/";
 
@@ -135,7 +137,7 @@ $(document).ready(() => {
         } else if (currentTab == "space") {
             spaceInit();
         } else if (currentTab == "search") {
-            searchInit();
+            search.display();
         }
     });
 
@@ -169,7 +171,7 @@ $("#RefreshBtn").click(() => {
     } else if (currentTab == "message") {
         messageInit(refresh = true);
     } else if (currentTab == "search") {
-        searchInit(refresh = true);
+        search.search(search.keyword, search.page, search.type);
     } else if (currentTab == "subscriptions") {
         dynamicInit(refresh = true);
     } else if (currentTab == "space") {
