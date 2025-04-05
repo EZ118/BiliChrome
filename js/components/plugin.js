@@ -2,7 +2,11 @@
 
 class JsPlugin {
     constructor() {
+        // 初始化脚本eval5解释器
         this.interpreter = new eval5.Interpreter(window);
+
+        // 远程插件源地址，通过在F12控制台中执行 plugin.remoteSourceURL="https://xxxx" 临时使用其他源（只能用gitee.com的文件）
+        // 配置自己的插件源可以参考：https://gitee.com/EZ118/BiliChromePlugin/
         this.remoteSourceURL = "https://gitee.com/EZ118/BiliChromePlugin/raw/main/plugins.json";
 
         // 本地存储键名（_script用于存储脚本代码；_hash用于存储脚本哈希值，主要用于分辨是否安装的是同一款脚本）
