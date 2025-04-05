@@ -192,7 +192,7 @@ function getWatchLater() {
             desc: item.desc,
             author: { uid: item.owner.mid, name: item.owner.name }
         }));
-        modal.open("稍后再看", "<div class='flex_container'>" + card.video(vidList) + "</div>", "https://www.bilibili.com/watchlater/#/list");
+        modal.open("稍后再看", "<div class='flex_container'>" + card.video(vidList, true) + "</div>", "https://www.bilibili.com/watchlater/#/list");
     });
 }
 

@@ -1,4 +1,3 @@
-var biliJctData = "";
 var player = null; // 播放器实例
 var live_player = null; // 直播间实例
 var modal = null; // 模态实例
@@ -7,6 +6,7 @@ var plugin = null; // 插件实例
 
 var currentTab = "home";
 var currentUid = null;
+var biliJctData = "";
 var lastDynamicOffset = null;
 
 function getVidPlayingNow() {

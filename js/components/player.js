@@ -158,7 +158,7 @@ class VideoPlayer {
 					// 当用户点击了评论回复，则显示更多评论
 					const clickedEle = $(evt.target);
 					let rpid = clickedEle.parent().parent().attr("rpid") || clickedEle.parent().attr("rpid") || clickedEle.attr("rpid");
-					this.showMoreReplies(rpid); // 这里的 this 指向 class 实例
+					this.showMoreReplies(rpid);
 				});
 			});
 		});
@@ -167,66 +167,34 @@ class VideoPlayer {
 
 		/* 侧边栏列表 */
 		if (option.videoList == "watch_later") {
-			/* 如果是从稍后再看列表进入的话，侧边栏显示稍后再看列表 */
+			// 如果是从稍后再看列表进入的话，侧边栏显示稍后再看列表
 			$("#player_sidebarTab_2").text("稍后再看");
 
 			$.get(`https://api.bilibili.com/x/v2/history/toview`, (tjlist) => {
-				var WebList = "";
-				$.each(tjlist.data.list, (index, item) => {
-					WebList += `
-						<s-card clickable="true" class="slim_video_card">
-							<div class="card-image">
-								<a href="#bvid_${item.bvid}_watchlater">
-									<img src='${item.pic}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-								</a>
-							</div>
-							<div class="card-content">
-								<div class="card-subhead">
-									<a href="#bvid_${item.bvid}_watchlater">
-										${item.title}
-									</a>
-								</div>
-								<div class="card-text">
-									<a href="#bvid_${item.bvid}_watchlater">
-										${item.owner.name}
-									</a>
-								</div>
-							</div>
-						</s-card>
-						`;
-				});
-				this.ele_videoList.html(WebList);
+				var WebList = tjlist.data.list.map(item => ({
+					bvid: item.bvid,
+					aid: item.aid,
+					pic: item.pic,
+					title: item.title,
+					desc: '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介"),
+					author: { uid: item.owner.mid, name: item.owner.name }
+				}));
+				this.ele_videoList.html(card.video_slim(WebList, true));
 			});
 		} else {
-			/* 如果是从普通视频页面进入的话，侧边栏显示推荐视频 */
+			// 如果是从普通视频页面进入的话，侧边栏显示推荐视频
 			$("#player_sidebarTab_2").text("相关推荐");
 
-			$.get(`https://api.bilibili.com/x/web-interface/archive/related?${urlStr}`, (res) => {
-				var WebList = "";
-				$.each(res.data, (index, item) => {
-					WebList += `
-						<s-card clickable="true" class="slim_video_card">
-							<div class="card-image">
-								<a href="#bvid_${item.bvid}">
-									<img src='${item.pic}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;'>
-								</a>
-							</div>
-							<div class="card-content">
-								<div class="card-subhead">
-									<a href="#bvid_${item.bvid}">
-										${item.title}
-									</a>
-								</div>
-								<div class="card-text">
-									<a href="#bvid_${item.bvid}">
-										${item.owner.name}
-									</a>
-								</div>
-							</div>
-						</s-card>
-						`;
-				});
-				this.ele_videoList.html(WebList);
+			$.get(`https://api.bilibili.com/x/web-interface/archive/related?${urlStr}`, (tjlist) => {
+				var WebList = tjlist.data.map(item => ({
+					bvid: item.bvid,
+					aid: item.aid,
+					pic: item.pic,
+					title: item.title,
+					desc: '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介"),
+					author: { uid: item.owner.mid, name: item.owner.name }
+				}));
+				this.ele_videoList.html(card.video_slim(WebList));
 			});
 		}
 

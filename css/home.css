@@ -34,7 +34,7 @@ html{ height:100%; width:100%; }
 #player_descArea{user-select:text;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;height:calc(100vh - 132px);font-size:16px;overflow:hidden auto}
 #player_descArea hr{margin:3px;border:none;border-bottom:1px solid var(--s-color-surface-container-high)}
 #player_videoList{user-select:none;word-wrap:break-word;word-break:break-all;width:100%;height:calc(100vh - 132px);font-size:16px;overflow-y:auto;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center}
-#player_simpleDanmu{width:fit-content;max-width:calc(100vw - 360px);position:fixed;top:50px;left:10px;z-index:104;font-size:16px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
+#player_simpleDanmu{width:fit-content;max-width:calc(100vw - 360px);min-width:300px;position:fixed;top:50px;left:10px;z-index:104;font-size:16px;word-wrap:break-word;word-break:break-all;white-space:pre-wrap;}
 .player_danmuText{width:fit-content;max-width:500px;font-size:18px;font-weight:bold;opacity:0.8;z-index:104;position:fixed;color:#EEEEEE;text-shadow:0 0 2px #000}
 .player_cidListItem{margin:3px;width:fit-content;cursor:pointer;user-select:none;white-space:nowrap}
 .player_blockTitle{font-size:large;font-weight:400;color:var(--s-color-primary);padding:0px 10px;border:0;border-left:8px solid;margin:3px 0px;}
@@ -118,7 +118,7 @@ s-snackbar a{ color:#00AEEC; }
 .myspace_subSection a { margin:10px; flex-grow:1; }
 
 /* 用户空间动态 */
-.space_singlebox{ margin:0; width:60%; min-width:200px; max-width:500px; font-size:16px; overflow:hidden; padding:10px; cursor:pointer; color:var(--s-color-on-surface); border-bottom:1px solid var(--s-color-surface-container-high); }
+.space_singlebox{ margin:0; width:60%; min-width:250px; max-width:500px; font-size:16px; overflow:hidden; padding:10px; cursor:pointer; color:var(--s-color-on-surface); border-bottom:1px solid var(--s-color-surface-container-high); }
 .space_singlebox .videopic{ width:100%; border-radius:10px; -webkit-user-drag:none; }
 .space_singlebox .dailypic{ width:100px; height:100px; object-fit:contain; border-radius:5px; -webkit-user-drag:none; margin:5px; }
 .space_singlebox_un{ color:var(--s-color-on-surface-variant); font-size:14px; width:100%; overflow:hidden; }
@@ -174,6 +174,14 @@ s-snackbar a{ color:#00AEEC; }
 		width: 100%!important;
 		height:fit-content;
 		max-width: none;
+		border-radius: 0px;
+	}
+	#player_title {
+		font-size: 14px;
+		width: calc(100vw - 100px);
+	}
+	#player_descArea, #player_videoList{
+		height:calc(100vh - 130px - 100vw * 9 / 16);
 	}
 	
 	
@@ -188,6 +196,14 @@ s-snackbar a{ color:#00AEEC; }
 		height:fit-content;
 		max-width: none;
 	}
+
+
+	#dlg_title {
+		width: calc(100vw - 200px);
+		font-size: 14px;
+		display:inline-block;
+		overflow: hidden;
+	}
 }
 
 
@@ -196,7 +212,7 @@ s-snackbar a{ color:#00AEEC; }
 	z-index层级：
 	104:滚动弹幕，自定义对话框（isTop=true）
 	103:播放器
-	102:自定义对话框
+	102:自定义对话框（isTop=false）
 	101:刷新按钮
 	120:加载球
 */
