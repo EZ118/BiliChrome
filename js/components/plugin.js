@@ -30,7 +30,7 @@ class JsPlugin {
                 reader.onload = function (e) {
                     var content = e.target.result;
 
-                    if (checkPluginSafety(content)) {
+                    if (this.checkPluginSafety(content)) {
                         localStorage.setItem(this.storeKey_script, content);
                         localStorage.setItem(this.storeKey_hash, hash(content));
                         modal.toast("插件已导入，刷新后生效");
@@ -150,7 +150,7 @@ class JsPlugin {
         });
         $("#plugin_removeBtn").click(() => {
             this.remove();
-            setTimeout(this.manager, 100);
+            setTimeout(this.manager, 200);
         });
 
         $.get(this.remoteSourceURL, (resdata) => {
@@ -189,7 +189,7 @@ class JsPlugin {
                 }
 
                 $.get(absoluteUrl, (script) => {
-                    if (checkPluginSafety(script)) {
+                    if (this.checkPluginSafety(script)) {
                         localStorage.setItem(this.storeKey_script, script);
                         localStorage.setItem(this.storeKey_hash, hash(this.remoteSourceURL + purl));
                         modal.toast("插件已安装，刷新后生效");

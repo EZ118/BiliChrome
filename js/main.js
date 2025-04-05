@@ -87,7 +87,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("plugins")) {
         /* 显示插件管理器对话框 */
-        showPluginManager();
+        plugin.manager();
 
     } else if (data == "default") {
         /* 不做任何事情 */
