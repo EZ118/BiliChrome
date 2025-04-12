@@ -58,6 +58,34 @@ var card = {
 
         return WebList;
     },
+    bangumi: (bangumiList) => {
+        // 显示番剧卡片（场景：番剧列表）
+        var WebList = "";
+        $.each(bangumiList, function (index, item) {
+            var bsdata = "bangumi_" + item.media_id;
+
+            WebList += `
+                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
+                    <div slot="image" style="overflow:hidden;">
+                        <a href="#${bsdata}">
+                            <img src='${item.pic}@412w_232h_1c.webp' style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                        </a>
+                    </div>
+                    <div slot="subhead">
+                        <a href="#${bsdata}">
+                            ${item.title}
+                        </a>
+                    </div>
+                    <div slot="text">
+                        <a href="#default">
+                            ${item.desc || ""}
+                        </a>
+                    </div>
+                </s-card>`;
+        });
+
+        return WebList;
+    },
     user: (userList) => {
         // 显示用户卡片（场景：订阅列表、搜索用户）
         var WebList = "";
