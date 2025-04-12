@@ -52,7 +52,7 @@ function getUserSpace(uid, isTop) {
                 /* 如果动态内容是视频 */
                 var video = card_json.modules.module_dynamic.major.archive;
                 VidDesc = video.title;
-                ImgUrl = '<img class="videopic" src="' + video.cover + '@530w_300h_1c.webp" onerror="this.remove()" loading="lazy" />';
+                ImgUrl = '<img class="videopic" src="' + video.cover + '@530w_300h_1c.webp" onerror="this.remove()" loading="eager" />';
                 LinkUrl = "bvid_" + video.bvid;
             } else if (dynamicType === 'DYNAMIC_TYPE_WORD' || dynamicType === 'DYNAMIC_TYPE_DRAW') {
                 /* 如果动态内容是文字 */
@@ -60,7 +60,7 @@ function getUserSpace(uid, isTop) {
                 if (dynamicType === 'DYNAMIC_TYPE_DRAW' && card_json.modules.module_dynamic.major) {
                     /* 如果动态内容含图片 */
                     $.each(card_json.modules.module_dynamic.major.draw.items, function (index, item) {
-                        ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg" loading="lazy" /></a>`;
+                        ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg" loading="eager" /></a>`;
                         if (index % 3 == 2) {
                             ImgUrl += "<br>";
                         }

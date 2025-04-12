@@ -224,7 +224,7 @@ class VideoPlayer {
 			/* 显示评论图片 */
 			let pictureList = "";
 			if (content.pictures && content.pictures.length > 0) {
-				$.each(content.pictures, (index, pic) => pictureList += `<a href="#img-${pic.img_src}-top"><img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='lazy' /></a>`);
+				$.each(content.pictures, (index, pic) => pictureList += `<a href="#img-${pic.img_src}-top"><img src='${pic.img_src}@176w_176h_1c_1s.avif' class='image' loading='eager' /></a>`);
 			}
 
 			/* 显示评论回复 */

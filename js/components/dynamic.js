@@ -63,7 +63,7 @@ class DynamicView {
             response.data.up_list.forEach(item => {
                 $(".dynamic_list").append(`
                     <s-card class="dynamic_listItem" type="outlined" clickable="true" uid="${item.mid}">
-                        <img class="avatar" src="${item.face}@42w_42h_1c.webp" loading="lazy" />
+                        <img class="avatar" src="${item.face}@42w_42h_1c.webp" loading="eager" />
                         <span class="title">${item.uname}</span>
                         ${item.has_update ? "<s-badge class='badge'></s-badge>" : ""}
                     </s-card>

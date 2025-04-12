@@ -5,6 +5,7 @@ var plugin = null; // 插件实例
 
 var search = null; // 搜索实例
 var dynamic = null; // 动态实例
+var home = null; // 首页实例
 
 var currentTab = "home";
 var currentUid = null;
@@ -12,6 +13,7 @@ var biliJctData = "";
 var lastDynamicOffset = null;
 
 function getVidPlayingNow() {
+    // 获取其他设备正在播放的视频
     $.get(`https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200`, (vidInfo) => {
         if (vidInfo.data != null) {
             modal.notification(
@@ -94,12 +96,12 @@ function routeCtrl(isOnload, hash) {
     } else if (data == "default") {
         /* 不做任何事情 */
     } else {
-        //modal.toast("链接错误，点击边栏按钮以重载页面");
-        //homeInit();
+        // modal.toast("链接错误，点击边栏按钮以重载页面");
+        // home.display();
     }
 
     if (isOnload == true) {
-        homeInit();
+        home.display();
     }
 }
 
@@ -113,11 +115,10 @@ $(document).ready(() => {
     // 初始化页面
     search = new SearchView();
     dynamic = new DynamicView();
+    home = new HomeView();
 
-    document.referrer = "https://www.bilibili.com/";
-
+    // 获取用户信息
     getAccount("auto", (usrInfo) => {
-        // 载入用户信息
         currentUid = usrInfo.uid;
         if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后再使用", 8000) }
     });
@@ -140,7 +141,7 @@ $(document).ready(() => {
         currentTab = link.substring(5);
 
         if (currentTab == "home") {
-            homeInit();
+            home.display();
         } else if (currentTab == "message") {
             messageInit();
         } else if (currentTab == "subscriptions") {
@@ -175,7 +176,7 @@ $(document).ready(() => {
 $("#RefreshBtn").click(() => {
     /* 刷新 */
     if (currentTab == "home") {
-        homeInit(refresh = true);
+        home.display(refresh = true);
     } else if (currentTab == "message") {
         messageInit(refresh = true);
     } else if (currentTab == "search") {

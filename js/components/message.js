@@ -5,7 +5,7 @@ function showMsgReply() {
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <a href="#uid_${item.user.mid}">
                     <div class='thinstrip_msgBox_headline'>
-                        <img src='${item.user.avatar}@45w_45h_1c.webp' loading="lazy" />
+                        <img src='${item.user.avatar}@45w_45h_1c.webp' loading="eager" />
                         <span class='thinstrip_msgBox_username'>${item.user.nickname}</span>
                     </div>
                 </a>
@@ -29,7 +29,7 @@ function showAtMe() {
             WebList += `<s-ripple class='thinstrip_msgBox'>
                 <div class='thinstrip_msgBox_headline'>
                     <a href="#uid_${item.user.mid}">
-                        <img src='${item.user.avatar}@45w_45h_1c.webp' title='${item.user.nickname}' loading="lazy" />
+                        <img src='${item.user.avatar}@45w_45h_1c.webp' title='${item.user.nickname}' loading="eager" />
                     </a>
                     <span class='thinstrip_msgBox_username'>在${item.item.business}中@了你</span>
                 </div>
@@ -55,7 +55,7 @@ function showRecentLikes() {
             let UserList = "";
             $.each(item.users, function (ind, user) {
                 UserList += `<a href="#uid_${user.mid}">
-                        <img src='${user.avatar}@45w_45h_1c.webp' title='${user.nickname}' loading="lazy" />
+                        <img src='${user.avatar}@45w_45h_1c.webp' title='${user.nickname}' loading="eager" />
                     </a>`;
             });
 
@@ -149,7 +149,7 @@ function showMsgSessions() {
                 if (!userInfo[item.talker_id]) { return; }
                 $(".chat_list").append(`
                     <s-card class="chat_listItem" type="outlined" clickable="true" talker-uid="${item.talker_id}">
-                        <img class="avatar" src="${userInfo[item.talker_id].face}@42w_42h_1c.webp" loading="lazy" />
+                        <img class="avatar" src="${userInfo[item.talker_id].face}@42w_42h_1c.webp" loading="eager" />
                         <span class="title">${userInfo[item.talker_id].name}</span>
                     </s-card>
                 `)
