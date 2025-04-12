@@ -1,6 +1,6 @@
 /* 自定义Toast */
 function showToast(message, duration) {
-	sober.Snackbar.show(message);
+	sober.Snackbar.builder(message);
 }
 
 function getAccount(uid, callback) {
