@@ -1,4 +1,4 @@
-class Search {
+class SearchView {
     constructor() {
         this.keyword = "";
         this.page = 1;

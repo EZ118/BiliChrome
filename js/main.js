@@ -1,8 +1,10 @@
 var player = null; // 播放器实例
 var live_player = null; // 直播间实例
 var modal = null; // 模态实例
-var search = null; // 搜索实例
 var plugin = null; // 插件实例
+
+var search = null; // 搜索实例
+var dynamic = null; // 动态实例
 
 var currentTab = "home";
 var currentUid = null;
@@ -109,7 +111,8 @@ $(document).ready(() => {
     plugin = new JsPlugin();
 
     // 初始化页面
-    search = new Search();
+    search = new SearchView();
+    dynamic = new DynamicView();
 
     document.referrer = "https://www.bilibili.com/";
 
@@ -141,7 +144,7 @@ $(document).ready(() => {
         } else if (currentTab == "message") {
             messageInit();
         } else if (currentTab == "subscriptions") {
-            dynamicInit();
+            dynamic.display();
         } else if (currentTab == "space") {
             spaceInit();
         } else if (currentTab == "search") {
@@ -178,7 +181,7 @@ $("#RefreshBtn").click(() => {
     } else if (currentTab == "search") {
         search.search(search.keyword, search.page, search.type);
     } else if (currentTab == "subscriptions") {
-        dynamicInit(refresh = true);
+        dynamic.display(refresh = true);
     } else if (currentTab == "space") {
         spaceInit(refresh = true);
     }
