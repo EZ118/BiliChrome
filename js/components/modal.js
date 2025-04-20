@@ -91,7 +91,7 @@ $(document).ready(function () {
 			} else if (!liveHidden) {
 				live_player.close();
 			} else if (!dlgHidden) {
-				closeDlg();
+				modal.close();
 			} else {
 				player.close();
 			}

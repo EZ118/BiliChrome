@@ -14,62 +14,7 @@ class JsPlugin {
         this.storeKey_hash = "single_plugin_hash";
     }
 
-    import(callback) {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.js';
-        input.style.display = 'none';
-        input.addEventListener('change', function (event) {
-            var file = event.target.files[0];
-
-            if (file) {
-                //var fileName = file.name;
-                var reader = new FileReader();
-
-                // 定义文件读取完成后的回调
-                reader.onload = function (e) {
-                    var content = e.target.result;
-
-                    if (this.checkPluginSafety(content)) {
-                        localStorage.setItem(this.storeKey_script, content);
-                        localStorage.setItem(this.storeKey_hash, hash(content));
-                        modal.toast("插件已导入，刷新后生效");
-
-                        if (callback) { callback(); }
-                    }
-                };
-
-                // 读取文件内容
-                reader.readAsText(file);
-            } else {
-                console.log("用户没有选择文件");
-            }
-        });
-        input.click();
-    }
-
-    remove() {
-        localStorage.removeItem(this.storeKey_script);
-        localStorage.removeItem(this.storeKey_hash);
-        modal.toast("插件已被移除，刷新后生效");
-    }
-
-    run() {
-        let script = localStorage.getItem(this.storeKey_script);
-
-        if (!script) { return; }
-        // if (!checkPluginSafety(script)) { modal.toast("插件未执行"); return; }
-        // else { modal.toast("插件开始执行"); }
-        // 目前先把执行前安全检查注释掉，便于调试。后续版本再恢复。
-        modal.toast("插件开始执行");
-
-        try {
-            this.interpreter.evaluate(script);
-        } catch (e) {
-            modal.toast("插件执行出错");
-            console.error(e);
-        }
-    }
+    
 
     checkPluginSafety(codeString) {
         let checks = [];
@@ -108,6 +53,63 @@ class JsPlugin {
         }
 
         return true; // 如果没有满足的项，默认返回 true
+    }
+
+    import(callback) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.js';
+        input.style.display = 'none';
+        input.addEventListener('change', (event) => {
+            var file = event.target.files[0];
+
+            if (file) {
+                //var fileName = file.name;
+                var reader = new FileReader();
+
+                // 定义文件读取完成后的回调
+                reader.onload = (e) => {
+                    var content = e.target.result;
+
+                    if (this.checkPluginSafety(content)) {
+                        localStorage.setItem(this.storeKey_script, content);
+                        localStorage.setItem(this.storeKey_hash, hash(content));
+                        modal.toast("插件已导入，刷新后生效");
+
+                        if (callback) { callback(); }
+                    }
+                };
+
+                // 读取文件内容
+                reader.readAsText(file);
+            } else {
+                console.log("用户没有选择文件");
+            }
+        });
+        input.click();
+    }
+
+    delete() {
+        localStorage.removeItem(this.storeKey_script);
+        localStorage.removeItem(this.storeKey_hash);
+        modal.toast("插件已被移除，刷新后生效");
+    }
+
+    run() {
+        let script = localStorage.getItem(this.storeKey_script);
+
+        if (!script) { return; }
+        // if (!checkPluginSafety(script)) { modal.toast("插件未执行"); return; }
+        // else { modal.toast("插件开始执行"); }
+        // 目前先把执行前安全检查注释掉，便于调试。后续版本再恢复。
+        modal.toast("插件开始执行");
+
+        try {
+            this.interpreter.evaluate(script);
+        } catch (e) {
+            modal.toast("插件执行出错");
+            console.error(e);
+        }
     }
 
     manager() {
@@ -149,8 +151,8 @@ class JsPlugin {
             this.import(this.manager);
         });
         $("#plugin_removeBtn").click(() => {
-            this.remove();
-            setTimeout(this.manager, 200);
+            this.delete();
+            setTimeout(() => this.manager(), 200);
         });
 
         $.get(this.remoteSourceURL, (resdata) => {

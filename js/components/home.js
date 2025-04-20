@@ -118,13 +118,14 @@ class HomeView {
         $("#dynamic_loader").show();
 
         $.get(
-            "https://api.live.bilibili.com/xlive/web-interface/v1/second/getUserRecommend?page=1&page_size=30&platform=web",
+            /* "https://api.live.bilibili.com/xlive/web-interface/v1/second/getUserRecommend?page=1&page_size=30&platform=web", */
+            "https://api.live.bilibili.com/room/v1/Index/getShowList?page=1&page_size=30&platform=web",
             (tjlist) => {
-                const vidList = tjlist.data.list.map((item) => ({
+                const vidList = tjlist.data.map((item) => ({
                     roomid: item.roomid,
-                    pic: item.cover,
+                    pic: item.user_cover,
                     title: item.title,
-                    desc: `- 分区: ${item.parent_name}/${item.area_name}`,
+                    desc: `- 分区: ${item.area_name}/${item.area_v2_name}`,
                     author: { uid: item.uid, name: item.uname },
                 }));
 
