@@ -54,7 +54,7 @@ class VideoPlayer {
 		$("#player_highQnBtn").click(() => {
 			/* 切换高画质 */
 			this.config.HD_Quality_As_Default = !this.config.HD_Quality_As_Default;
-			modal.toast("已切换至" + (this.config.Advanced_DanMu_As_Default ? "高画质" : "低画质"), 5000);
+			modal.toast("已切换至" + (this.config.HD_Quality_As_Default ? "高画质" : "低画质"), 5000);
 			this.loadVideoSource(this.bvid, this.cid);
 		});
 
@@ -94,8 +94,19 @@ class VideoPlayer {
 			} catch (e) { console.log("弹幕装填出错（显示时）" + e) }
 		}, 100);
 
-		// 视频播放完毕
-		this.ele_videoContainer.bind('ended', function () {
+		// 视频播放器事件绑定
+		this.ele_videoContainer.bind('loadedmetadata', () => {
+			// 视频帧加载完毕后自动播放
+			this.ele_videoContainer[0].play();
+			
+			$("#dynamic_loader").hide();
+		});
+		this.ele_videoContainer.bind('error', () => {
+			// 视频加载失败，关闭加载球
+			$("#dynamic_loader").hide();
+		});
+		this.ele_videoContainer.bind('ended', () => {
+			// 视频播放完毕，重置时间和弹幕计数器
 			$("#player_videoContainer")[0].currentTime = 0;
 			this.danmuCnt = 0;
 			modal.toast("视频播放完毕", 1000);
@@ -107,6 +118,9 @@ class VideoPlayer {
 	open(option) {
 		// 显示播放器并展示指定视频
 		// option 示例：{ bvid: "BV1Zy4y1C7ZV", aid: "123456", videoList: "watch_later", refreshOnly: false }
+
+		// 显示加载球
+        $("#dynamic_loader").show();
 
 		/* 视频ID */
 		var urlStr = "";
@@ -211,6 +225,9 @@ class VideoPlayer {
 		this.option = {};
 
 		window.location.hash = "#default";
+
+		
+        $("#dynamic_loader").hide();
 	}
 
 	parseComments(comments) {
