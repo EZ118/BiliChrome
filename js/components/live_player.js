@@ -18,7 +18,7 @@ class LivePlayer {
 			danmuReqFrequency: 6000, // 实时评论获取频率（请求1次/6000毫秒）
 			danmuMaxSum: 60, // 最大显示弹幕数量
 			showDanmu: true, // 是否显示实时评论
-			quality: 3, // 视频画质, 2：流畅 3：高清 4：原画
+			quality: 2, // 视频画质, 2：流畅 3：高清 4：原画
 		};
 
 		// 初始化事件监听
