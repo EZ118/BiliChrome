@@ -89,36 +89,22 @@ class HomeView {
         // 显示加载动画
         $("#dynamic_loader").show();
 
-        let WebList = "";
-        const requests = [];
-
-        for (let i = 1; i <= 2; i++) {
-            const request = $.get(
-                "https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14",
-                (tjlist) => {
-                    const vidList = tjlist.data.item.map((item) => ({
-                        bvid: item.bvid,
-                        aid: item.id,
-                        pic: item.pic,
-                        title: item.title,
-                        desc: item.title,
-                        author: { uid: item.owner.mid, name: item.owner.name },
-                    }));
-                    WebList += card.video(vidList);
-                }
-            );
-
-            requests.push(request);
-        }
-
-        $.when.apply($, requests).done(() => {
-            $(".tab_container").append(WebList);
+        $.get("https://api.bilibili.com/x/web-interface/index/top/rcmd?fresh_type=3&version=1&ps=14", (tjlist) => {
+            const vidList = tjlist.data.item.map((item) => ({
+                bvid: item.bvid,
+                aid: item.id,
+                pic: item.pic,
+                title: item.title,
+                desc: item.title,
+                author: { uid: item.owner.mid, name: item.owner.name },
+            }));
+            
+            $(".tab_container").append(card.video(vidList));
             $("#dynamic_loader").hide();
         });
     }
 
     getPopularVideos() {
-        console.log(this.currentPage);
         // 显示加载动画
         $("#dynamic_loader").show();
 
