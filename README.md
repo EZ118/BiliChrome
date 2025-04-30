@@ -17,7 +17,7 @@
 <img src="https://ez118.github.io/biliweb/shot2.png" width="32%" alt="消息" />
 <img src="https://ez118.github.io/biliweb/shot3.png" width="32%" alt="搜索" /><br/>
 <img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
-<img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="设置" />
+<img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="动态" />
 <img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/><br/>
 QQ群：1023133212
 </div>
@@ -62,17 +62,19 @@ QQ群：1023133212
   - [x] 私聊历史查询
 - [x] 设置板块
   - [x] 暗黑模式
-  - [x] 安装JS插件
+  - [x] JS插件管理器
   - [x] 账户基本信息
   - [x] 将关注列表导出至PipePipe
   - [x] 播放设置
 
 ## JS插件功能
-在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可获取EZ118（项目作者）制作的JS插件   
+自`v3.3.0`版本起，可通过“我的”->“插件管理”安装在线插件或加载本地插件。   
+
+在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码。   
 
 插件基于`eval5.js`实现，仅支持`ES5`标准，若报错请留意语法。   
 插件脚本在页面加载完成后执行，可访问 **所有数据/函数/变量/DOM** 。   
-导入插件前 **务必确认插件是否安全** ，用户需自行承担 由插件造成的数据泄露、功能不可用 的责任。   
+导入插件前 **请务必确认插件是否安全** 。   
 
 ## 视频演示
 2024年11月：[前往观看 >>](https://www.bilibili.com/video/BV1SZDAYtE73/)   
@@ -87,8 +89,7 @@ QQ群：1023133212
 - [bplok20010/eval5](https://github.com/bplok20010/eval5/)
 
 ## 开发计划
-- 将大部分组件封装类
+- 完整大部分组件的封装
 - 编写函数文档
-- JS插件管理器
 - “消息”页 私聊区 支持显示更多富文本内容/卡片。
 - 修复BUG
