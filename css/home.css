@@ -7,11 +7,14 @@ body{
 	display:flex;
 }
 html{ height:100%; width:100%; }
+*{ box-sizing:border-box; }
 
 /* 右侧列表通用容器 */
 #item_container{display:block;flex-grow:1;height:100vh;overflow:hidden auto;min-width:calc(100% - 80px)}
-.flex_container{display:flex;flex-wrap:wrap;align-content:flex-start;}
+.flex_container{display:flex;flex-wrap:wrap;}
 .options_frame{width:100%;height:99%;min-height:200px;border:none;border-radius:5px}
+
+.flex_hint_stripe{clear:both;display:flex;width:calc(100% - 14px);padding:5px;margin:7px;text-align:center;justify-content:center;font-size:small;background-color:var(--s-color-surface-container-high);color:var(--s-color-on-surface-variant);border:1px solid #3b3b3b3b;border-radius:12px;}
 
 /* 条形消息卡片 */
 .thinstrip_msgBox{background:transparent;border:1px solid #3b3b3b3b;border-radius:10px;padding:8px 10px;margin:5px;width:90%;margin-left:calc(5% - 10px)}
@@ -86,9 +89,10 @@ html{ height:100%; width:100%; }
 /* 顶部标签栏 */
 .tabbar{ display:flex; flex-direction:row; align-items:center; margin:10px 0px 2px 4px }
 .tabbar s-chip{ margin:0px 3px; }
+.tab_container{ align-content:flex-start; }
 
 /* Toast提示消息 */
-s-snackbar{ position:fixed; bottom:40px; left:50%; transform:translateX(-50%); z-index:9999;}
+s-snackbar{ z-index:9999; }
 s-snackbar a{ color:#00AEEC; }
 
 /* 动态页 - UP主列表 */
@@ -135,11 +139,11 @@ s-snackbar a{ color:#00AEEC; }
 .common_user_card_slim .right .sign { margin:0; font-size:small; color:var(--s-color-on-surface-variant); text-overflow:ellipsis; overflow:hidden; white-space:nowrap; display:inline-block; width:215px; }
 
 /* 消息页 - 私聊框 */
-#chat_container { margin:6px 0px 0px 7px; width:calc(100% - 24px); height:calc(100% - 68px); border:solid 1px #777680; border-radius:8px; padding:0px; }
-.chat_list {}
+#chat_container { margin:6px 0px 0px 7px; width:calc(100% - 14px); height:calc(100% - 58px); border:solid 1px #777680; border-radius:8px; padding:0px; }
+.chat_list { overflow: hidden auto; }
 .chat_listItem { width:calc(100% - 8px); display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; }
 .chat_listItem .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
-.chat_listItem .title {  font-weight:lighter; font-size:medium;}
+.chat_listItem .title { font-weight:lighter; font-size:medium;}
 #chat_container .dialog { font-size:medium; display:flex; flex-direction:column; }
 #chat_container .dialog_titlebar { font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
 #chat_container .dialog_content { width:calc(100% - 10px); flex-grow:1; padding:3px 5px; height:calc(100vh - 50px - 70px); }
