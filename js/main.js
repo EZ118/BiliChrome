@@ -6,6 +6,7 @@ var plugin = null; // 插件实例
 var search = null; // 搜索实例
 var dynamic = null; // 动态实例
 var home = null; // 首页实例
+var message = null; // 消息实例
 
 var currentTab = "home";
 var currentUid = null;
@@ -116,6 +117,7 @@ $(document).ready(() => {
     search = new SearchView();
     dynamic = new DynamicView();
     home = new HomeView();
+    message = new MessageView();
 
     // 获取用户信息
     getAccount("auto", (usrInfo) => {
@@ -143,7 +145,7 @@ $(document).ready(() => {
         if (currentTab == "home") {
             home.display();
         } else if (currentTab == "message") {
-            messageInit();
+            message.display();
         } else if (currentTab == "subscriptions") {
             dynamic.display();
         } else if (currentTab == "space") {
@@ -178,7 +180,7 @@ $("#RefreshBtn").click(() => {
     if (currentTab == "home") {
         home.display(refresh = true);
     } else if (currentTab == "message") {
-        messageInit(refresh = true);
+        message.display(refresh = true);
     } else if (currentTab == "search") {
         search.search(search.keyword, search.page, search.type);
     } else if (currentTab == "subscriptions") {
