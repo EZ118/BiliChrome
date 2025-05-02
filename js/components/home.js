@@ -89,7 +89,7 @@ class HomeView {
 
                 
                 // 隐藏滚动加载提示条
-                $(".flex_hint_stripe").css("opacity", "0").css("height", "0px").css("margin", "0px").css("padding", "0px 5px");
+                $(".flex_hint_stripe").css("opacity", "0");
             }
         });
     }
