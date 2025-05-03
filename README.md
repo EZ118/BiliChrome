@@ -19,7 +19,9 @@
 <img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
 <img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="动态" />
 <img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/><br/>
-QQ群：1023133212
+QQ群：1023133212   
+   
+（发现“受到神秘力量干扰，请稍后再试！”情况，最近较忙，需要1-2周时间才能解决）
 </div>
 
 ## 安装   
