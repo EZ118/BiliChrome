@@ -314,6 +314,11 @@ class VideoPlayer {
 		this.cid = cid;
 
 		$.get(`https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=${bvid}&cid=${cid}&qn=64&high_quality=${this.config.HD_Quality_As_Default ? 1 : 0}`, (result) => {
+			if(result.code != 0) {
+				modal.toast("受神秘力量控制，已启用备用方案");
+				this.ele_videoContainer.attr("src", "https://www.bilibili.com/blackboard/html5mobileplayer.html?bvid=" + bvid + "&cid=" + cid);
+				return;
+			}
 			this.ele_videoContainer.attr("src", result.data.durl[0].url);
 		});
 	}
