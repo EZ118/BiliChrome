@@ -5,7 +5,8 @@ class VideoPlayer {
 		this.ele_title = $("#player_title");
 		this.ele_descArea = $("#player_descArea");
 		this.ele_videoList = $("#player_videoList");
-		this.ele_videoContainer = $("#player_videoContainer");
+		this.ele_videoContainer = $("#player_videoContainer"); // 主播放器
+		this.ele_videoContainer_backup = $("#player_videoContainer_backup"); // 备用网页播放器
 		this.ele_danmu = $("#player_simpleDanmu");
 
 		// 播放器正在播放的视频ID
@@ -219,6 +220,7 @@ class VideoPlayer {
 		// 关闭播放器
 		this.ele_container.fadeOut(150);
 		this.ele_videoContainer.attr("src", "");
+		this.ele_videoContainer_backup.attr("src", "");
 		this.danmuList = [];
 		this.danmuCnt = 0;
 
@@ -315,11 +317,21 @@ class VideoPlayer {
 
 		$.get(`https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=${bvid}&cid=${cid}&qn=64&high_quality=${this.config.HD_Quality_As_Default ? 1 : 0}`, (result) => {
 			if(result.code != 0) {
-				modal.toast("受神秘力量控制，已启用备用方案");
-				this.ele_videoContainer.attr("src", "https://www.bilibili.com/blackboard/html5mobileplayer.html?bvid=" + bvid + "&cid=" + cid);
+				modal.toast("受到神秘力量干扰，已启用备用方案");
+
+				this.ele_videoContainer.hide();
+				this.ele_videoContainer_backup.show();
+				
+				this.ele_videoContainer_backup.attr("src", "https://www.bilibili.com/blackboard/html5mobileplayer.html?bvid=" + bvid + "&cid=" + cid);
+				
+				$("#dynamic_loader").hide();
 				return;
+			} else {
+				this.ele_videoContainer.show();
+				this.ele_videoContainer_backup.hide();
+
+				this.ele_videoContainer.attr("src", result.data.durl[0].url);
 			}
-			this.ele_videoContainer.attr("src", result.data.durl[0].url);
 		});
 	}
 
