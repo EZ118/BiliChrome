@@ -8,41 +8,64 @@ function getAccount(uid, callback) {
         if (detail) {
             callback(detail);
         } else if (!detail && uid && uid != "auto") {
-            $.get("https://api.bilibili.com/x/web-interface/card?mid=" + uid, function (data, status) {
-                var result = {
-                    "name": data.data.card.name,
-                    "uid": data.data.card.mid,
-                    "face": data.data.card.face,
-                    "sex": data.data.card.sex,
-                    "fans": data.data.card.fans,
-                    "sign": data.data.card.sign,
-                    "level": data.data.card.level_info.current_level,
-                    "coins": null
-                };
-                setStorage("account", result);
-                callback(result);
-            });
+            const url = `https://api.bilibili.com/x/web-interface/card?mid=${uid}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const result = {
+                        "name": data.data.card.name,
+                        "uid": data.data.card.mid,
+                        "face": data.data.card.face,
+                        "sex": data.data.card.sex,
+                        "fans": data.data.card.fans,
+                        "sign": data.data.card.sign,
+                        "level": data.data.card.level_info.current_level,
+                        "coins": null
+                    };
+                    setStorage("account", result);
+                    callback(result);
+                })
+                .catch(error => {
+                    console.error("[ERROR] 获取用户信息失败", error);
+                });
         } else if (!detail && uid == "auto") {
-            $.get("https://api.bilibili.com/x/space/v2/myinfo?", function (data, status) {
-                if (data.code == -101) {
-                    callback({ "name": null, "uid": null, "face": null, "sign": "未登录" });
-                    console.log("未登录");
-                }
-                var result = {
-                    "name": data.data.profile.name,
-                    "uid": data.data.profile.mid,
-                    "face": data.data.profile.face,
-                    "sex": data.data.profile.sex,
-                    "fans": data.data.follower,
-                    "sign": data.data.profile.sign,
-                    "level": data.data.profile.level,
-                    "coins": data.data.coins
-                };
-                setStorage("account", result);
-                callback(result);
-            })
+            const url = "https://api.bilibili.com/x/space/v2/myinfo?";
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.code == -101) {
+                        callback({ "name": null, "uid": null, "face": null, "sign": "未登录" });
+                        console.log("未登录");
+                        return;
+                    }
+                    const result = {
+                        "name": data.data.profile.name,
+                        "uid": data.data.profile.mid,
+                        "face": data.data.profile.face,
+                        "sex": data.data.profile.sex,
+                        "fans": data.data.follower,
+                        "sign": data.data.profile.sign,
+                        "level": data.data.profile.level,
+                        "coins": data.data.coins
+                    };
+                    setStorage("account", result);
+                    callback(result);
+                })
+                .catch(error => {
+                    console.error("[ERROR] 获取自动登录信息失败", error);
+                });
         }
-    })
+    });
 }
 
 function resetAccount() {
@@ -68,28 +91,54 @@ function getJctToken(callback) {
 }
 
 function saveSubscriptionForPipePipe(uid) {
-    var requests = [];
-    var finalList = [];
+    let requests = [];
+    let finalList = [];
 
     for (let i = 1; i <= 6; i++) {
-        let request = $.get("https://api.bilibili.com/x/relation/followings?vmid=" + uid + "&pn=" + i + "&ps=50&order=desc&order_type=attention", function (tjlist) {
-            if (tjlist.data.list.length <= 0) { return; }
-            $.each(tjlist.data.list, function (index, item) {
-                finalList.push({ "service_id": 5, "url": "https://space.bilibili.com/" + item.mid, "name": item.uname });
+        const url = `https://api.bilibili.com/x/relation/followings?vmid=${uid}&pn=${i}&ps=50&order=desc&order_type=attention`;
+
+        let request = fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(tjlist => {
+                if (tjlist.data.list.length <= 0) {
+                    return;
+                }
+                tjlist.data.list.forEach(item => {
+                    finalList.push({
+                        "service_id": 5,
+                        "url": `https://space.bilibili.com/${item.mid}`,
+                        "name": item.uname
+                    });
+                });
+            })
+            .catch(error => {
+                console.error("[ERROR] 获取订阅列表失败", error);
             });
-        });
 
         requests.push(request);
     }
 
-    $.when.apply($, requests).done(function () {
-        finalList = { "app_version": "3.4.3", "app_version_int": 105100, "subscriptions": finalList };
-        downloadFile("pipepipe_subscriptions_" + uid + ".json", JSON.stringify(finalList));
-    });
+    Promise.all(requests)
+        .then(() => {
+            finalList = {
+                "app_version": "3.4.3",
+                "app_version_int": 105100,
+                "subscriptions": finalList
+            };
+            downloadFile(`pipepipe_subscriptions_${uid}.json`, JSON.stringify(finalList));
+        })
+        .catch(error => {
+            console.error("[ERROR] 处理订阅列表时出错", error);
+        });
 }
 
 /* OPTIONS.HTML */
-$(document).ready(() => {
+document.addEventListener("DOMContentLoaded", () => {
     // 初始化页面
 
     // 默认设置
@@ -168,7 +217,7 @@ $(document).ready(() => {
             },
             openUserSpace() {
                 // 打开用户空间
-                if(!this.userInfo.uid) {
+                if (!this.userInfo.uid) {
                     showToast("请在登录后刷新该页面");
                     window.open("https://passport.bilibili.com/login?goto=https://www.bilibili.com/");
                 } else {
@@ -204,7 +253,7 @@ $(document).ready(() => {
 
             init() {
                 // 初始化设置
-                
+
                 // 移除加载界面
                 document.getElementsByClassName("container")[0].setAttribute("style", "");
                 document.getElementById("splashScreen").style.opacity = "0";
