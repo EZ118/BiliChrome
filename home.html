@@ -7,7 +7,7 @@
 	<title>BiliScape</title>
 	<link rel="stylesheet" type="text/css" href="./css/sober-theme.css">
 	<link rel="stylesheet" type="text/css" href="./css/home.css">
-	
+
 	<script src="./js/vendor/jquery.min.js"></script>
 	<script src="./js/vendor/sober.min.js"></script>
 	<script src="./js/vendor/hls.min.js"></script>
@@ -18,7 +18,8 @@
 	<s-page theme="auto">
 		<!-- 侧边栏 -->
 		<div style="display: flex; flex-direction: row; width:calc(100vw - 2px);">
-			<div style="width:fit-content; border-right:1px solid var(--s-color-surface-variant); background-color:var(--s-color-surface-container-high);">
+			<div
+				style="width:fit-content; border-right:1px solid var(--s-color-surface-variant); background-color:var(--s-color-surface-container-high);">
 				<s-navigation mode="rail">
 					<s-icon-button slot="start" type="filled-tonal" title="BiliScape" id="eggBtn">
 						<s-icon>
@@ -112,7 +113,8 @@
 			<div class="player_row" style="height:calc(100vh - 42px);">
 				<!-- 视频播放 -->
 				<video src="" id="player_videoContainer" class="player_videoContainer" controls></video>
-				<iframe src="" id="player_videoContainer_backup" class="player_videoContainer" style="border:0;overflow:hidden;display:none;"></iframe>
+				<iframe src="" id="player_videoContainer_backup" class="player_videoContainer"
+					style="border:0;overflow:hidden;display:none;"></iframe>
 
 				<!-- 播放器侧边栏 -->
 				<div
@@ -130,9 +132,9 @@
 						</s-icon-button>
 						<s-icon-button id="player_coinBtn" title="投币">
 							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+								<svg viewBox="0 -960 960 960">
 									<path
-										d="M360-120v-80H240v-80h80v-400h-80v-80h120v-80h80v80h80v-80h80v85q52 14 86 56.5t34 98.5q0 29-10 55.5T682-497q35 21 56.5 57t21.5 80q0 66-47 113t-113 47v80h-80v-80h-80v80h-80Zm40-400h160q33 0 56.5-23.5T640-600q0-33-23.5-56.5T560-680H400v160Zm0 240h200q33 0 56.5-23.5T680-360q0-33-23.5-56.5T600-440H400v160Z">
+										d="M600-160q-134 0-227-93t-93-227q0-134 93-227t227-93q134 0 227 93t93 227q0 134-93 227t-227 93Zm-320-10q-106-28-173-114T40-480q0-110 67-196t173-114v84q-72 25-116 87t-44 139q0 77 44 139t116 87v84Zm320-310Zm0 240q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Z">
 									</path>
 								</svg>
 							</s-icon>
@@ -291,7 +293,7 @@
 		<script src="./js/util.js"></script> <!-- 工具函数（主要调用CRX的API） -->
 		<script src="./js/options.js"></script> <!-- 用户数据组件（主要调用CRX的API） -->
 		<script src="./js/components/modal.js"></script> <!-- 对话框组件（Toast、半屏弹窗） -->
-		
+
 		<script src="./js/components/plugin.js"></script> <!-- 插件组件 -->
 		<script src="./js/components/cards.js"></script> <!-- 卡片组件 -->
 		<script src="./js/components/player.js"></script> <!-- 视频播放器 -->

@@ -53,10 +53,10 @@ function getConfig(item, callback) {
     // 获取扩展设置项（item示例：player.HD_Quality_As_Default）
     const itemFamily = item.split(".")[0];
     const itemKey = item.split(".")[1];
-    chrome.storage.local.get([itemFamily], function (result) {
+    chrome.storage.local.get([itemFamily], (result) => {
         try {
             if (result[itemFamily] && result[itemFamily][itemKey]) {
-                callback(result[itemFamily][itemKey]);
+                callback(result[itemFamily][itemKey].value);
             } else {
                 callback(null);
             }

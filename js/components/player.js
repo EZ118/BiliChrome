@@ -21,17 +21,17 @@ class VideoPlayer {
 
 		// 加载预设
 		this.config = {
-			"HD_Quality_As_Default": false,
-			"Advanced_DanMu_As_Default": false,
+			"HD_Quality": false,
+			"Advanced_DanMu": false,
 			"DanMu_Color": "#FFFFFF"
 		}
-		getConfig("player.HD_Quality_As_Default", (val) => {
-			this.config.HD_Quality_As_Default = val ? true : false;
+		getConfig("pref.HD_Quality", (val) => {
+			this.config.HD_Quality = val ? true : false;
 		});
-		getConfig("player.Advanced_DanMu_As_Default", (val) => {
-			this.config.Advanced_DanMu_As_Default = val ? true : false;
+		getConfig("pref.Advanced_DanMu", (val) => {
+			this.config.Advanced_DanMu = val ? true : false;
 		});
-		getConfig("player.DanMu_Color", (val) => {
+		getConfig("pref.DanMu_Color", (val) => {
 			this.config.DanMu_Color = val ? true : false;
 		});
 
@@ -44,8 +44,8 @@ class VideoPlayer {
 		$("#player_watchlaterBtn").click(() => this.doWatchLater(this.bvid)) // 稍后再看
 
 		$("#player_scrSwitchBtn").click(() => {
-			this.config.Advanced_DanMu_As_Default = !this.config.Advanced_DanMu_As_Default; // 切换弹幕模式
-			modal.toast("弹幕模式已切换，当前模式：" + (this.config.Advanced_DanMu_As_Default ? "滚动弹幕模式" : "简单弹幕模式"));
+			this.config.Advanced_DanMu = !this.config.Advanced_DanMu; // 切换弹幕模式
+			modal.toast("弹幕模式已切换，当前模式：" + (this.config.Advanced_DanMu ? "滚动弹幕模式" : "简单弹幕模式"));
 			$("#player_simpleDanmu").text("");
 		});
 		$("#player_pipBtn").click(() => {
@@ -54,8 +54,8 @@ class VideoPlayer {
 		});
 		$("#player_highQnBtn").click(() => {
 			/* 切换高画质 */
-			this.config.HD_Quality_As_Default = !this.config.HD_Quality_As_Default;
-			modal.toast("已切换至" + (this.config.HD_Quality_As_Default ? "高画质" : "低画质"), 5000);
+			this.config.HD_Quality = !this.config.HD_Quality;
+			modal.toast("已切换至" + (this.config.HD_Quality ? "高画质" : "低画质"), 5000);
 			this.loadVideoSource(this.bvid, this.cid);
 		});
 
@@ -76,7 +76,7 @@ class VideoPlayer {
 			if (!this.danmuList || this.danmuList.length == 0 || this.danmuList.length <= this.danmuCnt) { return; }
 			try {
 				if (this.danmuList[this.danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
-					if (this.config.Advanced_DanMu_As_Default) {
+					if (this.config.Advanced_DanMu) {
 						const containerWidth = this.ele_container.innerWidth() - 380;
 						const containerHeight = this.ele_container.innerHeight() - 20;
 						const pageH = parseInt(Math.random() * containerHeight);
@@ -315,7 +315,7 @@ class VideoPlayer {
 		// 加载视频源，需要bvid和cid
 		this.cid = cid;
 
-		$.get(`https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=${bvid}&cid=${cid}&qn=64&high_quality=${this.config.HD_Quality_As_Default ? 1 : 0}`, (result) => {
+		$.get(`https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=${bvid}&cid=${cid}&qn=64&high_quality=${this.config.HD_Quality ? 1 : 0}`, (result) => {
 			if(result.code != 0) {
 				modal.toast("受到神秘力量干扰，已启用备用方案");
 

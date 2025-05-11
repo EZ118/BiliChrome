@@ -1,6 +1,6 @@
 /* 自定义Toast */
 function showToast(message, duration) {
-	sober.Snackbar.builder(message);
+    sober.Snackbar.builder(message);
 }
 
 function getAccount(uid, callback) {
@@ -44,6 +44,7 @@ function getAccount(uid, callback) {
         }
     })
 }
+
 function resetAccount() {
     removeStorage("account", function () {
         getAccount("auto", function (result) {
@@ -51,6 +52,7 @@ function resetAccount() {
         })
     })
 }
+
 function getJctToken(callback) {
     /* 获取B站账号登录凭据（用于接口请求时的身份验证） */
     chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
@@ -86,148 +88,142 @@ function saveSubscriptionForPipePipe(uid) {
     });
 }
 
+/* OPTIONS.HTML */
+$(document).ready(() => {
+    // 初始化页面
 
-/* OPTIONS.JS 页面脚本 */
-function showUserCard(uid) {
-    getAccount(uid, function (result) {
-        if (!result.name) {
-            $("#userCard").html(`
-                <div slot="image">
-                    <img src="https://i0.hdslb.com/bfs/face/member/noface.jpg@80w_80h_1c_1s_!web-avatar-comment.avif">
-                </div>
-                <div slot="headline">
-                    <span class="usrName">未登录</span><br/>
-					<a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-						<span class="usrSign">点击按钮登录</span>
-					</a>
-                </div>
-                <div slot="subhead">
-                    <a href="https://passport.bilibili.com/login?goto=https://www.bilibili.com/" target="_blank">
-                        <s-icon-button type="outlined" title="点此登录">
-                            <s-icon slot="start" name="arrow_forward"></s-icon>
-                        </s-icon-button>
-                    </a>
-                </div>
-            `);
-        } else {
-            $("#userCard").html(`
-                <div slot="image">
-                    <img src="` + result.face + `@256w_256h_1c.webp">
-                </div>
-                <div slot="headline">
-                    <span class="usrName">` + result.name + `</span><br/>
-                    <p class="usrSign">` + result.sign + `</p>
-                </div>
-                <div slot="subhead">
-                    <a href="https://space.bilibili.com/` + result.uid + `" target="_blank">
-                        <s-icon-button type="outlined" title="空间">
-                            <s-icon slot="start">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-120q-66 0-113-47T80-280q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm480 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm-480-80q33 0 56.5-23.5T320-280q0-33-23.5-56.5T240-360q-33 0-56.5 23.5T160-280q0 33 23.5 56.5T240-200Zm480 0q33 0 56.5-23.5T800-280q0-33-23.5-56.5T720-360q-33 0-56.5 23.5T640-280q0 33 23.5 56.5T720-200ZM480-520q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-680q0-33-23.5-56.5T480-760q-33 0-56.5 23.5T400-680q0 33 23.5 56.5T480-600Zm0-80Zm240 400Zm-480 0Z"></path></svg>
-                            </s-icon>
-                        </s-icon-button>
-                    </a>
-                </div>
-            `);
+    // 默认设置
+    const defaultSettings = {
+        HD_Quality: {
+            value: true,
+            desc: "默认启用1080P画质",
+            type: 'boolean'
+        },
+        Advanced_DanMu: {
+            value: false,
+            desc: "默认启用滚动弹幕",
+            type: 'boolean'
+        },
+        DanMu_Color: {
+            value: "#FFFFFF",
+            desc: "设置滚动弹幕颜色（HEX）",
+            type: 'string'
+        },
+        Notify_Update: {
+            value: false,
+            desc: "后台收取动态更新通知（20分钟/次）",
+            type: 'boolean'
         }
-    });
-}
+    };
 
-function showPlayerPref() {
-    getStorage("player", function (result) {
-        // 如果没有存储的设置，使用默认值
-        var defaultResult = { "HD_Quality_As_Default": false, "Advanced_DanMu_As_Default": false, "DanMu_Color": "white", "Notify_Dynamic_Update": false };
-        if (!result || !areKeysEqual(result, defaultResult)) {
-            result = defaultResult;
-            setStorage("player", result);
-        }
 
-        // 生成HTML内容
-        let htmlContent = '';
-        for (var key in result) {
-            const value = result[key];
-            if (typeof value === 'boolean') {
-                htmlContent += `
-                    <p class="pref_label">
-                        <input type="checkbox" id="${key}" ${value ? 'checked' : ''}> ${key}
-                    </p>
-                `;
-            } else if (typeof value === 'string') {
-                htmlContent += `
-                    <p class="pref_label">
-                        ${key}: <input type="text" id="${key}" value="${value}">
-                    </p>
-                `;
-            }
-        }
-
-        $("#container_1").html(htmlContent + `<br/><i>* 提示：选项修改后会自动保存，页面刷新后才能应用全部设置。</i>`);
-
-        // 添加事件监听
-        for (const key in result) {
-            if (typeof result[key] === 'boolean') {
-                $(`#${key}`).change(function () {
-                    result[key] = this.checked;
-                    setStorage("player", result);
-                });
-            } else if (typeof result[key] === 'string') {
-                $(`#${key}`).blur(function () {
-                    result[key] = this.value;
-                    setStorage("player", result);
-                });
-            }
-        }
-    });
-}
-
-/* 设置页面操作 */
-function optRouteCtrl() {
-    $("s-tab-item").click((evt) => {
-        const { selectedIndex } = document.querySelector('s-tab');
-
-        var tabsNumber = 3; // tab总数
-        for (i = 0; i < tabsNumber; i ++) {
-            if (i == selectedIndex) {
-                document.getElementById("container_" + i).style.display = "block";
-            } else {
-                document.getElementById("container_" + i).style.display = "none";
-            }
-        }
-    });
-}
-
-$(document).ready(function () {
     if (window.location.href.split("/").slice(-1)[0] === "options.html") {
-        optRouteCtrl();
-        showPlayerPref();
-        showUserCard("auto");
+        PetiteVue.createApp({
+            currentTab: "common",
 
-        $("#refreshUserInfo").click(function () {
-            $("#refreshUserInfo").hide();
-            $("#refreshUserInfo").text("刷新完成!");
-            $("#refreshUserInfo").fadeIn(1000);
-            resetAccount();
+            // 设置项
+            settings: PetiteVue.reactive(JSON.parse(JSON.stringify(defaultSettings))),
+            updateBoolean(event, key) {
+                // 更新布尔值
+                this.settings[key].value = event.target.checked;
+            },
+            updateString(event, key) {
+                // 更新字符串值
+                this.settings[key].value = event.target.value;
+            },
+            saveSettings() {
+                // 保存设置
+                showToast("当前设置已保存！");
+                console.log('保存的设置:', this.settings);
+                setStorage("pref", this.settings);
+            },
+            getSettings() {
+                // 显示已保存的设置
+                getStorage("pref", (result) => {
+                    if (result) {
+                        for (let k in result) {
+                            if (this.settings[k]) {
+                                this.settings[k].value = result[k].value;
+                            }
+                        }
+                    } else {
+                        for (let k in defaultSettings) {
+                            this.settings[k].value = defaultSettings[k].value;
+                        }
+                    }
+                });
+            },
+
+            userInfo: {
+                name: "未登录",
+                uid: null,
+                face: "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+                sign: "点击箭头按钮登录"
+            },
+            showUserCard() {
+                // 显示用户信息
+                getAccount("auto", (result) => {
+                    this.userInfo = result;
+                });
+            },
+            openUserSpace() {
+                // 打开用户空间
+                if(!this.userInfo.uid) {
+                    showToast("请在登录后刷新该页面");
+                    window.open("https://passport.bilibili.com/login?goto=https://www.bilibili.com/");
+                } else {
+                    window.open("https://space.bilibili.com/" + this.userInfo.uid);
+                }
+            },
+
+
+            refreshUserInfo() {
+                // 刷新用户信息
+                resetAccount();
+                setTimeout(() => {
+                    this.showUserCard();
+                }, 400);
+                showToast("用户信息已刷新");
+            },
+            exportSubscription() {
+                // 导出订阅
+                getAccount("auto", (usrInfo) => {
+                    showToast("正在获取列表，请等待2s~10s，转换完成后将通过浏览器下载保存");
+                    saveSubscriptionForPipePipe(usrInfo.uid);
+                });
+            },
+            restoreUserPref() {
+                // 恢复个性化设置
+                removeStorage("pref");
+                setTimeout(() => {
+                    this.getSettings();
+                }, 400);
+                showToast("个性化设置已恢复默认");
+            },
+
+
+            init() {
+                // 初始化设置
+                
+                // 移除加载界面
+                document.getElementsByClassName("container")[0].setAttribute("style", "");
+                document.getElementById("splashScreen").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("splashScreen").remove();
+                }, 300);
+
+                // 显示用户信息
+                this.getSettings();
+                this.showUserCard();
+            }
+        }).mount("#app");
+
+    } else {
+        // 如果不是options.html，则初始化存储
+        getStorage("pref", (result) => {
+            if (!result) {
+                setStorage("pref", defaultSettings);
+            }
         });
-        $("#restorePlayerCfg").click(function () {
-            $("#restorePlayerCfg").hide();
-            $("#restorePlayerCfg").text("已恢复为默认!");
-            $("#restorePlayerCfg").fadeIn(1000);
-            removeStorage("player");
-            setTimeout(function () {
-                showPlayerPref();
-            }, 500);
-        });
-
-        $("#exportSubscription").click(function () {
-            /* 导出订阅（pipepipe格式 -options.js） */
-            $("#exportSubscription").hide();
-
-            getAccount("auto", function (usrInfo) {
-                showToast("正在获取列表，请等待2s~10s，转换完成后将通过浏览器下载保存");
-                saveSubscriptionForPipePipe(usrInfo.uid);
-
-                $("#exportSubscription").text("导出完成!");
-                $("#exportSubscription").fadeIn(1000);
-            });
-        })
     }
 });

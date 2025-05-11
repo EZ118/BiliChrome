@@ -88,7 +88,7 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
-        modal.open("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "#options");
+        modal.open("扩展选项", "<iframe src='./options.html' class='options_frame'></iframe>", "./options.html");
 
     } else if (data.includes("plugins")) {
         /* 显示插件管理器对话框 */

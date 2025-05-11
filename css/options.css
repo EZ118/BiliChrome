@@ -5,14 +5,18 @@ body{
 	margin:0px; padding: 0px;
 	width:100%;
 	height:100%;
+
+	overscroll-behavior:none;
+	-webkit-appearance:none;
 }
-html{ height:100%; width:100%; }
+html{ height:100%; width:100%; touch-action:pan-x pan-y;}
+*{ box-sizing:border-box; scroll-behavior:smooth; }
 
 h1, h2, h3, p { margin: 5px 0px; }
 
 .topNav{ width: 100%; margin-bottom: 10px; }
 
-.container{ width:calc(100% - 20px); margin: 10px; height:fit-content; }
+.container{ width:calc(100% - 20px); margin:10px; height:fit-content; }
 .btn{ margin: 8px 1px; }
 
 #userCard { margin:2px; width:calc(100% - 4px); height:100px; min-width:220px; max-width:none; display:inline-flex; }
@@ -24,6 +28,6 @@ h1, h2, h3, p { margin: 5px 0px; }
 #userCard div[slot="subhead"] { width:fit-content; }
 #userCard div[slot="subhead"] s-icon-button { margin:26px 5px; }
 
-.pref_label { margin:5px 2px; }
-.pref_label input[type="text"] { margin-left:5px; padding:5px; border-radius: 5px; border:none; background: #222; color: #FFF; border:1px solid #333; }
-.pref_label input[type="text"]:focus { outline:2px solid #393939; }
+s-table s-text-field { max-width:200px; margin:-5px 0; }
+
+#splashScreen{ position:fixed; top:0; left:0; width:100%; height:100%; background-color:var(--s-color-background); z-index:9999; transition:all 0.3s; opacity:1; }
