@@ -22,7 +22,19 @@ function getVidPlayingNow() {
                 "其他设备正在播放的视频，点击继续观看",
                 "./img/cast.svg",
                 "继续浏览",
-                () => { window.location.hash = `#bvid_` + vidInfo.data.history.bvid; }
+                () => {
+                    if(vidInfo.data.history.bvid) {
+                        /* 视频 */
+                        player.open({
+                            bvid: vidInfo.data.history.bvid
+                        });
+                    } else if(vidInfo.data.history.business == "live") {
+                        /* 直播间 */
+                        live_player.open({
+                            roomid: vidInfo.data.history.oid
+                        });
+                    }
+                }
             );
         }
     });
