@@ -80,6 +80,7 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 .common_video_card a{ color:inherit; -webkit-user-drag:none; }
 .common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.common_video_card_skeleton { width:280px; height:190px; flex-shrink:0; flex-grow:0; margin:7px; }
 
 /* 视频卡片组件（列表型） */
 .slim_video_card{display:flex;align-items:center;margin:6px 8px;width:calc(100% - 16px);height:90px;min-width:300px;max-width:none;overflow:hidden}

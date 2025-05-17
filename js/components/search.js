@@ -28,7 +28,7 @@ class SearchView {
             this.type = $(event.currentTarget).attr("value");
             this.search(this.keyword, 1, this.type);
         });
-        
+
         this.display();
     }
 
@@ -109,8 +109,11 @@ class SearchView {
 
     search(keyword, page = 1, type = "video") {
         // 显示搜索结果
+        // $("#item_container").html(`<div style="display: flex; align-items:center; flex-wrap:wrap; margin:12px;">
+        //     ${Array(16).fill('<s-skeleton class="common_video_card_skeleton"></s-skeleton>').join('')}
+        // </div>`);
 
-        $("#item_container").html("");
+        $("#item_container").empty();
         $("#dynamic_loader").show();
         $.get(`https://api.bilibili.com/x/web-interface/wbi/search/type?search_type=${type}&keyword=${encodeURI(keyword)}&page=${page}`, (tjlist) => {
             this.keyword = keyword;

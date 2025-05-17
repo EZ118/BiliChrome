@@ -96,9 +96,6 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data == "default") {
         /* 不做任何事情 */
-    } else {
-        // modal.toast("链接错误，点击边栏按钮以重载页面");
-        // home.display();
     }
 
     if (isOnload == true) {
@@ -127,6 +124,7 @@ $(document).ready(() => {
 
     // 获取登录token
     getJctToken((token) => biliJctData = token);
+    getConfig("pref.Hide_Useless_Ctrl", (val) => { if (val) { $("#player_likeBtn,#player_coinBtn,#player_watchlaterBtn").hide(); } });
 
     // 初始动作
     getVidPlayingNow();

@@ -143,6 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 默认设置
     const defaultSettings = {
+        Hide_Useless_Ctrl: {
+            value: true,
+            desc: "隐藏播放器内无法使用的功能按钮",
+            type: 'boolean'
+        },
         HD_Quality: {
             value: true,
             desc: "默认启用1080P画质",
