@@ -317,7 +317,7 @@ class VideoPlayer {
 
 		$.get(`https://api.bilibili.com/x/player/playurl?type=mp4&platform=html5&bvid=${bvid}&cid=${cid}&qn=64&high_quality=${this.config.HD_Quality ? 1 : 0}`, (result) => {
 			if(result.code != 0) {
-				modal.toast("受到神秘力量干扰，已启用备用方案");
+				modal.toast("备用方案已启用");
 
 				this.ele_videoContainer.hide();
 				this.ele_videoContainer_backup.show();
@@ -349,7 +349,7 @@ class VideoPlayer {
 			$(".player_cidListItem").attr("type", "outlined");
 			$(evt.currentTarget).attr("type", "filled-tonal");
 
-			modal.toast("正在加载分P视频 [P" + page + "]");
+			modal.toast(`正在加载分P视频 [P${page}]`);
 			this.loadVideoSource(this.bvid, cid);
 			this.getDanmu(cid);
 		});
@@ -361,7 +361,7 @@ class VideoPlayer {
 			.done((res) => {
 				if (res.code == 0) { modal.toast("点赞成功"); }
 				else if (res.code == 65006) { modal.toast("已赞过"); }
-				else { modal.toast("点赞失败 [" + res.code + "] \n(" + res.message + ")"); }
+				else { modal.toast(`点赞失败 [${res.code}] \n(${res.message}`); }
 			})
 			.fail((res) => {
 				modal.toast("点赞失败，请求被拦截");
@@ -374,7 +374,7 @@ class VideoPlayer {
 			.done((res) => {
 				if (res.code == 0) { modal.toast("投币成功"); }
 				else if (res.code == 65006) { modal.toast("已投过"); }
-				else { modal.toast("投币失败 [" + res.code + "] \n(" + res.message + ")"); }
+				else { modal.toast(`投币失败 [${res.code}] \n(${res.message}`); }
 			})
 			.fail((res) => {
 				modal.toast("投币失败，请求被拦截");
@@ -386,7 +386,7 @@ class VideoPlayer {
 		$.post(`https://api.bilibili.com/x/v2/history/toview/add`, `bvid=${bvid}&csrf=${biliJctData}`)
 			.done((res) => {
 				if (res.code == 0) { modal.toast("已添加到稍后再看"); }
-				else { modal.toast("添加失败 [" + res.code + "] \n(" + res.message + ")"); }
+				else { modal.toast(`添加失败 [${res.code}] \n(${res.message}`); }
 			})
 			.fail((res) => {
 				modal.toast("添加失败，请求被拦截");

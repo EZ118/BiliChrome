@@ -49,6 +49,8 @@ class HomeView {
             return;
         }
 
+        this.currentTab = "recommand";
+
         // 显示页面结构
         $("#item_container").html(`
             <div class="tabbar">
