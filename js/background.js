@@ -1,7 +1,7 @@
 /* 插件安装成功事件 */
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(function () {
     const version = chrome.runtime.getManifest().version;
-    chrome.tabs.create({ 
+    chrome.tabs.create({
         url: `https://ez118.github.io/biliweb/installed.html#${version}`
     });
 });
@@ -60,18 +60,26 @@ chrome.contextMenus.onClicked.addListener(function (item, tab) {
 
 
 /* 扩展图标点击事件，打开单独窗口 */
-chrome.action.onClicked.addListener(function (tab) {
-    chrome.windows.create({
-        url: 'home.html',
-        type: "popup",
-        state: "maximized"
-    });
+chrome.action.onClicked.addListener((tab) => {
+    console.log("当前浏览器UA：", navigator.userAgent.toLowerCase());
+
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        chrome.tabs.create({
+            url: 'home.html'
+        });
+    } else {
+        chrome.windows.create({
+            url: 'home.html',
+            type: "popup",
+            state: "maximized"
+        });
+    }
 });
 
 
 /* 通知推送 */
 function getConfig(item, callback) {
-    // 获取扩展设置项（item示例：player.HD_Quality_As_Default）
+    // 获取扩展设置项（item示例：player.HD_Quality）
     const itemFamily = item.split(".")[0];
     const itemKey = item.split(".")[1];
     chrome.storage.local.get([itemFamily], (result) => {
@@ -126,7 +134,7 @@ async function checkForUpdates() {
 
 /* 获取扩展设置（扩展重新载入时生效） */
 getConfig("pref.Notify_Update", (value) => {
-    if(value) {
+    if (value) {
         checkForUpdates();
         setInterval(checkForUpdates, 20 * 60 * 1000);
     }
