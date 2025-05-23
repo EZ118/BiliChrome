@@ -7,6 +7,7 @@ var search = null; // 搜索实例
 var dynamic = null; // 动态实例
 var home = null; // 首页实例
 var message = null; // 消息实例
+var space = null; // 空间实例
 
 var currentTab = "home";
 var currentUid = null;
@@ -69,7 +70,7 @@ function routeCtrl(isOnload, hash) {
         });
     } else if (data.includes("uid")) {
         /* 用户空间 */
-        getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
+        space.getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
 
     } else if (data.includes("img-")) {
         /* 图片查看 */
@@ -79,24 +80,24 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("myfav")) {
         /* 收藏夹列表 */
-        getMyCollectionList();
+        space.getMyCollectionList();
 
     } else if (data.includes("mysubscription")) {
         /* 订阅up主列表 */
-        if (isOnload) { setTimeout(function () { getUserSubscription(currentUid); }, 300); }
-        else { getUserSubscription(currentUid); }
+        if (isOnload) { setTimeout(function () { space.getUserSubscription(currentUid); }, 300); }
+        else { space.getUserSubscription(currentUid); }
 
     } else if (data.includes("fav_")) {
         /* 收藏夹 */
-        getCollectionById(data.split("_")[1], data.split("_")[2]);
+        space.getCollectionById(data.split("_")[1], data.split("_")[2]);
 
     } else if (data.includes("history")) {
         /* 观看历史 */
-        getUserHistory();
+        space.getUserHistory();
 
     } else if (data.includes("watchlater")) {
         /* 稍后再看 */
-        getWatchLater();
+        space.getWatchLater();
 
     } else if (data.includes("options")) {
         /* 显示扩展选项对话框 */
@@ -127,6 +128,7 @@ $(document).ready(() => {
     dynamic = new DynamicView();
     home = new HomeView();
     message = new MessageView();
+    space = new SpaceView();
 
     // 获取用户信息
     getAccount("auto", (usrInfo) => {
@@ -159,7 +161,7 @@ $(document).ready(() => {
         } else if (currentTab == "subscriptions") {
             dynamic.display();
         } else if (currentTab == "space") {
-            spaceInit();
+            space.display();
         } else if (currentTab == "search") {
             search.display();
         }
@@ -196,6 +198,6 @@ $("#RefreshBtn").click(() => {
     } else if (currentTab == "subscriptions") {
         dynamic.display(refresh = true);
     } else if (currentTab == "space") {
-        spaceInit(refresh = true);
+        space.display(refresh = true);
     }
 });

@@ -160,7 +160,7 @@ class VideoPlayer {
 			this.getDanmu(cid); /* 获取弹幕 */
 			this.loadVideoSource(bvid, cid); /* 获取视频源 */
 		
-			getUserCard(VideoInfo["data"]["owner"]["mid"], (card) => {
+			space.getUserCard(VideoInfo["data"]["owner"]["mid"], (card) => {
 				/* 获取UP主卡片 */
 				$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">` + limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"') + `</a>`);
 			});
