@@ -81,11 +81,11 @@ QQ群：1023133212
 
 ## 参考与使用   
 - [jQuery](https://jquery.com/)
-- [Material Icon](https://fonts.google.com/icons)
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [apprat/sober](https://soberjs.com/)
 - [video-dev/hls.js](https://github.com/video-dev/hls.js/)
 - [bplok20010/eval5](https://github.com/bplok20010/eval5/)
+- [baptistejamin/petite-vue-csp](https://github.com/baptistejamin/petite-vue-csp)
 
 ## 开发计划
 - “消息”页 私聊区 支持显示更多富文本内容/卡片。
