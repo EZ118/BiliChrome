@@ -158,7 +158,7 @@ s-snackbar a{ color:#00AEEC; }
 .search_historyItem { margin:2px 3px; }
 .search_pageSwitcher { margin:10px auto; position:relative; left:50%; transform: translateX(-50%); }
 .search_typeTab { justify-content:left; }
-.search_titlebar { font-size:medium; font-weight:lighter; width:calc(100% - 10px); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
+.search_titlebar { font-size:medium; font-weight:lighter; width:calc(100%); height:fit-content; padding:3px 5px; background:var(--s-color-surface); border-bottom: 1px solid var(--s-color-surface-variant); }
 .search_title {margin-top:5px; user-select:text; text-decoration:underline; }
 .search_backBtn {}
 .keyword { color:var(--s-color-secondary); font-style: normal; }
