@@ -112,7 +112,7 @@ def copy_static_files():
     
     # 复制其他文件
     shutil.copy('LICENSE', DIST_DIR)
-    shutil.copy('manifest.json', DIST_DIR)
+    shutil.copy('manifest_chromium.json', DIST_DIR)
     shutil.copy('manifest_firefox.json', DIST_DIR)
     shutil.copy('README.md', DIST_DIR)
     
@@ -141,8 +141,10 @@ def create_zip(version, browser):
                 
                 # 处理manifest文件
                 if browser == 'chromium':
-                    if arcname == 'manifest_firefox.json':
+                    if arcname == 'manifest.json':
                         continue
+                    if arcname == 'manifest_chromium.json':
+                        arcname = 'manifest.json'
                 elif browser == 'firefox':
                     if arcname == 'manifest.json':
                         continue
