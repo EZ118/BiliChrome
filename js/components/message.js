@@ -135,7 +135,7 @@ class MessageView {
                         </a>`;
                 });
     
-                let itemId = item.item.uri.split("/")[4];
+                let itemId = item.item.uri.split("/")[4].split("?")[0];
     
                 WebList += `<s-ripple class='thinstrip_msgBox'>
                     <div class='thinstrip_msgBox_headline'>
