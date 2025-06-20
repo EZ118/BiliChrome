@@ -22,13 +22,7 @@
 				style="width:fit-content; border-right:1px solid var(--s-color-surface-variant); background-color:var(--s-color-surface-container-high);">
 				<s-navigation mode="rail">
 					<s-icon-button slot="start" type="filled-tonal" title="BiliScape" id="eggBtn">
-						<s-icon>
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-								<path
-									d="M18.223 3.086a1.25 1.25 0 0 1 0 1.768L17.08 5.996h1.17A3.75 3.75 0 0 1 22 9.747v7.5a3.75 3.75 0 0 1-3.75 3.75H5.75A3.75 3.75 0 0 1 2 17.247v-7.5a3.75 3.75 0 0 1 3.75-3.75h1.166L5.775 4.855a1.25 1.25 0 1 1 1.767-1.768l2.652 2.652c.079.079.145.165.198.257h3.213c.053-.092.12-.18.199-.258l2.651-2.652a1.25 1.25 0 0 1 1.768 0zm.027 5.42H5.75a1.25 1.25 0 0 0-1.247 1.157l-.003.094v7.5c0 .659.51 1.199 1.157 1.246l.093.004h12.5a1.25 1.25 0 0 0 1.247-1.157l.003-.093v-7.5c0-.69-.56-1.25-1.25-1.25zm-10 2.5c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25zm7.5 0c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25z">
-								</path>
-							</svg>
-						</s-icon>
+						<s-icon src="./img/icon/bilibili.svg"></s-icon>
 					</s-icon-button>
 					<s-navigation-item selected="true" href="#nav_home">
 						<s-icon slot="icon" name="home"></s-icon>
@@ -40,33 +34,15 @@
 						<s-badge slot="badge"></s-badge>
 					</s-navigation-item>
 					<s-navigation-item href="#nav_search">
-						<s-icon slot="icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-								<path
-									d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z">
-								</path>
-							</svg>
-						</s-icon>
+						<s-icon slot="icon" name="search"></s-icon>
 						<div slot="text">搜索</div>
 					</s-navigation-item>
 					<s-navigation-item href="#nav_message">
-						<s-icon slot="icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-								<path
-									d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z">
-								</path>
-							</svg>
-						</s-icon>
+						<s-icon slot="icon" src="./img/icon/notification.svg"></s-icon>
 						<div slot="text">消息</div>
 					</s-navigation-item>
 					<s-navigation-item href="#nav_space">
-						<s-icon slot="icon">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-								<path
-									d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z">
-								</path>
-							</svg>
-						</s-icon>
+						<s-icon slot="icon" src="./img/icon/user.svg"></s-icon>
 						<div slot="text">我的</div>
 					</s-navigation-item>
 				</s-navigation>
@@ -78,17 +54,11 @@
 
 		<!-- 刷新按钮 -->
 		<s-fab id="RefreshBtn">
-			<s-icon>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-					<path
-						d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z">
-					</path>
-				</svg>
-			</s-icon>
+			<s-icon src="./img/icon/refresh.svg"></s-icon>
 		</s-fab>
 
 		<!-- 加载球 -->
-		<s-circular-progress indeterminate="true" id="dynamic_loader"></s-circular-progress>
+		<s-linear-progress indeterminate="true" id="dynamic_loader"></s-linear-progress>
 
 		<!-- 视频播放器 -->
 		<div id="player_container" style="display:none;">
@@ -97,13 +67,7 @@
 
 				<!-- 对话框基本功能按钮 -->
 				<s-icon-button id="player_openNewBtn" title="在新标签页打开">
-					<s-icon>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-							<path
-								d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
-							</path>
-						</svg>
-					</s-icon>
+					<s-icon src="./img/icon/open_in_new_tab.svg"></s-icon>
 				</s-icon-button>
 
 				<s-icon-button id="player_closeBtn" title="关闭 (Ctrl+Q)">
@@ -122,58 +86,22 @@
 					<!-- 功能按钮 -->
 					<div style="height:40px; display:flex; flex-direction:row; justify-content:center;">
 						<s-icon-button id="player_likeBtn" title="点赞">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/like.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="player_coinBtn" title="投币">
-							<s-icon>
-								<svg viewBox="0 -960 960 960">
-									<path
-										d="M600-160q-134 0-227-93t-93-227q0-134 93-227t227-93q134 0 227 93t93 227q0 134-93 227t-227 93Zm-320-10q-106-28-173-114T40-480q0-110 67-196t173-114v84q-72 25-116 87t-44 139q0 77 44 139t116 87v84Zm320-310Zm0 240q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/coin.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="player_watchlaterBtn" title="添加到稍后再看">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M440-120q-75 0-140.5-28T185-225q-49-49-77-114.5T80-480q0-75 28-140.5T185-735q49-49 114.5-77T440-840q21 0 40.5 2.5T520-830v82q-20-6-39.5-9t-40.5-3q-118 0-199 81t-81 199q0 118 81 199t199 81q118 0 199-81t81-199q0-11-1-20t-3-20h82q2 11 2 20v20q0 75-28 140.5T695-225q-49 49-114.5 77T440-120Zm112-192L400-464v-216h80v184l128 128-56 56Zm168-288v-120H600v-80h120v-120h80v120h120v80H800v120h-80Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/watchlater.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="player_highQnBtn" title="切换到高画质(1080P)">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M240-360h60v-80h80v80h60v-240h-60v100h-80v-100h-60v240Zm280 0h160q17 0 28.5-11.5T720-400v-160q0-17-11.5-28.5T680-600H520v240Zm60-60v-120h80v120h-80ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/hd.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="player_pipBtn" title="画中画">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/pip.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="player_scrSwitchBtn" title="切换弹幕模式">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM880-80 720-240H160q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v720ZM160-320h594l46 45v-525H160v480Zm0 0v-480 480Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/comment.svg"></s-icon>
 						</s-icon-button>
 					</div>
 
@@ -200,13 +128,7 @@
 
 				<!-- 对话框基本功能按钮 -->
 				<s-icon-button id="live_openNewBtn" title="在新标签页打开">
-					<s-icon>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-							<path
-								d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
-							</path>
-						</svg>
-					</s-icon>
+					<s-icon src="./img/icon/open_in_new_tab.svg"></s-icon>
 				</s-icon-button>
 
 				<s-icon-button id="live_closeBtn" title="关闭 (Ctrl+Q)">
@@ -223,31 +145,13 @@
 					<!-- 功能按钮 -->
 					<div style="height:40px; display:flex; flex-direction:row; justify-content:center;">
 						<s-icon-button id="live_qnSwitchBtn" title="切换画质">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M240-360h60v-80h80v80h60v-240h-60v100h-80v-100h-60v240Zm280 0h160q17 0 28.5-11.5T720-400v-160q0-17-11.5-28.5T680-600H520v240Zm60-60v-120h80v120h-80ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/hd.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="live_pipBtn" title="画中画">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/pip.svg"></s-icon>
 						</s-icon-button>
 						<s-icon-button id="live_scrSwitchBtn" title="开启/关闭实时评论">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM880-80 720-240H160q-33 0-56.5-23.5T80-320v-480q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v720ZM160-320h594l46 45v-525H160v480Zm0 0v-480 480Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/comment.svg"></s-icon>
 						</s-icon-button>
 					</div>
 
@@ -267,13 +171,7 @@
 					</td>
 					<td align="right" width="110px">
 						<s-icon-button id="dlg_openNewBtn" title="在新标签页打开">
-							<s-icon>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-									<path
-										d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z">
-									</path>
-								</svg>
-							</s-icon>
+							<s-icon src="./img/icon/open_in_new_tab.svg"></s-icon>
 						</s-icon-button>
 
 						<s-icon-button id="dlg_closeBtn" title="关闭 (Ctrl+Q)">

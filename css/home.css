@@ -29,7 +29,7 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 .thinstrip_msgBox_contentline .time{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:11px;font-family:inherit;margin:5px 0px;opacity:0.8}
 
 /* 页面主体 */
-#dynamic_loader{ position:fixed; top:50%; left:50%; transform:translateX(-50%) translateY(-50%); z-index:120; }
+#dynamic_loader{ position:fixed; top:0; left:81px; width:calc(100vw - 80px); z-index:120; }
 #RefreshBtn{ position:fixed; right:24px; bottom:24px; z-index:101; }
 
 /* 播放器 */
@@ -72,7 +72,7 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 /* 自定义对话框 */
 #dlg_container{position:fixed;top:0px;left:0;z-index:102;width:100vw;height:100vh;background:rgba(0,0,0,0.3)}
 .dlg_container_real{position:relative;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:clamp(300px,65%,1200px);height:calc(100% - 140px);background:var(--s-color-surface-container-low);color:var(--s-color-on-surface);border-radius:8px;border:1px solid rgba(197,217,241,0.063)}
-#dlg_content{width:100%;height:100%;background:var(--s-color-surface-container-low);overflow-y:auto;overflow-x:hidden;color:var(--s-color-on-surface);font-size:medium;max-height:calc(100vh - 60px);}
+#dlg_content{width:100%;height:100%;background:var(--s-color-surface-container-low);overflow-y:auto;overflow-x:hidden;color:var(--s-color-on-surface);font-size:medium;max-height:calc(100vh - 80px);}
 #dlg_title{margin-left:15px;font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* 视频卡片组件（封面突出） */
@@ -80,7 +80,6 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 .common_video_card a{ color:inherit; -webkit-user-drag:none; }
 .common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.common_video_card_skeleton { width:280px; height:190px; flex-shrink:0; flex-grow:0; margin:7px; }
 
 /* 视频卡片组件（列表型） */
 .slim_video_card{display:flex;align-items:center;margin:6px 8px;width:calc(100% - 16px);height:90px;min-width:300px;max-width:none;overflow:hidden}

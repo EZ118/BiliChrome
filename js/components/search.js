@@ -55,7 +55,7 @@ class SearchView {
                 </div>
                 <br>
                 <s-search style="width:300px;" placeholder="回车以搜索" class="app-input-text">
-                    <s-icon name="search" slot="start"></s-icon>
+                    <s-icon slot="start" name="search"></s-icon>
                     <s-icon-button slot="end">
                         <s-icon name="close"></s-icon>
                     </s-icon-button>
