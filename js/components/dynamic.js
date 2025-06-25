@@ -2,10 +2,9 @@ class DynamicView {
     constructor() {
         // 初始化
         this.lastDynamicOffset = null; // 用于存储动态分页偏移量
-		
-        
+
         $(document).on("click", ".dynamic_showListBtn", () => {
-            document.querySelector('#dynamic_container').toggle();
+            document.querySelector("#dynamic_container").toggle();
         });
 
         $(document).on("click", ".dynamic_listItem", (event) => {
@@ -16,7 +15,9 @@ class DynamicView {
                 this.getUserDynamics(upUid);
             }
 
-            $(".dialog_title").text($(event.currentTarget).find(".title").text());
+            $(".dialog_title").text(
+                $(event.currentTarget).find(".title").text(),
+            );
         });
     }
 
@@ -59,8 +60,10 @@ class DynamicView {
         `);
 
         try {
-            const response = await $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/portal?up_list_more=0");
-            response.data.up_list.forEach(item => {
+            const response = await $.get(
+                "https://api.bilibili.com/x/polymer/web-dynamic/v1/portal?up_list_more=0",
+            );
+            response.data.up_list.forEach((item) => {
                 $(".dynamic_list").append(`
                     <s-card class="dynamic_listItem" type="outlined" clickable="true" uid="${item.mid}">
                         <img class="avatar" src="${item.face}@42w_42h_1c.webp" loading="eager" />
@@ -70,7 +73,9 @@ class DynamicView {
                 `);
             });
 
-            $(".dynamic_list").append(`<a href="#mysubscription"><s-button type="text"><s-icon slot="start" name="more_horiz"></s-icon>查看所有</s-button></a><br/><br/>`);
+            $(".dynamic_list").append(
+                `<a href="#mysubscription"><s-button type="text"><s-icon slot="start" name="more_horiz"></s-icon>查看所有</s-button></a><br/><br/>`,
+            );
         } catch (error) {
             console.error("[ERROR] 获取关注UP主列表失败", error);
         }
@@ -88,15 +93,27 @@ class DynamicView {
 
             try {
                 const response = await $.get(url);
-                const vidList = response.data.items.map(item => ({
+                const vidList = response.data.items.map((item) => ({
                     bvid: item.modules.module_dynamic.major.archive.bvid,
                     aid: item.modules.module_dynamic.major.archive.aid,
                     pic: item.modules.module_dynamic.major.archive.cover,
                     title: item.modules.module_dynamic.major.archive.title,
-                    desc: (item.modules.module_dynamic.desc ? ("动态内容: " + item.modules.module_dynamic.desc.text + "\n") : "") +
-                          '点赞数量: ' + item.modules.module_stat.like.count + '\n视频简介: ' +
-                          item.modules.module_dynamic.major.archive.desc,
-                    author: { uid: item.modules.module_author.mid, name: item.modules.module_author.name }
+                    desc:
+                        "- 时长: " +
+                        item.modules.module_dynamic.major.archive
+                            .duration_text +
+                        "\n- 点赞: " +
+                        item.modules.module_stat.like.count +
+                        (item.modules.module_dynamic.desc
+                            ? "\n- 动态: " +
+                              item.modules.module_dynamic.desc.text
+                            : "") +
+                        "\n- 简介: " +
+                        item.modules.module_dynamic.major.archive.desc,
+                    author: {
+                        uid: item.modules.module_author.mid,
+                        name: item.modules.module_author.name,
+                    },
                 }));
 
                 WebList += card.video(vidList);
@@ -106,8 +123,8 @@ class DynamicView {
                 break;
             }
         }
-		
-		this.lastDynamicOffset = null;
+
+        this.lastDynamicOffset = null;
 
         $(".dialog_content").html(WebList + "</div>");
         $("#dynamic_loader").hide();
@@ -121,20 +138,32 @@ class DynamicView {
         const url = `https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?offset=&host_mid=${upUid}&timezone_offset=-480&platform=web&type=video`;
 
         $.get(url, (response) => {
-            const vidList = response.data.items.map(item => ({
+            const vidList = response.data.items.map((item) => ({
                 bvid: item.modules.module_dynamic.major.archive.bvid,
                 aid: item.modules.module_dynamic.major.archive.aid,
                 pic: item.modules.module_dynamic.major.archive.cover,
                 title: item.modules.module_dynamic.major.archive.title,
-                desc: (item.modules.module_dynamic.desc ? ("动态内容: " + item.modules.module_dynamic.desc.text + "\n") : "") +
-                      '点赞数量: ' + item.modules.module_stat.like.count + '\n视频简介: ' +
-                      item.modules.module_dynamic.major.archive.desc,
-                author: { uid: item.modules.module_author.mid, name: item.modules.module_author.name }
+                desc:
+                    "- 时长: " +
+                    item.modules.module_dynamic.major.archive.duration_text +
+                    "\n- 点赞: " +
+                    item.modules.module_stat.like.count +
+                    (item.modules.module_dynamic.desc
+                        ? "\n- 动态: " + item.modules.module_dynamic.desc.text
+                        : "") +
+                    "\n- 简介: " +
+                    item.modules.module_dynamic.major.archive.desc,
+                author: {
+                    uid: item.modules.module_author.mid,
+                    name: item.modules.module_author.name,
+                },
             }));
 
-            $(".dialog_content").html("<div class='flex_container'>" + card.video(vidList) + "</div>");
+            $(".dialog_content").html(
+                "<div class='flex_container'>" + card.video(vidList) + "</div>",
+            );
             $("#dynamic_loader").hide();
-        }).fail(error => {
+        }).fail((error) => {
             console.error("[ERROR] 获取单人动态失败", error);
             $("#dynamic_loader").hide();
         });

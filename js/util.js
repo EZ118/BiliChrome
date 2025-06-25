@@ -1,7 +1,10 @@
 function limitConsecutiveChars(str) {
     // 只允许字符串中连续出现n个相同字符
     const maxConsecutive = 10;
-    return str.replace(new RegExp(`(.)\\1{${maxConsecutive - 1},}`, 'g'), (match, p1) => p1.repeat(maxConsecutive));
+    return str.replace(
+        new RegExp(`(.)\\1{${maxConsecutive - 1},}`, "g"),
+        (match, p1) => p1.repeat(maxConsecutive),
+    );
 }
 
 function hash(str) {
@@ -17,7 +20,10 @@ function downloadFile(fileName, text) {
     // 下载文件
     const url = window.URL || window.webkitURL || window;
     const blob = new Blob([text]);
-    const saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    const saveLink = document.createElementNS(
+        "http://www.w3.org/1999/xhtml",
+        "a",
+    );
     saveLink.href = url.createObjectURL(blob);
     // 设置 download 属性
     saveLink.download = fileName;
@@ -81,4 +87,21 @@ function areKeysEqual(dict1, dict2) {
         }
     }
     return true;
+}
+
+function formatDuration(seconds) {
+    let hours = parseInt(seconds / 3600);
+    let minutes = parseInt((seconds % 3600) / 60);
+    let secondsLeft = seconds % 60;
+
+    // 补零操作
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    secondsLeft = secondsLeft < 10 ? "0" + secondsLeft : secondsLeft;
+
+    if (hours == "00") {
+        return `${minutes}:${secondsLeft}`;
+    } else {
+        return `${hours}:${minutes}:${secondsLeft}`;
+    }
 }
