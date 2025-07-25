@@ -85,6 +85,7 @@ class SpaceView {
     }
 
     getUserSpace(uid, isTop) {
+		// 获取用户的最近空间动态
         var WebList = "";
         $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=" + uid, (data) => {
             $.each(data.data.items, (index, item) => {
@@ -148,6 +149,7 @@ class SpaceView {
     }
 
     getUserCard(uid, callback) {
+		// 获取用户简略信息卡片
         $.get("https://api.bilibili.com/x/web-interface/card?mid=" + uid, (usrInfo) => {
             const { mid, name, sex, face, sign, level_info, fans, attention } = usrInfo.data.card;
 
@@ -181,6 +183,7 @@ class SpaceView {
     }
 
     getUserHistory() {
+		// 获取用户播放历史
         $.get("https://api.bilibili.com/x/web-interface/history/cursor?ps=30&type=archive", (tjlist) => {
             var vidList = tjlist.data.list.map(item => ({
                 bvid: item.history.bvid,
@@ -195,6 +198,7 @@ class SpaceView {
     }
 
     getUserSubscription(uid) {
+		// 获取用户订阅列表（UP主关注列表）
         $("#item_container").empty();
         $("#dynamic_loader").show();
         var requests = [];
@@ -222,6 +226,7 @@ class SpaceView {
     }
 
     getMyCollectionList() {
+		// 获取当前账号的收藏夹列表
         $.get(`https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${currentUid}&ps=999&pn=1`, (tjlist) => {
             var WebList = "";
             $.each(tjlist.data.list, (index, item) => {
@@ -238,6 +243,7 @@ class SpaceView {
     }
 
     getCollectionById(fid, mediaCount) {
+		// 按照ID获取收藏夹内容
         mediaCount = parseInt(mediaCount);
         $.get(`https://api.bilibili.com/x/v3/fav/resource/list?media_id=${fid}&ps=${(mediaCount)}&pn=1`, (tjlist) => {
             if (tjlist.code == -400) { modal.toast("该收藏夹未被公开，暂时无法查看"); return; }
@@ -258,6 +264,7 @@ class SpaceView {
     }
 
     getWatchLater() {
+		// 获取稍后再看列表
         $.get("https://api.bilibili.com/x/v2/history/toview", (tjlist) => {
             if (tjlist.code == -400) { modal.toast("暂时无法查看"); return; }
 
@@ -272,4 +279,31 @@ class SpaceView {
             modal.open("稍后再看", "<div class='flex_container'>" + card.video(vidList, true) + "</div>", "https://www.bilibili.com/watchlater/#/list");
         });
     }
+	
+	getVidPlayingNow() {
+		// 获取其他设备正在播放的视频
+		$.get(`https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200`, (vidInfo) => {
+			if (vidInfo.data != null) {
+				modal.notification(
+					vidInfo.data.title,
+					"其他设备正在播放的视频，点击继续观看",
+					"./img/cast.svg",
+					"继续浏览",
+					() => {
+						if(vidInfo.data.history.bvid) {
+							/* 视频 */
+							player.open({
+								bvid: vidInfo.data.history.bvid
+							});
+						} else if(vidInfo.data.history.business == "live") {
+							/* 直播间 */
+							live_player.open({
+								roomid: vidInfo.data.history.oid
+							});
+						}
+					}
+				);
+			}
+		});
+	}
 }

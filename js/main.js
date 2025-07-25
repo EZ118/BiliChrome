@@ -9,37 +9,10 @@ var home = null; // 首页实例
 var message = null; // 消息实例
 var space = null; // 空间实例
 
-var currentTab = "home";
+var currentNav = "home";
 var currentUid = null;
 var biliJctData = "";
 var lastDynamicOffset = null;
-
-function getVidPlayingNow() {
-    // 获取其他设备正在播放的视频
-    $.get(`https://api.bilibili.com/x/web-interface/history/continuation?his_exp=1200`, (vidInfo) => {
-        if (vidInfo.data != null) {
-            modal.notification(
-                vidInfo.data.title,
-                "其他设备正在播放的视频，点击继续观看",
-                "./img/cast.svg",
-                "继续浏览",
-                () => {
-                    if(vidInfo.data.history.bvid) {
-                        /* 视频 */
-                        player.open({
-                            bvid: vidInfo.data.history.bvid
-                        });
-                    } else if(vidInfo.data.history.business == "live") {
-                        /* 直播间 */
-                        live_player.open({
-                            roomid: vidInfo.data.history.oid
-                        });
-                    }
-                }
-            );
-        }
-    });
-}
 
 function routeCtrl(isOnload, hash) {
     var data = null;
@@ -56,6 +29,7 @@ function routeCtrl(isOnload, hash) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
+		
     } else if (data.includes("aid")) {
         /* 视频播放aid */
         player.open({
@@ -63,11 +37,13 @@ function routeCtrl(isOnload, hash) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
+		
     } else if (data.includes("roomid")) {
         /* 直播roomid */
         live_player.open({
             roomid: data.split("_")[1]
         });
+		
     } else if (data.includes("uid")) {
         /* 用户空间 */
         space.getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
@@ -133,7 +109,7 @@ $(document).ready(() => {
     // 获取用户信息
     getAccount("auto", (usrInfo) => {
         currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后再使用", 8000) }
+        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后使用", 8000) }
     });
 
     // 获取登录token
@@ -141,8 +117,8 @@ $(document).ready(() => {
     getConfig("pref.Hide_Useless_Ctrl", (val) => { if (val) { $("#player_likeBtn,#player_coinBtn,#player_watchlaterBtn").hide(); } });
 
     // 初始动作
-    getVidPlayingNow();
     routeCtrl(isOnload = true);
+    space.getVidPlayingNow();
     plugin.run();
 
     // 控制路由
@@ -152,19 +128,28 @@ $(document).ready(() => {
     $("s-navigation-item").click((evt) => {
         const link = $(evt.currentTarget).attr("href");
 
-        currentTab = link.substring(5);
+        currentNav = link.substring(5);
 
-        if (currentTab == "home") {
-            home.display();
-        } else if (currentTab == "message") {
-            message.display();
-        } else if (currentTab == "subscriptions") {
-            dynamic.display();
-        } else if (currentTab == "space") {
-            space.display();
-        } else if (currentTab == "search") {
-            search.display();
-        }
+        switch (currentNav) {
+			case "home":
+				home.display();
+				break;
+			case "message":
+				message.display();
+				break;
+			case "subscriptions":
+				dynamic.display();
+				break;
+			case "space":
+				space.display();
+				break;
+			case "search":
+				search.display();
+				break;
+			default:
+				console.log("未知页")
+				break;
+		}
     });
 
     /* 侧栏彩蛋 */
@@ -189,15 +174,24 @@ $(document).ready(() => {
 
 $("#RefreshBtn").click(() => {
     /* 刷新 */
-    if (currentTab == "home") {
-        home.display(refresh = true);
-    } else if (currentTab == "message") {
-        message.display(refresh = true);
-    } else if (currentTab == "search") {
-        search.search(search.keyword, search.page, search.type);
-    } else if (currentTab == "subscriptions") {
-        dynamic.display(refresh = true);
-    } else if (currentTab == "space") {
-        space.display(refresh = true);
-    }
+    switch (currentNav) {
+		case "home":
+			home.display(true);
+			break;
+		case "message":
+			message.display(true);
+			break;
+		case "search":
+			search.search(search.keyword, search.page, search.type);
+			break;
+		case "subscriptions":
+			dynamic.display(true);
+			break;
+		case "space":
+			space.display(true);
+			break;
+		default:
+			console.warn("未知页");
+			break;
+	}
 });
