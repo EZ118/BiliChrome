@@ -190,10 +190,24 @@ class MessageView {
             $(".dialog_content").html("");
     
             var WebList = "";
-            $.each(msgInfo.data.messages, function (index, item) {
+            $.each(msgInfo.data.messages, (index, item) => {
                 let msgCard = JSON.parse(item.content);
-                let msgContent = msgCard.content || ("<a href='#aid_" + msgCard.id + "'>【视频】 " + msgCard.title + "</a>");
-                if(item.sender_uid == currentUid) {
+				let msgContent = "";
+				
+				if (msgCard.content) {
+					msgContent = msgCard.content;
+				} else {
+					msgContent = " 【视频动态】 <br/>" + card.video([{
+						bvid: null,
+						aid: msgCard.id,
+						pic: msgCard.thumb,
+						title: msgCard.title,
+						desc: msgCard.title,
+						author: { uid: item.sender_uid, name: msgCard.author }
+					}]);
+				}
+                
+				if(item.sender_uid == currentUid) {
                     WebList = `<div class="dialog_msgBubble_me">${msgContent}</div>` + WebList;
                 } else {
                     WebList = `<div class="dialog_msgBubble">${msgContent}</div>` + WebList;

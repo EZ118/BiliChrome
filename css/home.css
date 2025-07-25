@@ -29,7 +29,7 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 .thinstrip_msgBox_contentline .time{width:fit-content;max-width:98%;white-space:pre-wrap;word-wrap:break-word;font-size:11px;font-family:inherit;margin:5px 0px;opacity:0.8}
 
 /* 页面主体 */
-#dynamic_loader{ position:fixed; top:0; left:81px; width:calc(100vw - 80px); z-index:120; }
+#dynamic_loader{ position:fixed; bottom:0; left:0px; width:100vw; z-index:120; opacity:1; }
 #RefreshBtn{ position:fixed; right:24px; bottom:24px; z-index:101; }
 
 /* 播放器 */
