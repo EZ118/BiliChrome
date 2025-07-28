@@ -71,7 +71,8 @@ class HomeView {
 
         // 滚动刷新事件
         $("#item_container").on("scroll", () => {
-            if (!this.allowScrollEvent) {
+            if (!this.allowScrollEvent || currentNav !== "home") {
+                // 注：此处currentNav来自main.js全局变量，记录当前页面名称
                 return;
             }
 
