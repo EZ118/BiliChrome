@@ -77,8 +77,8 @@ class SpaceView {
                 </div>
                 
                 <center style="margin-top:calc(40vh - 120px); z-index: -1;">
-                    <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;" target="_blank">前往Github查看项目</a><br>
-                    <font color="#888">提示：Ctrl+Q可快速关闭视频等窗口</font>
+                    <a href="https://github.com/EZ118/BiliChrome" style="color:#5050F0;" target="_blank">在 GitHub 中查看项目</a><br>
+                    <font color="#888">关闭对话框 Ctrl+Q / 老板键 Ctrl+Shift+C</font>
                 </center>
             `);
         });

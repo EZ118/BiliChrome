@@ -105,3 +105,9 @@ function formatDuration(seconds) {
         return `${hours}:${minutes}:${secondsLeft}`;
     }
 }
+
+function minimizeWindow() {
+    chrome.windows.getCurrent({ populate: false }, function (currentWindow) {
+        chrome.windows.update(currentWindow.id, { state: "minimized" });
+    });
+}

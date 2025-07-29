@@ -124,10 +124,9 @@ $(document).ready(() => {
     // 控制路由
     window.addEventListener('popstate', (event) => routeCtrl());
 
-    /* 侧边主菜单 */
+    // 侧边主菜单
     $("s-navigation-item").click((evt) => {
         const link = $(evt.currentTarget).attr("href");
-
         currentNav = link.substring(5);
 
         switch (currentNav) {
@@ -150,48 +149,62 @@ $(document).ready(() => {
 				console.log("未知页")
 				break;
 		}
-    });
+    });    
 
-    /* 侧栏彩蛋 */
-    var eggBtnCnt = 0;
-    $("#eggBtn").click(() => {
-        eggBtnCnt++;
-        if (eggBtnCnt == 16) {
-            modal.toast("这不是彩蛋...");
-        } else if (eggBtnCnt == 32) {
-            modal.toast("真不是彩蛋...");
-        } else if (eggBtnCnt >= 64) {
-            eggBtnCnt = 0;
-            modal.toast("你疯了吧！");
+    // 右下角刷新按钮
+    $("#RefreshBtn").click(() => {
+        switch (currentNav) {
+            case "home":
+                home.display(true);
+                break;
+            case "message":
+                message.display(true);
+                break;
+            case "search":
+                search.search(search.keyword, search.page, search.type);
+                break;
+            case "subscriptions":
+                dynamic.display(true);
+                break;
+            case "space":
+                space.display(true);
+                break;
+            default:
+                console.warn("未知页");
+                break;
         }
     });
 
+    // 全局返回按钮
     $(document).on("click", ".historyBackButton", () => {
-        // 全局返回按钮
         window.history.back();
+    });
+    
+    
+    // 全局老板键（ctrl + shift + x 或 ctrl + shift + c 触发），触发时，浏览器最小化、视频暂停
+    $(window).keydown((evt) => {
+        if ((evt.ctrlKey && evt.shiftKey && evt.key === 'C') || (evt.ctrlKey && evt.shiftKey && evt.key === 'X')) {
+            evt.preventDefault();
+            player.ele_videoContainer.trigger('pause');
+            player.ele_videoContainer_backup.attr("src", "");
+            minimizeWindow();
+        }
     });
 });
 
-$("#RefreshBtn").click(() => {
-    /* 刷新 */
-    switch (currentNav) {
-		case "home":
-			home.display(true);
-			break;
-		case "message":
-			message.display(true);
-			break;
-		case "search":
-			search.search(search.keyword, search.page, search.type);
-			break;
-		case "subscriptions":
-			dynamic.display(true);
-			break;
-		case "space":
-			space.display(true);
-			break;
-		default:
-			console.warn("未知页");
-			break;
-	}
+
+
+// 侧栏彩蛋
+var eggBtnCnt = 0;
+$("#eggBtn").click(() => {
+    eggBtnCnt++;
+    if (eggBtnCnt == 16) {
+        modal.toast("这不是彩蛋...");
+    } else if (eggBtnCnt == 32) {
+        modal.toast("真不是彩蛋...");
+    } else if (eggBtnCnt >= 64) {
+        eggBtnCnt = 0;
+        modal.toast("你疯了吧！");
+    }
 });
+
