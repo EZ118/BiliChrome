@@ -5,7 +5,7 @@ class Modal {
 		$('#dlg_openNewBtn').click(() => {
 			// 对话框右上角“在新标签页中打开”
 			if (this.url[0] == "#") {
-				// location.href = "dlgOpenNewNow";
+				// location.href = this.url;
 			} else {
 				chrome.tabs.create({ url: this.url });
 			}
@@ -30,20 +30,20 @@ class Modal {
 		if (!url) { url = ""; }
 		if (isTop) { $('#dlg_container').css("z-index", "104"); }
 
-		$('#dlg_container').fadeIn(200);
+		$('#dlg_container').show();
 		$('#dlg_content').html(html);
 		$('#dlg_title').html(title);
 		this.url = url;
 	}
 
 	close() {
-		$('#dlg_container').fadeOut(200, () => {
-			if ($('#dlg_container').css("z-index") == "104") { $('#dlg_container').css("z-index", "") }
+		$('#dlg_container').hide()
+			
+        if ($('#dlg_container').css("z-index") == "104") { $('#dlg_container').css("z-index", "") }
 
-			$('#dlg_content').html("");
-			$('#dlg_title').html("[默认标题]");
-			this.url = "";
-		});
+		$('#dlg_content').empty();
+		$('#dlg_title').html("[默认标题]");
+		this.url = "";
 
 		window.location.hash = "#default";
 	}

@@ -45,8 +45,8 @@ class VideoPlayer {
 
 		$("#player_scrSwitchBtn").click(() => {
 			this.config.Advanced_DanMu = !this.config.Advanced_DanMu; // 切换弹幕模式
-			modal.toast("弹幕模式已切换，当前模式：" + (this.config.Advanced_DanMu ? "滚动弹幕模式" : "简单弹幕模式"));
-			$("#player_simpleDanmu").text("");
+			modal.toast("弹幕模式已切换：" + (this.config.Advanced_DanMu ? "滚动弹幕模式" : "简单弹幕模式"));
+			$("#player_simpleDanmu").empty();
 		});
 		$("#player_pipBtn").click(() => {
 			var pip = $("#player_videoContainer")[0].requestPictureInPicture(); // 切换画中画
@@ -77,16 +77,18 @@ class VideoPlayer {
 			try {
 				if (this.danmuList[this.danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
 					if (this.config.Advanced_DanMu) {
-						const containerWidth = this.ele_container.innerWidth() - 380;
-						const containerHeight = this.ele_container.innerHeight() - 20;
-						const pageH = parseInt(Math.random() * containerHeight);
+                        // 滚动弹幕模式（使用CSS的keyframe实现滚动效果）
+						const pageH = parseInt( Math.random() * ( this.ele_container.innerHeight() - 20 ) );
 						const newSpan = $("<div class='player_danmuText'></span>");
-						newSpan.appendTo("#player_simpleDanmu")
-							.css("left", (containerWidth - newSpan.innerWidth() + 20))
-							.css("top", pageH)
-							.css("color", this.config.DanMu_Color)
-							.text(this.danmuList[this.danmuCnt]["text"])
-							.animate({ "left": -500 }, 10000, "linear", () => $(this).remove());
+                        newSpan.text(this.danmuList[this.danmuCnt]["text"])
+                            .css({
+                                "animation": "DanMuAnimation 10s linear",
+                                "top": pageH,
+                                "color": this.config.DanMu_Color,
+                                "left": "0px"
+                            });
+                        this.ele_danmu.append(newSpan);
+                        setTimeout(() => newSpan.remove(), 10000);
 					} else {
 						this.ele_danmu.html("<b>「弹幕」</b>" + this.danmuList[this.danmuCnt]["text"]);
 					}
@@ -135,7 +137,7 @@ class VideoPlayer {
 			return;
 		}
 
-		this.ele_container.fadeIn(200);
+		this.ele_container.show();
 		this.option = option;
 
 		/* 视频详情 */
@@ -162,7 +164,7 @@ class VideoPlayer {
 		
 			space.getUserCard(VideoInfo["data"]["owner"]["mid"], (card) => {
 				/* 获取UP主卡片 */
-				$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">` + limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"') + `</a>`);
+				$("#player_descArea").prepend(`<a href="#uid_${card.data.uid}_top">${limitConsecutiveChars(card.html).replace(/\ \ /g, "").replace(/\n/g, "").replace('type="outlined"', 'type="outlined" style="border:none;"')}</a>`);
 			});
 		
 			$.get(`https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=${aid}`, (ReplyInfo) => {
@@ -218,7 +220,6 @@ class VideoPlayer {
 
 	close() {
 		// 关闭播放器
-		this.ele_container.fadeOut(150);
 		this.ele_videoContainer.attr("src", "");
 		this.ele_videoContainer_backup.attr("src", "");
 		this.danmuList = [];
@@ -228,7 +229,7 @@ class VideoPlayer {
 
 		window.location.hash = "#default";
 
-		
+		this.ele_container.hide();
         $("#dynamic_loader").hide();
 	}
 
@@ -322,10 +323,9 @@ class VideoPlayer {
 				this.ele_videoContainer.hide();
 				this.ele_videoContainer_backup.show();
 				
-				this.ele_videoContainer_backup.attr("src", "https://www.bilibili.com/blackboard/html5mobileplayer.html?bvid=" + bvid + "&cid=" + cid);
+                this.ele_videoContainer_backup.attr("src", `https://www.bilibili.com/blackboard/html5mobileplayer.html?bvid=${bvid}&cid=${cid}`);
 				
 				$("#dynamic_loader").hide();
-				return;
 			} else {
 				this.ele_videoContainer.show();
 				this.ele_videoContainer_backup.hide();
@@ -341,7 +341,7 @@ class VideoPlayer {
 		$.each(pages, (index, item) => {
 			cidList += `<s-chip type='${(index == 0) ? "filled-tonal" : "outlined"}' class='player_cidListItem' cid-data='${item.cid}' page-num='${item.page}' title='${item.part}'>${item.part}</s-chip>`;
 		});
-		this.ele_descArea.append("<br><hr><b class='player_blockTitle'>选集</b><div class='flex_container'>" + cidList + "</div>");
+        this.ele_descArea.append(`<br><hr><b class='player_blockTitle'>选集</b><div class='flex_container'>${cidList}</div>`);
 		$(".player_cidListItem").click((evt) => {
 			var cid = $(evt.currentTarget).attr("cid-data");
 			var page = $(evt.currentTarget).attr("page-num");

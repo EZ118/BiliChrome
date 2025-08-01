@@ -137,7 +137,7 @@ class LivePlayer {
 
 		$("#dynamic_loader").show();
 		this.ele_commentArea.empty();
-		this.ele_container.fadeIn(200);
+		this.ele_container.show();
 
 		// 获取视频信息
 		$.get(`https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${option.roomid}`, (VideoInfo) => {
@@ -160,9 +160,9 @@ class LivePlayer {
 		if (this.hls) {
 			this.hls.destroy();
 		}
-		this.ele_container.fadeOut(150);
 		this.danmuList = [];
 		this.danmuShowDelay = null;
+		this.ele_container.hide();
 		$("#dynamic_loader").hide();
 
 		
