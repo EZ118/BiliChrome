@@ -18,7 +18,6 @@ class VideoPlayer {
 		this.danmuList = [];
 		this.danmuCnt = 0;
 
-
 		// 加载预设
 		this.config = {
 			"HD_Quality": false,
@@ -101,7 +100,6 @@ class VideoPlayer {
 		this.ele_videoContainer.bind('loadedmetadata', () => {
 			// 视频帧加载完毕后自动播放
 			this.ele_videoContainer[0].play();
-			
 			$("#dynamic_loader").hide();
 		});
 		this.ele_videoContainer.bind('error', () => {
@@ -114,6 +112,48 @@ class VideoPlayer {
 			this.danmuCnt = 0;
 			modal.toast("视频播放完毕", 1000);
 		});
+        
+        $(document).on('keydown', (e) => {
+            // 视频失焦时响应快捷键
+            const video = this.ele_videoContainer[0];
+
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { return; }
+            if (this.ele_container.is(":hidden") || this.ele_videoContainer.is(":hidden")) { return; }
+
+            switch (e.key) {
+                case ' ':
+                    // 播放/暂停
+                    e.preventDefault();
+                    if (video.paused) { video.play(); }
+                    else { video.pause(); }
+                    break;
+                case 'ArrowLeft':
+                    // 快退 5 秒
+                    e.preventDefault();
+                    video.currentTime = Math.max(0, video.currentTime - 5);
+                    break;
+                case 'ArrowRight':
+                    // 快进 5 秒
+                    e.preventDefault();
+                    video.currentTime += 5;
+                    break;
+                case 'm':
+                    // 静音切换
+                    e.preventDefault();
+                    video.muted = !video.muted;
+                    break;
+                case 'f':
+                    // 全屏切换
+                    e.preventDefault();
+                    if (video.requestFullscreen) {
+                        if (document.fullscreenElement) { document.exitFullscreen(); } 
+                        else { video.requestFullscreen(); }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
 
 		console.log("[VideoPlayer] 已初始化");
 	}
@@ -153,7 +193,7 @@ class VideoPlayer {
 			desc = limitConsecutiveChars(desc);
 		
 			this.ele_title.html(VideoInfo["data"]["title"]);
-			this.ele_descArea.html("<b class='player_blockTitle'>详情</b><br>" + desc);
+			this.ele_descArea.html(`<b class='player_blockTitle'>详情</b><br>"${desc}`);
 		
 			this.aid = aid;
 			this.bvid = bvid;
@@ -169,7 +209,7 @@ class VideoPlayer {
 		
 			$.get(`https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&ps=20&type=1&sort=2&oid=${aid}`, (ReplyInfo) => {
 				/* 获取评论 */
-				this.ele_descArea.append(`<br><b class='player_blockTitle'>评论</b><br><div class='reply_container'>${this.parseComments(ReplyInfo.data.replies)}<hr style='border-bottom:2px dashed #91919160;'></div>`);
+				this.ele_descArea.append(`<br><b class='player_blockTitle'>评论</b><br><div class='reply_container'>${this.parseComments(ReplyInfo.data.replies)}</div>`);
 		
 				$(document).on('click', '.reply_container .more_reply', (evt) => {
 					// 当用户点击了评论回复，则显示更多评论
@@ -193,7 +233,7 @@ class VideoPlayer {
 					aid: item.aid,
 					pic: item.pic,
 					title: item.title,
-					desc: '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介"),
+                    desc: `- 点赞: ${item.stat.like}\n- 简介: ${item.desc ? item.desc : "-"}`,
 					author: { uid: item.owner.mid, name: item.owner.name }
 				}));
 				this.ele_videoList.html(card.video_slim(WebList, true));
@@ -208,7 +248,7 @@ class VideoPlayer {
 					aid: item.aid,
 					pic: item.pic,
 					title: item.title,
-					desc: '- 点赞数量: ' + item.stat.like + '\n- 视频简介: ' + (item.desc ? item.desc : "无简介"),
+					desc: `- 点赞: ${item.stat.like}\n- 简介: ${item.desc ? item.desc : "-"}`,
 					author: { uid: item.owner.mid, name: item.owner.name }
 				}));
 				this.ele_videoList.html(card.video_slim(WebList));
