@@ -163,6 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
             desc: "设置滚动弹幕颜色（HEX）",
             type: 'string'
         },
+        Auto_Full_Screen: {
+            value: false,
+            desc: "打开视频时自动全屏",
+            type: 'boolean'
+        },
         Notify_Update: {
             value: false,
             desc: "后台收取动态更新通知（20分钟/次）",
@@ -187,9 +192,10 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             saveSettings() {
                 // 保存设置
+                const newSettings = JSON.parse(JSON.stringify(this.settings))
+                console.log('保存的设置:', newSettings);
+                setStorage("pref", newSettings);
                 showToast("当前设置已保存！");
-                console.log('保存的设置:', this.settings);
-                setStorage("pref", this.settings);
             },
             getSettings() {
                 // 显示已保存的设置

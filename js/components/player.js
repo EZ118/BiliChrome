@@ -22,17 +22,12 @@ class VideoPlayer {
 		this.config = {
 			"HD_Quality": false,
 			"Advanced_DanMu": false,
-			"DanMu_Color": "#FFFFFF"
+			"DanMu_Color": "#FFFFFF",
+            "Auto_Full_Screen": false,
+            "Hide_Useless_Ctrl": true
 		}
-		getConfig("pref.HD_Quality", (val) => {
-			this.config.HD_Quality = val ? true : false;
-		});
-		getConfig("pref.Advanced_DanMu", (val) => {
-			this.config.Advanced_DanMu = val ? true : false;
-		});
-		getConfig("pref.DanMu_Color", (val) => {
-			this.config.DanMu_Color = val ? true : false;
-		});
+        this.config = userPrefSettings;
+        if (this.config.Hide_Useless_Ctrl) { $("#player_likeBtn,#player_coinBtn,#player_watchlaterBtn").hide(); }
 
 		// 按钮事件监听
 		$("#player_openNewBtn").click(() => chrome.tabs.create({ url: "https://www.bilibili.com/video/" + this.bvid })); // 在新标签页打开
@@ -78,7 +73,7 @@ class VideoPlayer {
 					if (this.config.Advanced_DanMu) {
                         // 滚动弹幕模式（使用CSS的keyframe实现滚动效果）
 						const pageH = parseInt( Math.random() * ( this.ele_container.innerHeight() - 20 ) );
-						const newSpan = $("<div class='player_danmuText'></span>");
+						const newSpan = $("<div class='player_danmuText'></div>");
                         newSpan.text(this.danmuList[this.danmuCnt]["text"])
                             .css({
                                 "animation": "DanMuAnimation 10s linear",
@@ -101,6 +96,9 @@ class VideoPlayer {
 			// 视频帧加载完毕后自动播放
 			this.ele_videoContainer[0].play();
 			$("#dynamic_loader").hide();
+            
+            // 自动全屏
+            if (this.config.Auto_Full_Screen && !this.ele_videoContainer.is(":hidden") && !document.fullscreenElement) { this.ele_videoContainer[0].requestFullscreen(); }
 		});
 		this.ele_videoContainer.bind('error', () => {
 			// 视频加载失败，关闭加载球
@@ -111,14 +109,15 @@ class VideoPlayer {
 			$("#player_videoContainer")[0].currentTime = 0;
 			this.danmuCnt = 0;
 			modal.toast("视频播放完毕", 1000);
+            if (document.fullscreenElement) { document.exitFullscreen(); } 
 		});
         
         $(document).on('keydown', (e) => {
             // 视频失焦时响应快捷键
             const video = this.ele_videoContainer[0];
 
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { return; }
             if (this.ele_container.is(":hidden") || this.ele_videoContainer.is(":hidden")) { return; }
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { return; }
 
             switch (e.key) {
                 case ' ':

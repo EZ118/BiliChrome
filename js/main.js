@@ -13,11 +13,13 @@ var currentNav = "home";
 var currentUid = null;
 var biliJctData = "";
 var lastDynamicOffset = null;
+var userPrefSettings = {};
 
 function routeCtrl(isOnload, hash) {
     var data = null;
     if (hash) {
         data = hash.substring(1);
+        alert("发现了一处狗屎代码，快提issue")
     } else {
         data = window.location.hash.substring(1);
     }
@@ -92,7 +94,26 @@ function routeCtrl(isOnload, hash) {
     }
 }
 
-$(document).ready(() => {
+$(document).ready(async () => {
+    // 获取用户偏好设置（同步执行）
+    await (async () => {
+        const result = await new Promise((resolve, reject) => {
+            getStorage("pref", resolve); // 假设 getStorage 是 callback 风格
+        });
+        for (let key in result) {
+            userPrefSettings[key] = result[key].value;
+        }
+    })();
+    
+    // 获取登录token
+    getJctToken((token) => biliJctData = token);
+    
+    // 获取用户信息
+    getAccount("auto", (usrInfo) => {
+        currentUid = usrInfo.uid;
+        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后使用", 8000) }
+    });
+    
     // 初始化组件
     player = new VideoPlayer();
     live_player = new LivePlayer();
@@ -105,16 +126,6 @@ $(document).ready(() => {
     home = new HomeView();
     message = new MessageView();
     space = new SpaceView();
-
-    // 获取用户信息
-    getAccount("auto", (usrInfo) => {
-        currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后使用", 8000) }
-    });
-
-    // 获取登录token
-    getJctToken((token) => biliJctData = token);
-    getConfig("pref.Hide_Useless_Ctrl", (val) => { if (val) { $("#player_likeBtn,#player_coinBtn,#player_watchlaterBtn").hide(); } });
 
     // 初始动作
     routeCtrl(isOnload = true);
@@ -146,7 +157,6 @@ $(document).ready(() => {
 				search.display();
 				break;
 			default:
-				console.log("未知页")
 				break;
 		}
     });    
@@ -170,7 +180,6 @@ $(document).ready(() => {
                 space.display(true);
                 break;
             default:
-                console.warn("未知页");
                 break;
         }
     });
@@ -179,7 +188,6 @@ $(document).ready(() => {
     $(document).on("click", ".historyBackButton", () => {
         window.history.back();
     });
-    
     
     // 全局老板键（ctrl + shift + x 或 ctrl + shift + c 触发），触发时，浏览器最小化、视频暂停
     $(window).keydown((evt) => {
@@ -191,8 +199,6 @@ $(document).ready(() => {
         }
     });
 });
-
-
 
 // 侧栏彩蛋
 var eggBtnCnt = 0;
@@ -207,4 +213,3 @@ $("#eggBtn").click(() => {
         modal.toast("你疯了吧！");
     }
 });
-
