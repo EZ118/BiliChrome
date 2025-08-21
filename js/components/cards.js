@@ -9,7 +9,7 @@ var card = {
                 <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#${bsdata}">
-                            <img src='${item.pic}@412w_232h_1c.webp' style="width:100%; height:100%; object-fit:cover;" loading="eager">
+                            <img src='${item.pic}@412w_232h_1c.webp' loading="eager">
                         </a>
                     </div>
                     <div slot="subhead">
@@ -37,7 +37,7 @@ var card = {
                 <s-card clickable="true" class="slim_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
                     <div class="card-image">
                         <a href="#${bsdata}">
-                            <img src='${item.pic}@412w_232h_1c.webp' style='width:100%; height:100%; object-fit:cover;' loading="eager">
+                            <img src='${item.pic}@412w_232h_1c.webp' loading="eager">
                         </a>
                     </div>
                     <div class="card-content">

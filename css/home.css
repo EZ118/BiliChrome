@@ -80,6 +80,7 @@ html{ height:100%; width:100%; touch-action:pan-x pan-y;}
 .common_video_card a{ color:inherit; -webkit-user-drag:none; }
 .common_video_card div[slot="subhead"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .common_video_card div[slot="text"]{ height:1.4rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.common_video_card div[slot="image"] img{width:100%;height:100%;object-fit:cover}
 
 /* 视频卡片组件（列表型） */
 .slim_video_card{display:flex;align-items:center;margin:6px 8px;width:calc(100% - 16px);height:90px;min-width:300px;max-width:none;overflow:hidden}
@@ -125,13 +126,12 @@ s-snackbar a{ color:#00AEEC; }
 .myspace_subSection a { margin:10px; flex-grow:1; }
 
 /* 用户空间动态 */
-.space_singlebox{ margin:0; width:60%; min-width:250px; max-width:500px; font-size:16px; overflow:hidden; padding:10px; cursor:pointer; color:var(--s-color-on-surface); border-bottom:1px solid var(--s-color-surface-container-high); }
-.space_singlebox .videopic{ width:100%; border-radius:10px; -webkit-user-drag:none; }
-.space_singlebox .dailypic{ width:100px; height:100px; object-fit:contain; border-radius:5px; -webkit-user-drag:none; margin:5px; }
-.space_singlebox_un{ color:var(--s-color-on-surface-variant); font-size:14px; width:100%; overflow:hidden; }
-.space_singlebox_un .userpic{ width:30px; height:30px; border-radius:30px }
-.space_singlebox_un span{ position:relative; top:-10px; left:5px }
-.space_singlebox_vt{ width:100%; margin:5px 0px }
+.common_dynamic_card{ margin:0; width:60%; min-width:250px; max-width:500px; font-size:16px; overflow:hidden; padding:10px; cursor:pointer; color:var(--s-color-on-surface); border-bottom:1px solid var(--s-color-surface-container-high); }
+.common_dynamic_card .videopic{ width:100%; border-radius:10px; -webkit-user-drag:none; }
+.common_dynamic_card .dailypic{ width:100px; height:100px; object-fit:contain; border-radius:5px; -webkit-user-drag:none; margin:5px; }
+.common_dynamic_card .username{ color:var(--s-color-on-surface-variant); font-size:small; width:100%; overflow:hidden; display:flex; flex-direction:row; align-items:center; gap:5px; }
+.common_dynamic_card .userpic{ width:30px; height:30px; border-radius:30px }
+.common_dynamic_card .title{ width:100%; margin:5px 0px }
 
 /* UP主/用户卡片（少量信息） */
 .common_user_card_slim { width:280px; display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; background-color:inherit; }

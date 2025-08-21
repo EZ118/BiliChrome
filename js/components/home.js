@@ -60,8 +60,7 @@ class HomeView {
                 <s-chip type="" class="tab" tab-data="popular">热门</s-chip>
                 <s-chip type="" class="tab" tab-data="live">直播</s-chip>
             </div>
-            <div class="flex_container tab_container" style="min-height: calc(100vh - 30px); overflow-y: auto; padding: 0px 0px 10px 0px;">
-            </div>
+            <div class="flex_container tab_container" style="min-height: calc(100vh - 30px); overflow-y: auto; padding: 0px 0px 10px 0px;"></div>
         `);
 
         // 调用显示推荐视频列表

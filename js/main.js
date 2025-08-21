@@ -9,20 +9,13 @@ var home = null; // 首页实例
 var message = null; // 消息实例
 var space = null; // 空间实例
 
-var currentNav = "home";
-var currentUid = null;
-var biliJctData = "";
-var lastDynamicOffset = null;
-var userPrefSettings = {};
+var currentNav = "home"; // 当前浏览页面
+var currentUid = null; // 当前用户UID（页面加载时载入）
+var biliJctData = ""; // 当前用户token（页面加载时载入）
+var userPrefSettings = {}; // 本地存储的个性化设置（页面加载时载入）
 
-function routeCtrl(isOnload, hash) {
-    var data = null;
-    if (hash) {
-        data = hash.substring(1);
-        alert("发现了一处狗屎代码，快提issue")
-    } else {
-        data = window.location.hash.substring(1);
-    }
+function routeCtrl(isOnload) {
+    const data = window.location.hash.substring(1);
 
     if (data.includes("bvid")) {
         /* 视频播放bvid */
@@ -31,7 +24,7 @@ function routeCtrl(isOnload, hash) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
-		
+
     } else if (data.includes("aid")) {
         /* 视频播放aid */
         player.open({
@@ -39,13 +32,13 @@ function routeCtrl(isOnload, hash) {
             refreshOnly: data.includes("refreshonly") ? "watch_later" : null,
             videoList: data.includes("watchlater") ? "watch_later" : null
         });
-		
+
     } else if (data.includes("roomid")) {
         /* 直播roomid */
         live_player.open({
             roomid: data.split("_")[1]
         });
-		
+
     } else if (data.includes("uid")) {
         /* 用户空间 */
         space.getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
@@ -53,7 +46,9 @@ function routeCtrl(isOnload, hash) {
     } else if (data.includes("img-")) {
         /* 图片查看 */
         let imgVewerHtml = `<img src="${data.split("-")[1]}" width="100%" />`;
-        if (!data.includes("-top")) { imgVewerHtml = `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button>` + imgVewerHtml; }
+        if (!data.includes("-top")) {
+            imgVewerHtml = `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button>` + imgVewerHtml;
+        }
         modal.open("浏览图片", imgVewerHtml, data.split("-")[1], isTop = data.includes("-top"));
 
     } else if (data.includes("myfav")) {
@@ -62,8 +57,13 @@ function routeCtrl(isOnload, hash) {
 
     } else if (data.includes("mysubscription")) {
         /* 订阅up主列表 */
-        if (isOnload) { setTimeout(function () { space.getUserSubscription(currentUid); }, 300); }
-        else { space.getUserSubscription(currentUid); }
+        if (isOnload) {
+            setTimeout(function () {
+                space.getUserSubscription(currentUid);
+            }, 300);
+        } else {
+            space.getUserSubscription(currentUid);
+        }
 
     } else if (data.includes("fav_")) {
         /* 收藏夹 */
@@ -94,9 +94,9 @@ function routeCtrl(isOnload, hash) {
     }
 }
 
-$(document).ready(async () => {
+$(document).ready(async() => {
     // 获取用户偏好设置（同步执行）
-    await (async () => {
+    await(async() => {
         const result = await new Promise((resolve, reject) => {
             getStorage("pref", resolve); // 假设 getStorage 是 callback 风格
         });
@@ -104,16 +104,16 @@ $(document).ready(async () => {
             userPrefSettings[key] = result[key].value;
         }
     })();
-    
+
     // 获取登录token
     getJctToken((token) => biliJctData = token);
-    
+
     // 获取用户信息
     getAccount("auto", (usrInfo) => {
-        currentUid = usrInfo.uid;
-        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后使用", 8000) }
+        if (!usrInfo.uid) { modal.toast("您未登录，请在bilibili.com登录后使用", 8000); }
+        else { currentUid = usrInfo.uid; }
     });
-    
+
     // 初始化组件
     player = new VideoPlayer();
     live_player = new LivePlayer();
@@ -141,25 +141,25 @@ $(document).ready(async () => {
         currentNav = link.substring(5);
 
         switch (currentNav) {
-			case "home":
-				home.display();
-				break;
-			case "message":
-				message.display();
-				break;
-			case "subscriptions":
-				dynamic.display();
-				break;
-			case "space":
-				space.display();
-				break;
-			case "search":
-				search.display();
-				break;
-			default:
-				break;
-		}
-    });    
+            case "home":
+                home.display();
+                break;
+            case "message":
+                message.display();
+                break;
+            case "subscriptions":
+                dynamic.display();
+                break;
+            case "space":
+                space.display();
+                break;
+            case "search":
+                search.display();
+                break;
+            default:
+                break;
+        }
+    });
 
     // 右下角刷新按钮
     $("#RefreshBtn").click(() => {
@@ -188,7 +188,7 @@ $(document).ready(async () => {
     $(document).on("click", ".historyBackButton", () => {
         window.history.back();
     });
-    
+
     // 全局老板键（ctrl + shift + x 或 ctrl + shift + c 触发），触发时，浏览器最小化、视频暂停
     $(window).keydown((evt) => {
         if ((evt.ctrlKey && evt.shiftKey && evt.key === 'C') || (evt.ctrlKey && evt.shiftKey && evt.key === 'X')) {
@@ -204,12 +204,18 @@ $(document).ready(async () => {
 var eggBtnCnt = 0;
 $("#eggBtn").click(() => {
     eggBtnCnt++;
-    if (eggBtnCnt == 16) {
-        modal.toast("这不是彩蛋...");
-    } else if (eggBtnCnt == 32) {
-        modal.toast("真不是彩蛋...");
-    } else if (eggBtnCnt >= 64) {
-        eggBtnCnt = 0;
-        modal.toast("你疯了吧！");
+    switch (eggBtnCnt) {
+        case 16:
+            modal.toast("这不是彩蛋...");
+            break;
+        case 32:
+            modal.toast("真不是彩蛋...");
+            break;
+        case 64:
+            eggBtnCnt = 0;
+            modal.toast("你疯了吧！");
+            break;
+        default:
+            break;
     }
 });

@@ -3,9 +3,9 @@ class SpaceView {
         this.currentUid = uid || currentUid;
 
         $(document).on("click", ".subscription_backBtn", () => {
-            if (currentTab == "space") {
+            if (currentNav == "space") {
                 space.display();
-            } else if (currentTab == "subscriptions") {
+            } else if (currentNav == "subscriptions") {
                 dynamic.display();
             } else {
                 home.display();
@@ -87,7 +87,7 @@ class SpaceView {
     getUserSpace(uid, isTop) {
 		// 获取用户的最近空间动态
         var WebList = "";
-        $.get("https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=" + uid, (data) => {
+        $.get(`https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=${uid}&features=itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,decorationCard,onlyfansAssetsV2,forwardListHidden,ugcDelete`, (data) => {
             $.each(data.data.items, (index, item) => {
                 var ImgUrl = "";
                 var VidDesc = "";
@@ -99,39 +99,58 @@ class SpaceView {
                 var dynamicType = item.type;
                 var card_json = item;
 
-                if (dynamicType === 'DYNAMIC_TYPE_AV' && card_json.modules.module_dynamic.major) {
-                    /* 如果动态内容是视频 */
+                if (dynamicType == 'DYNAMIC_TYPE_AV' && card_json.modules.module_dynamic.major) {
+                    // 如果动态主要内容是视频
                     var video = card_json.modules.module_dynamic.major.archive;
                     VidDesc = video.title;
-                    ImgUrl = '<img class="videopic" src="' + video.cover + '@530w_300h_1c.webp" onerror="this.remove()" loading="eager" />';
+                    ImgUrl = `<img class="videopic" src="${video.cover}@530w_300h_1c.webp" loading="eager" />`;
                     LinkUrl = "bvid_" + video.bvid;
-                } else if (dynamicType === 'DYNAMIC_TYPE_WORD' || dynamicType === 'DYNAMIC_TYPE_DRAW') {
-                    /* 如果动态内容是文字 */
-                    VidDesc = card_json.modules.module_dynamic.desc.text;
-                    if (dynamicType === 'DYNAMIC_TYPE_DRAW' && card_json.modules.module_dynamic.major) {
+                } else if (dynamicType == 'DYNAMIC_TYPE_WORD' || dynamicType == 'DYNAMIC_TYPE_DRAW') {
+                    // 如果动态主要内容是文字
+                    VidDesc = card_json.modules.module_dynamic.major.opus.summary.text;
+                    if (dynamicType == 'DYNAMIC_TYPE_DRAW') {
                         /* 如果动态内容含图片 */
-                        $.each(card_json.modules.module_dynamic.major.draw.items, function (index, item) {
-                            ImgUrl += `<a href="#img-${encodeURI(item.src)}"><img class="dailypic" src="${item.src}@256w_256h_1e_1c_!web-dynamic.jpg" loading="eager" /></a>`;
-                            if (index % 3 == 2) {
-                                ImgUrl += "<br>";
-                            }
+                        $.each(card_json.modules.module_dynamic.major.opus.pics, (index, item) => {
+                            ImgUrl += `<a href="#img-${encodeURI(item.url)}"><img class="dailypic" src="${item.url}@256w_256h_1e_1c_!web-dynamic.jpg" loading="eager" /></a>`;
+                            if (index % 3 == 2) { ImgUrl += "<br>"; }
                         });
                     }
+                    
+                    if(card_json.modules.module_dynamic.additional) {
+                        const additionalCard = card_json.modules.module_dynamic.additional;
+                        if(additionalCard.type == "ADDITIONAL_TYPE_UGC") {
+                            ImgUrl += `<br><br>【引用视频】${additionalCard.ugc.title}<br><img class="videopic" src="${additionalCard.ugc.cover}@530w_300h_1c.webp" loading="eager" />`
+                            LinkUrl = "aid_" + additionalCard.ugc.id_str;
+                        }
+                    }
+                } else if (dynamicType == 'DYNAMIC_TYPE_FORWARD') {
+                    // 如果是转发内容
+                    VidDesc = card_json.modules.module_dynamic.desc?.text;
+                    
+                    const additionalCard = card_json.orig;
+                    if (additionalCard.type == "DYNAMIC_TYPE_ARTICLE") { ImgUrl += "<br><br>【转发专栏】<br>内容暂不支持" }
+                    else if (additionalCard.type == "DYNAMIC_TYPE_AV"){
+                        var video = additionalCard.modules.module_dynamic.major.archive;
+                        VidDesc += `<br><br>【引用视频】<br>@${additionalCard.modules.module_author.name}: ${video.title}`;
+                        ImgUrl = `<img class="videopic" src="${video.cover}@530w_300h_1c.webp" loading="eager" />`;
+                        LinkUrl = "bvid_" + video.bvid;
+                    }
                 }
+                    console.log(dynamicType)
 
-                if (VidDesc == null) { VidDesc = ""; }
-                if (LinkUrl == null) { LinkUrl = "default"; }
+                if (!VidDesc) { VidDesc = ""; }
+                if (!LinkUrl) { LinkUrl = "default"; }
 
                 if (VidDesc == "" && LinkUrl == "default" && (ImgUrl == null || ImgUrl == "")) { } else {
                     VidDesc = VidDesc.split("\n").join("<br>");
                     WebList += `
-                        <s-ripple class='space_singlebox' align='left'>
-                            <div class="space_singlebox_un">
+                        <s-ripple class='common_dynamic_card' align='left'>
+                            <div class="username">
                                 <img class="userpic" src='${avatarUrl}@45w_45h_1c.webp' loading="eager" />
                                 <span>&nbsp;${username}</span>
                             </div>
                             <a href='#${LinkUrl}'>
-                                <div class='space_singlebox_vt'>${VidDesc}</div>
+                                <div class='title'>${VidDesc}</div>
                                 ${ImgUrl}
                             </a>
                         </s-ripple>`;

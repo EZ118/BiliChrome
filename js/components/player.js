@@ -69,7 +69,7 @@ class VideoPlayer {
 		setInterval(() => {
 			if (!this.danmuList || this.danmuList.length == 0 || this.danmuList.length <= this.danmuCnt) { return; }
 			try {
-				if (this.danmuList[this.danmuCnt]["time"] <= $("#player_videoContainer")[0].currentTime) {
+				if (this.danmuList[this.danmuCnt]["time"] <= this.ele_videoContainer[0].currentTime) {
 					if (this.config.Advanced_DanMu) {
                         // 滚动弹幕模式（使用CSS的keyframe实现滚动效果）
 						const pageH = parseInt( Math.random() * ( this.ele_container.innerHeight() - 20 ) );
