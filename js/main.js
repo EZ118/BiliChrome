@@ -162,7 +162,7 @@ $(document).ready(async() => {
     });
 
     // 右下角刷新按钮
-    $("#RefreshBtn").click(() => {
+    $("#global_refresh_btn").click(() => {
         switch (currentNav) {
             case "home":
                 home.display(true);

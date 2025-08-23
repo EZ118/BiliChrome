@@ -139,3 +139,26 @@ getConfig("pref.Notify_Update", (value) => {
         setInterval(checkForUpdates, 20 * 60 * 1000);
     }
 });
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete' && tab.url) {
+        // 检查是否是 Bilibili 视频页
+        if (/^https:\/\/www\.bilibili\.com\/video\/.+/.test(tab.url)) {
+            // 获取用户偏好设置（同步执行）
+            getConfig("pref.Redirect_To_BiliScape", (result) => {
+                if (!result) { return; }
+
+                const url = tab.url;
+                const vid = url.split("/")[4].replace(url.substring(url.lastIndexOf("?")), "");
+
+                let newOption = "";
+                if (vid.includes("av")) { newOption = "aid_" + vid.replace("av", ""); }
+                else { newOption = "bvid_" + vid; }
+
+                chrome.tabs.update(tabId, {
+                    url: chrome.runtime.getURL('home.html') + "#" + newOption
+                });
+            })
+        }
+    }
+});

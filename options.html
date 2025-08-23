@@ -2,9 +2,11 @@
 <html>
 
 <head>
-	<title>BiliScape扩展选项</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+	
+	<title>BiliScape扩展选项</title>
+
 	<link rel="stylesheet" type="text/css" href="./css/sober-theme.css">
 	<link rel="stylesheet" type="text/css" href="./css/options.css">
 	<script src="./js/vendor/petite-vue-csp.iife.js"></script>
@@ -52,6 +54,9 @@
 			</div>
 
 			<div v-show="currentTab === 'pref'">
+				<p style="color:var(--s-color-on-surface-variant);font-size:9pt;margin:0 0 5px 0;">
+					* 提示: 请在设置完成后点击“保存设置”以保存选项内容。
+				</p>
 				<s-table style="overflow:auto; display:block;">
 					<s-thead>
 						<s-tr>
@@ -88,13 +93,13 @@
 				<b>第三方哔哩哔哩客户端浏览器插件</b><br><br>
 				<a href="https://github.com/EZ118/" target="_blank"><i>Developed by EZ118</i></a>
 				<br><br>
-				<div style="max-width:400px;min-width:200px;width:60%;text-align:center;word-break:break-all;">
+				<div style="max-width:600px;min-width:200px;width:60%;text-align:center;word-break:break-all;">
 					<p style="font-weight:600;">项目简介</p>
 					BiliScape（原BiliChrome未过审遂易名）源于自己的项目Bili32和BiliBili-PWA-Server，
 					其中很多结构和元素都有所体现。这个扩展程序的目标是让上网本也能流畅刷B站。作者持有的Yoga3 11笔记本性能过低，
-					尝试了Ubuntu、MintLinux、Win8.1、ChromeOS都会卡顿，但仍想发挥其余热，故而开发了这个扩展程序。
-					未实现的功能主要是由于B站官方对接口的限制，而BiliScape采用了权限更严格的Manifest V3标准，这使得实现高级操作变得困难。
-					目前作者正在优化性能和规范化代码，欢迎大家提出意见和建议（QQ群、Github、BiliBili都可）。
+					但仍想发挥其余热，故而开发了这个扩展程序。未实现的功能主要是由于B站官方对接口的限制，
+					而BiliScape采用了权限更严格的Manifest V3标准，这使得实现高级操作变得困难。
+					目前作者正在优化性能和规范化代码，欢迎大家提出意见和建议（QQ、GitHub、BiliBili）。
 				</div>
 			</div>
 		</div>

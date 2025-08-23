@@ -4,10 +4,13 @@ function showToast(message, duration) {
 }
 
 function getAccount(uid, callback) {
+    // 获取用户信息（会将当前账户信息缓存至本地）
     getStorage("account", function (detail) {
         if (detail) {
+            // 已缓存则直接返回
             callback(detail);
         } else if (!detail && uid && uid != "auto") {
+            // 按UID获取用户信息
             const url = `https://api.bilibili.com/x/web-interface/card?mid=${uid}`;
             fetch(url)
                 .then(response => {
@@ -34,6 +37,7 @@ function getAccount(uid, callback) {
                     console.error("[ERROR] 获取用户信息失败", error);
                 });
         } else if (!detail && uid == "auto") {
+            // 自动获取当前登录用户信息
             const url = "https://api.bilibili.com/x/space/v2/myinfo?";
             fetch(url)
                 .then(response => {
@@ -69,6 +73,7 @@ function getAccount(uid, callback) {
 }
 
 function resetAccount() {
+    // 重置用户信息（清除缓存）
     removeStorage("account", function () {
         getAccount("auto", function (result) {
             console.log(result);
@@ -77,7 +82,7 @@ function resetAccount() {
 }
 
 function getJctToken(callback) {
-    /* 获取B站账号登录凭据（用于接口请求时的身份验证） */
+    // 获取B站账号登录凭据（用于接口请求时的身份验证）
     chrome.cookies.getAll({ url: "https://www.bilibili.com/" }, function (cookies) {
         var finalVal = "";
         for (let i = 0; i < cookies.length; i++) {
@@ -91,6 +96,7 @@ function getJctToken(callback) {
 }
 
 function saveSubscriptionForPipePipe(uid) {
+    // 导出订阅列表为 PipePipe 格式
     let requests = [];
     let finalList = [];
 
@@ -143,11 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 默认设置
     const defaultSettings = {
-        Hide_Useless_Ctrl: {
-            value: true,
-            desc: "隐藏播放器内无法使用的功能按钮",
-            type: 'boolean'
-        },
         HD_Quality: {
             value: true,
             desc: "默认启用1080P画质",
@@ -160,12 +161,22 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         DanMu_Color: {
             value: "#FFFFFF",
-            desc: "设置滚动弹幕颜色（HEX）",
+            desc: "自定义滚动弹幕颜色（HEX）",
             type: 'string'
         },
         Auto_Full_Screen: {
             value: false,
-            desc: "打开视频时自动全屏",
+            desc: "浏览视频时自动全屏",
+            type: 'boolean'
+        },
+        Hide_Useless_Ctrl: {
+            value: true,
+            desc: "隐藏播放器内无法使用的功能按钮",
+            type: 'boolean'
+        },
+        Redirect_To_BiliScape: {
+            value: false,
+            desc: "官网视频自动跳转至 BiliScape 播放",
             type: 'boolean'
         },
         Notify_Update: {
@@ -177,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (window.location.href.split("/").slice(-1)[0] === "options.html") {
+        // 如果是options.html即扩展选项页面，则初始化选项页面
         PetiteVue.createApp({
             currentTab: "common",
 
