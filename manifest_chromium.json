@@ -10,7 +10,6 @@
     "permissions": [
         "notifications",
         "webRequest",
-        "declarativeNetRequest",
         "cookies",
         "contextMenus",
         "tabs",
@@ -19,7 +18,9 @@
     ],
     "host_permissions": [
         "*://*.bilibili.com/*",
-        "*://gitee.com/*/*/raw/*"
+        "*://gitee.com/*/*/raw/*",
+        "*://raw.githubusercontent.com/*",
+        "*://gist.githubusercontent.com/*"
     ],
     "action": {
         "default_title": "BiliScape"
