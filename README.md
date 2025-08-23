@@ -24,10 +24,14 @@ QQ群：1023133212
 </div>
 
 ## 安装   
-**Edge浏览器：** [在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
-**Firefox浏览器：** [在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
-**Chrome浏览器：** 主菜单 > 扩展程序 > 管理扩展程序 > 启用 开发者模式 > 加载已解压的扩展程序 并选择文件夹 **或** 将打包为zip的扩展拖拽到“扩展程序”页面内。   
+| 浏览器  | 链接   |
+|---------|--------|
+| Edge    | [Microsoft Addons](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
+| Firefox | [Add-ons for Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
+| Chrome  | [Crx搜搜](https://www.crxsoso.com/addon/detail/baglkdkhhmbfimiacicchpflifnpibkp) |
 
+*提示: 因为谷歌开发者账号不方便注册，所以借助第三方网站“Crx搜搜”。*
+   
 ## 功能   
 - [x] 推荐视频列表
 - [x] 最热视频列表
@@ -46,11 +50,11 @@ QQ群：1023133212
   - [x] 视频详情
   - [x] 视频推荐列表
   - [x] 查看评论/回复
-  - [ ] 点赞、投币操作
   - [x] 小窗播放
   - [x] 弹幕（精简/滚动模式）
   - [x] 添加稍后再看
   - [x] 用户卡片
+  - [ ] 点赞、投币操作（受限）
 - [x] 用户板块
   - [x] 关注用户
   - [x] 最近动态
@@ -61,12 +65,14 @@ QQ群：1023133212
   - [x] 私聊历史查询
 - [x] 设置板块
   - [x] 暗黑模式
-  - [x] JS插件管理器
   - [x] 账户基本信息
-  - [x] 将关注列表导出至PipePipe
   - [x] 播放设置
+- [x] 特色功能
+  - [x] JS插件管理器（插件管理）
+  - [x] 将关注列表导出至PipePipe（扩展选项）
+  - [x] 老板键 Ctrl+Shift+C（仅BiliScape内生效）
 
-## JS插件功能
+## JS插件
 自`v3.3.0`版本起，可通过“我的”->“插件管理”安装在线插件或加载本地插件。   
 
 在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码。   
@@ -88,5 +94,5 @@ QQ群：1023133212
 - [baptistejamin/petite-vue-csp](https://github.com/baptistejamin/petite-vue-csp)
 
 ## 开发计划
-- “消息”页 私聊区 支持显示更多富文本内容/卡片。
-- 修复BUG
+- 新的动态页（可查看）
+- 优化执行速度
