@@ -75,7 +75,7 @@ QQ群：1023133212
 ## JS插件
 自`v3.3.0`版本起，可通过“我的”->“插件管理”安装在线插件或加载本地插件。   
 
-在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码。   
+在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码与相关开发提示。   
 
 插件基于`eval5.js`实现，仅支持`ES5`标准，若报错请留意语法。   
 插件脚本在页面加载完成后执行，可访问 **所有数据/函数/变量/DOM** 。   
@@ -94,5 +94,5 @@ QQ群：1023133212
 - [baptistejamin/petite-vue-csp](https://github.com/baptistejamin/petite-vue-csp)
 
 ## 开发计划
-- 新的动态页（可查看）
+- 新的动态页（可在单页内展示指定用户动态、视频动态、收藏内容等）
 - 优化执行速度
