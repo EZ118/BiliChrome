@@ -1,5 +1,6 @@
 class Modal {
 	constructor() {
+		// 初始化
 		this.url = "";
 
 		$('#dlg_openNewBtn').click(() => {
@@ -26,25 +27,34 @@ class Modal {
 		console.log("[Modal] 已初始化");
 	}
 
-	open(title, html, url, isTop) {
-		if (!url) { url = ""; }
-		if (isTop) { $('#dlg_container').css("z-index", "104"); }
+	open(title, html, url, isTop, isFullscreen) {
+		// 显示对话框
 
-		$('#dlg_container').show();
+		if (!url) { url = ""; }
+		if (isTop) {
+			// 如果设置了置顶
+			$('#dlg_container').css("z-index", "104");
+		}
+		if (isFullscreen) {
+			// 如果设置了全屏
+			$('.dlg_container_real').css({ "width": "100vw", "height": "100vw", "top": 0, "left": 0, "transform": "initial" });
+			$('#dlg_content').css({ "max-height": "calc(100vh - 47px)" });
+		}
+
 		$('#dlg_content').html(html);
 		$('#dlg_title').html(title);
+		$('#dlg_container').show();
 		this.url = url;
 	}
 
 	close() {
-		$('#dlg_container').hide()
-			
-        if ($('#dlg_container').css("z-index") == "104") { $('#dlg_container').css("z-index", "") }
+		// 关闭对话框
+		$('#dlg_container, .dlg_container_real, #dlg_content').removeAttr("style");
 
-		$('#dlg_content').empty();
-		$('#dlg_title').html("[默认标题]");
+		$('#dlg_content, #dlg_title').empty();
+		$('#dlg_container').hide();
+
 		this.url = "";
-
 		window.location.hash = "#default";
 	}
 
