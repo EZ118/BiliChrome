@@ -3,10 +3,6 @@ class DynamicView {
         // 初始化
         this.lastDynamicOffset = null; // 用于存储动态分页偏移量
 
-        $(document).on("click", ".dynamic_showListBtn", () => {
-            document.querySelector("#dynamic_container").toggle();
-        });
-
         $(document).on("click", ".dynamic_listItem", (event) => {
             const upUid = $(event.currentTarget).attr("uid");
             if (upUid === "all_dynamic") {
@@ -29,7 +25,7 @@ class DynamicView {
                 </s-scroll-view>
                 <div class="dialog">
                     <div class="dialog_titlebar">
-                        <s-icon-button class="dynamic_showListBtn"><s-icon name="menu"></s-icon></s-icon-button>
+                        <s-icon-button class="toggleDrawerButton"><s-icon name="menu"></s-icon></s-icon-button>
                         <span class="dialog_title">全部动态</span>
                     </div>
                     <s-scroll-view class="dialog_content">

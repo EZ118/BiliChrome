@@ -41,7 +41,7 @@ function routeCtrl(isOnload) {
 
     } else if (data.includes("uid")) {
         /* 用户空间 */
-        space.getUserSpace(data.split("_")[1], isTop = data.includes("_top"));
+        space.getUserSpace(data.split("_")[1], data.includes("_top"));
 
     } else if (data.includes("img-")) {
         /* 图片查看 */
@@ -50,10 +50,6 @@ function routeCtrl(isOnload) {
             imgVewerHtml = `<s-icon-button class="historyBackButton"><s-icon name="arrow_back"></s-icon></s-icon-button>` + imgVewerHtml;
         }
         modal.open("浏览图片", imgVewerHtml, data.split("-")[1], isTop = data.includes("-top"));
-
-    } else if (data.includes("myfav")) {
-        /* 收藏夹列表 */
-        space.getMyCollectionList();
 
     } else if (data.includes("mysubscription")) {
         /* 订阅up主列表 */
@@ -188,6 +184,12 @@ $(document).ready(async() => {
     $(document).on("click", ".historyBackButton", () => {
         window.history.back();
     });
+
+    $(document).on("click", ".toggleDrawerButton", () => {
+        const toggleDrawerButton = document.querySelector('.toggleDrawerButton');
+        const drawer = toggleDrawerButton.closest('s-drawer');
+        drawer.toggle();
+    })
 
     // 全局老板键（ctrl + shift + x 或 ctrl + shift + c 触发），触发时，浏览器最小化、视频暂停
     $(window).keydown((evt) => {

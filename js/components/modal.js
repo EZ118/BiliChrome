@@ -39,6 +39,8 @@ class Modal {
 			// 如果设置了全屏
 			$('.dlg_container_real').css({ "width": "100vw", "height": "100vw", "top": 0, "left": 0, "transform": "initial" });
 			$('#dlg_content').css({ "max-height": "calc(100vh - 47px)" });
+		} else {
+			$('.dlg_container_real, #dlg_content').removeAttr("style");
 		}
 
 		$('#dlg_content').html(html);
@@ -96,7 +98,8 @@ $(document).ready(function () {
 			var playerHidden = $("#player_container").is(":hidden");
 			var liveHidden = $("#live_container").is(":hidden");
 
-			if (!playerHidden) {
+			if (!playerHidden && !space.isTop) {
+				// 如果对话框置顶，则优先关闭对话框
 				player.close();
 			} else if (!liveHidden) {
 				live_player.close();

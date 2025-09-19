@@ -3,10 +3,6 @@ class MessageView {
         // 初始化
 
         // 事件绑定
-        $(document).on("click", ".chat_showListBtn", () => {
-            // 列表伸缩按钮
-            document.querySelector('#chat_container').toggle();
-        });
         $(document).on("click", ".chat_listItem", (event) => {
             // 私聊用户卡片点击操作
             let talkerUid = $(event.currentTarget).attr("talker-uid");
@@ -32,7 +28,7 @@ class MessageView {
                 </s-scroll-view>
                 <div class="dialog">
                     <div class="dialog_titlebar">
-                        <s-icon-button class="chat_showListBtn"><s-icon name="menu"></s-icon></s-icon-button>
+                        <s-icon-button class="toggleDrawerButton"><s-icon name="menu"></s-icon></s-icon-button>
                         <span class="dialog_title">点击左侧列表项查看对话历史</span>
                     </div>
                     <s-scroll-view class="dialog_content">

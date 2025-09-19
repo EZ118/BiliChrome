@@ -6,7 +6,7 @@ var card = {
             var bsdata = (item.bvid ? "bvid_" + item.bvid : "aid_" + item.aid) + (watchlater ? "_watchlater" : "");
 
             WebList += `
-                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
+                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" data-bs="${bsdata}">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#${bsdata}">
                             <img src='${item.pic}@412w_232h_1c.webp' loading="eager">
@@ -34,7 +34,7 @@ var card = {
             var bsdata = (item.bvid ? "bvid_" + item.bvid : "aid_" + item.aid) + (watchlater ? "_watchlater" : "");
 
             WebList += `
-                <s-card clickable="true" class="slim_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
+                <s-card clickable="true" class="slim_video_card" title="${item.desc || ''}" data-bs="${bsdata}">
                     <div class="card-image">
                         <a href="#${bsdata}">
                             <img src='${item.pic}@412w_232h_1c.webp' loading="eager">
@@ -65,7 +65,7 @@ var card = {
             var bsdata = "bangumi_" + item.media_id;
 
             WebList += `
-                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
+                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" data-bs="${bsdata}">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#${bsdata}">
                             <img src='${item.pic}@412w_232h_1c.webp' style="width:100%; height:100%; object-fit:cover;" loading="eager">
@@ -93,7 +93,7 @@ var card = {
             var bsdata = "uid_" + item.uid;
 
             WebList += `<a href="#${bsdata}">
-                    <s-card class="common_user_card_slim" type="outlined" title="${item.sign}" bs-data="${bsdata}" title="${item.desc || ""}">
+                    <s-card class="common_user_card_slim" type="outlined" title="${item.sign}" data-bs="${bsdata}" title="${item.desc || ""}">
                         <img src="${item.pic}@48w_48h_1c.webp" class="avatar" loading="eager" />
                         <div class="right">
                             <span class="name">
@@ -114,7 +114,7 @@ var card = {
             var bsdata = "roomid_" + item.roomid;
 
             WebList += `
-                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" bs-data="${bsdata}">
+                <s-card clickable="true" class="common_video_card" title="${item.desc || ''}" data-bs="${bsdata}">
                     <div slot="image" style="overflow:hidden;">
                         <a href="#${bsdata}">
                             <img src='${item.pic}@412w_232h_1c.webp' style="width:100%; height:100%; object-fit:cover;" loading="eager">

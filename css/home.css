@@ -134,7 +134,7 @@ s-snackbar a{ color:#00AEEC; }
 .common_dynamic_card .title{ width:100%; margin:5px 0px }
 
 /* UP主/用户卡片（少量信息） */
-.common_user_card_slim { width:280px; display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; background-color:inherit; }
+.common_user_card_slim { width:280px; max-width:calc(100% - 10px); display:flex; align-items:center; height:fit-content; overflow:hidden; flex-direction:row; margin:5px 5px; overflow-y: hidden; background-color:inherit; }
 .common_user_card_slim .avatar { width:35px; height:35px; border-radius:100%; margin:10px; }
 .common_user_card_slim .right { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; flex-grow:1; }
 .common_user_card_slim .right .name { display:block; width:100%; font-weight:lighter; font-size:medium; }
@@ -162,6 +162,8 @@ s-snackbar a{ color:#00AEEC; }
 .search_backBtn {}
 .keyword { color:var(--s-color-secondary); font-style: normal; }
 
+.space_container { width:100%; height:calc(100vh - 50px); border-radius: 8px; }
+#space_list { height:100%; overflow: hidden auto; }
 
 /* 宽度自适应 */
 @media screen and (max-width:400px) {
