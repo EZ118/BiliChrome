@@ -30,7 +30,7 @@ QQ群：1023133212
 | Firefox | [Add-ons for Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
 | Chrome  | [Crx搜搜](https://www.crxsoso.com/addon/detail/baglkdkhhmbfimiacicchpflifnpibkp) |
 
-*提示: 因为谷歌开发者账号不方便注册，所以借助第三方网站“Crx搜搜”。*
+*提示: 未注册谷歌开发者账号，无法发布到Chrome官方扩展商店，因此目前借助第三方网站“Crx搜搜”。*
    
 ## 功能   
 - [x] 推荐视频列表
@@ -95,4 +95,6 @@ QQ群：1023133212
 
 ## 开发计划
 - 新的动态页（可在单页内展示指定用户动态、视频动态、收藏内容等）
-- 优化执行速度
+- 计划使用mithril或petite-vue重写，以改进使用体验
+
+**注：近几个月更新频率会放缓**
