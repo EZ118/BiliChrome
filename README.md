@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-    <img src="https://ez118.github.io/biliweb/icon.svg" width="100" height="100" />
+    <img src="./img/icon.svg" width="100" height="100" />
     <h1>BiliScape</h1>
 </div>
 
@@ -19,19 +19,18 @@
 <img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
 <img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="动态" />
 <img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/><br/>
-QQ群：1023133212   
-   
+QQ群：1023133212
+<br/>
+<font color="red">仓库内的 BiliScape 4.0 处于开发阶段，相关功能未完成</font><br/>
+<font color="red">若需要 3.x.x 源码，请切换Tag或查看Release</font><br/>
+<font color="red">以下文档 属于 v3.4.3 版本</font>
 </div>
 
-## 安装   
-| 浏览器  | 链接   |
-|---------|--------|
-| Edge    | [Microsoft Addons](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
-| Firefox | [Add-ons for Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
-| Chrome  | [Crx搜搜](https://www.crxsoso.com/addon/detail/baglkdkhhmbfimiacicchpflifnpibkp) |
+## 安装（v3.4.3）   
+**Edge浏览器：** [在 Microsoft Addons 查看](https://microsoftedge.microsoft.com/addons/detail/biliscape/baglkdkhhmbfimiacicchpflifnpibkp?hl=zh-CN)   
+**Firefox浏览器：** [在 Add-ons for Firefox 查看](https://addons.mozilla.org/zh-CN/firefox/addon/biliscape/)   
+**Chrome浏览器：** 主菜单 > 扩展程序 > 管理扩展程序 > 启用 开发者模式 > 加载已解压的扩展程序 并选择文件夹 **或** 将打包为zip的扩展拖拽到“扩展程序”页面内。   
 
-*提示: 未注册谷歌开发者账号，无法发布到Chrome官方扩展商店，因此目前借助第三方网站“Crx搜搜”。*
-   
 ## 功能   
 - [x] 推荐视频列表
 - [x] 最热视频列表
@@ -50,11 +49,13 @@ QQ群：1023133212
   - [x] 视频详情
   - [x] 视频推荐列表
   - [x] 查看评论/回复
+  - [x] 点赞、投币操作
   - [x] 小窗播放
   - [x] 弹幕（精简/滚动模式）
   - [x] 添加稍后再看
+  - [ ] 字幕
   - [x] 用户卡片
-  - [ ] 点赞、投币操作（受限）
+  - [ ] 收藏
 - [x] 用户板块
   - [x] 关注用户
   - [x] 最近动态
@@ -65,17 +66,15 @@ QQ群：1023133212
   - [x] 私聊历史查询
 - [x] 设置板块
   - [x] 暗黑模式
+  - [x] JS插件管理器
   - [x] 账户基本信息
+  - [x] 将关注列表导出至PipePipe
   - [x] 播放设置
-- [x] 特色功能
-  - [x] JS插件管理器（插件管理）
-  - [x] 将关注列表导出至PipePipe（扩展选项）
-  - [x] 老板键 Ctrl+Shift+C（仅BiliScape内生效）
 
-## JS插件
+## JS插件功能
 自`v3.3.0`版本起，可通过“我的”->“插件管理”安装在线插件或加载本地插件。   
 
-在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码与相关开发提示。   
+在 [BiliChromePlugin](https://github.com/EZ118/BiliChromePlugin) 仓库中可查看EZ118（项目作者）制作的JS插件源代码。   
 
 插件基于`eval5.js`实现，仅支持`ES5`标准，若报错请留意语法。   
 插件脚本在页面加载完成后执行，可访问 **所有数据/函数/变量/DOM** 。   
@@ -87,14 +86,12 @@ QQ群：1023133212
 
 ## 参考与使用   
 - [jQuery](https://jquery.com/)
+- [Material Icon](https://fonts.google.com/icons)
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [apprat/sober](https://soberjs.com/)
 - [video-dev/hls.js](https://github.com/video-dev/hls.js/)
 - [bplok20010/eval5](https://github.com/bplok20010/eval5/)
-- [baptistejamin/petite-vue-csp](https://github.com/baptistejamin/petite-vue-csp)
 
 ## 开发计划
-- 新的动态页（可在单页内展示指定用户动态、视频动态、收藏内容等）
-- 计划使用mithril或petite-vue重写，以改进使用体验
-
-**注：近几个月更新频率会放缓**
+- 编写函数文档
+- “消息”页 私聊区 支持显示更多富文本内容/卡片。

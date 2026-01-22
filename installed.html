@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>欢迎使用 BiliScape</title>
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="./img/icon_64x64.png">
+
+    <!-- 自定义样式 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-weight: normal;
+        }
+
+        body,
+        html {
+            height: 100vh;
+            width: 100vw;
+            font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+            -webkit-appearance: none !important;
+            -webkit-tap-highlight-color: transparent;
+            color: #222;
+            overflow: hidden;
+        }
+
+        /* 背景：多色混合渐变 + 动态流动效果 */
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg,
+                    rgb(255, 48, 112) 0%,
+                    rgb(255, 123, 166) 50%,
+                    rgb(255, 217, 222),
+                    rgb(236, 224, 224) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 18s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 内容容器：居中布局 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* 图标：带阴影与圆角 */
+        .icon {
+            width: 96px;
+            height: 96px;
+            margin-bottom: 1.5rem;
+            border-radius: 1.5em;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        /* 标题文字 */
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: rgb(80, 15, 35);
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: rgb(124, 22, 54);
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: rgb(158, 56, 89);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: rgb(255, 48, 112);
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 6px 15px rgb(255, 48, 112);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transform: translateY(10px);
+        }
+
+        .btn:hover {
+            background: rgb(255, 123, 166);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgb(255, 123, 166);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn::after {
+            content: '';
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            h4 {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 10px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 背景层 -->
+    <div class="bg"></div>
+
+    <!-- 主内容容器 -->
+    <div class="container">
+        <img src="./img/icon_128x128.png" alt="AnnyMusic Logo" class="icon">
+
+        <h1>BiliScape 已安装</h1>
+        <h3>全新体验即将开启</h3>
+        <h4>
+            BiliScape 4.x 经过了大量的重构，并使用了仿 FluentUI 设计，为您带来崭新体验
+        </h4>
+
+        <a href="./index.html#!/home" class="btn">
+            开始
+        </a>
+    </div>
+</body>
+
+</html>

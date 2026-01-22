@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+    <title>BiliScape</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <link rel="stylesheet" type="text/css" href="./css/view.css">
+    <link rel="stylesheet" type="text/css" href="./css/component.css">
+
+    <script src="./js/vendor/mithril.min.js"></script>
+    <script src="./js/vendor/hls.min.js"></script>
+    <script src="./js/vendor/eval5.min.js"></script>
+</head>
+
+<body>
+    <!-- 启动屏幕 -->
+    <div id="SplashScreen" style="display:flex;opacity:1;">
+        <img class="logo" src="./img/logo.svg">
+        <img class="loader" src="./img/loader.svg">
+        <br><br>
+    </div>
+
+    <div id="app"></div>
+
+    <script src="./js/native.js"></script>
+    <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>

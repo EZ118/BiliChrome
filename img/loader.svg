@@ -1,0 +1,30 @@
+<svg width="48" height="48" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        :root {
+            --primary-color: rgb(255, 48, 112);
+        }
+
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: rgb(255, 123, 166);
+            }
+        }
+
+        @keyframes loader-spin {
+            0% { stroke-dasharray: 0.01, 43.97; transform: rotate(0deg); }
+            50% { stroke-dasharray: 21.99, 21.99; transform: rotate(450deg); }
+            100% { stroke-dasharray: 0.01, 43.97; transform: rotate(1080deg); }
+        }
+        .c {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            transform-origin: 8px 8px;
+            transform: rotate(-90deg);
+            animation: loader-spin 2s linear infinite;
+        }
+    </style>
+    <circle class="c" cx="8" cy="8" r="7" />
+</svg>

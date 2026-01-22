@@ -1,0 +1,325 @@
+/* =====[ 通知 Toast ]===== */
+.toast {
+    position: fixed;
+    bottom: calc(1rem);
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 2400;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 4px;
+    min-width: 20rem;
+    max-width: 36rem;
+    padding: 8px;
+    font-size: 0.9rem;
+    display: block;
+    box-shadow: 0 1.25px 5px 0 rgba(0, 0, 0, 19%), 0 .3333px 1.5px 0 rgba(0, 0, 0, 3.9%);
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+
+/* =====[ 视频卡片 VideoCard ]===== */
+.live-card,
+.video-card {
+    margin: 6px;
+    width: 280px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: fit-content;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--background-color);
+    cursor: pointer;
+    user-select: none;
+    transition: 0.1s filter;
+    display: inline-block;
+    box-shadow: 0px 2px 2px #00000033;
+}
+
+.live-card:hover,
+.video-card:hover {
+    filter: brightness(0.85);
+}
+
+.live-card:active,
+.video-card:active {
+    filter: brightness(0.7);
+}
+
+.live-card .pic,
+.video-card .pic {
+    width: 280px;
+    height: 158px;
+    object-fit: cover;
+}
+
+.live-card .title,
+.video-card .title {
+    margin: 4px 8px;
+    padding: 0;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.live-card .subtitle,
+.video-card .subtitle {
+    margin: 4px 8px;
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =====[ 视频窄卡片 VideoCardSlim ]===== */
+.video-card-slim {
+    margin: 4px 0;
+    height: 68px;
+    padding: 4px;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--background-color);
+    cursor: pointer;
+    user-select: none;
+    transition: 0.125s background;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.video-card-slim:hover {
+    background: var(--secondary-color);
+}
+
+.video-card-slim:active {
+    background: var(--primary-color);
+}
+
+.video-card-slim .pic {
+    height: 60px;
+    width: 100px;
+    border-radius: 4px;
+}
+
+.video-card-slim .info {
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+}
+
+.video-card-slim .title {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: calc(100% - 1.2em);
+}
+
+.video-card-slim .subtitle {
+    padding: 0;
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =====[ 评论卡片 ReplyCard ]===== */
+.reply-card {
+    width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid #88888833;
+    padding: 8px;
+}
+
+.reply-card .user {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.reply-card .user .face {
+    width: 28px;
+    height: 28px;
+    border-radius: 28px;
+    cursor: pointer;
+}
+
+.reply-card .user .name {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.9;
+}
+
+.reply-card .content {
+    margin: 4px 0;
+    padding-left: 36px;
+    font-size: 0.9rem;
+    user-select: text;
+}
+
+.reply-card .detail {
+    margin: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    text-align: right;
+}
+
+.reply-card .more-replies {
+    margin: 4px 0;
+    margin-left: 36px;
+    padding: 0;
+    width: calc(100% - 36px);
+    font-size: 0.85rem;
+    border-radius: 4px;
+    overflow: hidden;
+    height: fit-content;
+}
+
+.reply-card .more-reply-item {
+    padding: 3px 4px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: var(--secondary-color);
+    transition: 0.125s opacity;
+    cursor: pointer;
+}
+
+.reply-card .more-reply-item:hover {
+    opacity: 0.8;
+}
+
+.reply-card .more-reply-item:active {
+    opacity: 0.7;
+}
+
+.reply-card .more-reply-item .name {
+    color: var(--primary-color);
+}
+
+
+
+/* =====[ 用户卡片 UserCard ]===== */
+.user-card {
+    height: 50px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--secondary-color);
+    transition: 0.125s background;
+    background: transparent;
+    cursor: pointer;
+    user-select: none;
+}
+
+.user-card:hover {
+    background: var(--secondary-color);
+}
+
+.user-card:active {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.user-card .face {
+    height: 36px;
+    width: 36px;
+    border-radius: 36px;
+}
+
+.user-card .name {
+    font-size: 1rem;
+}
+
+.user-card .desc {
+    max-width: calc(100% - 36px - 80px);
+    flex: 1;
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =====[ 聊天气泡 ChatBubble ]===== */
+.chat-bubble {
+    margin:4px;
+    display: flex;
+    justify-content: baseline;
+    gap: 4px;
+}
+.chat-bubble.left {
+    align-items: left;
+    text-align: left;
+    flex-direction: row;
+}
+.chat-bubble.right {
+    align-items: right;
+    text-align: left;
+    flex-direction: row-reverse;
+}
+.chat-bubble .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    cursor: pointer;
+}
+.chat-bubble .bubble {
+    display: block;
+    width: fit-content;
+    max-width: 75%;
+    min-width: 50px;
+    padding: 8px;
+    background: var(--secondary-color);
+    border-top: 1px solid #88888833;
+    border-left: 1px solid #88888833;
+    margin: 4px;
+    font-size: 0.9rem;
+    user-select: text;
+}
+
+.chat-bubble .bubble .desc {
+    font-size: 0.85rem;
+    color: inherit;
+    opacity: 0.8;
+    user-select: none;
+}
+
+.chat-bubble .bubble.left {
+    border-radius: 2px 8px 8px 8px;
+}
+
+.chat-bubble .bubble.right {
+    border-radius: 8px 2px 8px 8px;
+}
+
+.chat-bubble>*,
+.chat-bubble .bubble>* {
+    display: block;
+}

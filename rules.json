@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "priority": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "origin",
+                    "operation": "set",
+                    "value": "https://www.bilibili.com"
+                },
+                {
+                    "header": "referer",
+                    "operation": "set",
+                    "value": "https://www.bilibili.com/"
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "||bilibili.com",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ],
+            "domainType": "thirdParty"
+        }
+    }
+]

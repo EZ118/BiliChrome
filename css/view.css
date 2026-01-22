@@ -1,0 +1,756 @@
+/* =====[ 播放器 PlayerView ]===== */
+.player-view {
+    width: 100%;
+    height: 100%;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.player-view .col {
+    width: auto;
+    height: 100%;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+.player-view .row-titlebar {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    align-items: center;
+    border-bottom: 1px solid #88888833;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0 12px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: text;
+}
+
+.player-view .row-tabbar {
+    width: 100%;
+    height: 44px;
+    padding: 6px;
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #88888833;
+}
+
+.player-view .row-tabbar .tab {
+    padding: 6px 4px;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--background-color);
+    cursor: pointer;
+}
+
+.player-view .row-tabbar .tab:hover,
+.player-view .row-tabbar .tab:active,
+.player-view .row-tabbar .tab.selected {
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
+}
+
+.player-view .row-detail {
+    height: calc(100% - 44px);
+    width: 100%;
+    padding: 8px;
+    overflow: hidden auto;
+}
+
+.player-view .row-detail .stat {
+    font-size: 0.8rem;
+    margin: 5px 0;
+    color: var(--text-color);
+    opacity: 0.75;
+}
+
+.player-view .row-detail .desc {
+    font-size: 0.8rem;
+    margin: 5px 0;
+    color: var(--text-color);
+    opacity: 0.8;
+    user-select: text;
+}
+
+.player-view .row-detail .pages-list {
+    width: 100%;
+    height: fit-content;
+    max-height: 300px;
+    overflow: hidden auto;
+    background: var(--secondary-color);
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 0.8rem;
+    margin: 6px 0;
+}
+
+.player-view .row-detail .page-item {
+    height: fit-content;
+    width: 100%;
+    margin: 0;
+    margin-top: 4px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: 0.125s background;
+    background: var(--background-color);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.player-view .row-detail .page-item:hover {
+    background: var(--secondary-color);
+    filter: brightness(1.3);
+}
+
+.player-view .row-detail .page-item:active {
+    background: var(--primary-color);
+    filter: brightness(1);
+}
+
+.player-view .row-video {
+    width: 100%;
+    height: calc(100% - 44px);
+}
+
+.player-view .row-video .video-body {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+    outline: none;
+}
+
+/* =====[ 首页 HomeView ]===== */
+.home-view {}
+
+.home-view .tabbar {
+    height: 40px;
+    width: calc(100% - 16px);
+    padding: 10px;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: 8px 8px 1px 1px;
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0px 4px 4px var(--background-color),
+        0px 0px 2px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+    user-select: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.home-view .tabbar .tab {
+    padding: 6px;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--background-color);
+    cursor: pointer;
+}
+
+.home-view .tabbar .tab:hover,
+.home-view .tabbar .tab:active,
+.home-view .tabbar .tab.selected {
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
+}
+
+.home-view .cardlist {
+    height: calc(100% - 40px);
+    overflow: hidden scroll;
+    display: block;
+    padding: 5px 0;
+}
+
+/* =====[ 动态 DynamicView ]===== */
+.dynamic-view {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.dynamic-view .left {
+    width: 320px;
+    min-width: 225px;
+    height: 100%;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden scroll;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.dynamic-view .up-card {
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #88888833;
+    border-left: 4px solid transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.1s all;
+}
+
+.dynamic-view .up-card:hover {
+    background: var(--secondary-color);
+}
+
+.dynamic-view .up-card:active {
+    background: var(--secondary-color);
+    filter: brightness(0.8);
+}
+
+.dynamic-view .up-card.selected {
+    background: var(--secondary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.dynamic-view .up-card .face {
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+}
+
+.dynamic-view .up-card .name {
+    margin: 0;
+    padding: 0;
+}
+
+.dynamic-view .right {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.dynamic-view .right .titlebar {
+    height: 44px;
+    line-height: 44px;
+    font-size: 1rem;
+    padding: 0 12px;
+    font-weight: bold;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: text;
+    background: var(--background-color);
+    box-shadow: 0px 0px 4px #00000033;
+    border-radius: 8px;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+.dynamic-view .right .dynamicList {
+    flex: 1;
+    width: 100%;
+    box-shadow: 0px 0px 4px #00000033;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    display: block;
+    overflow: hidden auto;
+    padding: 8px;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+
+/* =====[ 搜索 SearchView ]===== */
+.search-view {}
+
+.search-view .logo {
+    margin-top: 25vh;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+    font-size: 1.75rem;
+    font-style: italic;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 4px var(--secondary-color);
+}
+
+.search-view .search-box {
+    position: relative;
+    left: 50%;
+    top: -1.75rem;
+    transform: translateX(-50%);
+
+    width: 40vw;
+    min-width: 320px;
+    max-width: 500px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 1px solid var(--secondary-color);
+    border-radius: 6px;
+    outline: none;
+    padding: 12px;
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    background: var(--background-color);
+    opacity: 0.9;
+}
+
+.search-view .search-box:focus {
+    outline: 2px solid var(--secondary-color);
+}
+
+.search-view .searchSuggestion {
+    position: relative;
+    left: 50%;
+    top: -20px;
+    transform: translateX(-50%);
+
+    width: 40vw;
+    min-width: 320px;
+    max-width: 500px;
+
+    padding: 4px;
+    border-radius: 8px;
+    overflow: hidden auto;
+    height: fit-content;
+    max-height: calc(100vh - 25vh - 125px - 100px);
+    background: var(--background-color);
+    border-top: 1px solid #88888833;
+    border-bottom: 1px solid #88888833;
+}
+
+.search-view .searchSuggestion .item {
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.search-view .searchSuggestion .item:hover {
+    background: var(--secondary-color);
+}
+
+.search-view .tabbar {
+    height: 40px;
+    width: calc(100% - 16px);
+    padding: 10px;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: 8px 8px 1px 1px;
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: 0px 4px 4px var(--background-color),
+        0px 0px 2px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+    user-select: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.search-view .tabbar .tab {
+    padding: 6px;
+    font-size: 0.9rem;
+    border-bottom: 2px solid var(--background-color);
+    cursor: pointer;
+}
+
+.search-view .tabbar .tab:hover,
+.search-view .tabbar .tab:active,
+.search-view .tabbar .tab.selected {
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
+}
+
+.search-view .cardlist {
+    height: calc(100% - 40px);
+    overflow: hidden scroll;
+    display: block;
+    padding: 5px 0;
+}
+
+.search-view .cardlist:has(.user-card) {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 50px);
+    grid-template-columns: repeat(3, calc((100% - 2 * 12px) / 3));
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    padding-top: 12px;
+}
+
+.search-view .cardlist .user-card {
+    background: var(--background-color);
+    border: none;
+    box-shadow: 0px 2px 2px #00000033;
+    transition: filter 0.125s;
+}
+
+.search-view .cardlist .user-card:hover {
+    filter: brightness(0.85);
+}
+
+/* =====[ 消息 MessageView ]===== */
+.message-view {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.message-view>.left {
+    width: 320px;
+    min-width: 225px;
+    height: 100%;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden scroll;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.message-view .up-card {
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #88888833;
+    border-left: 4px solid transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.1s all;
+}
+
+.message-view .up-card:hover {
+    background: var(--secondary-color);
+}
+
+.message-view .up-card:active {
+    background: var(--secondary-color);
+    filter: brightness(0.8);
+}
+
+.message-view .up-card.selected {
+    background: var(--secondary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.message-view .up-card .face {
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+}
+
+.message-view .up-card .name {
+    margin: 0;
+    padding: 0;
+}
+
+.message-view>.right {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.message-view>.right .titlebar {
+    height: 44px;
+    line-height: 44px;
+    font-size: 1rem;
+    padding: 0 12px;
+    font-weight: bold;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: text;
+    background: var(--background-color);
+    box-shadow: 0px 0px 4px #00000033;
+    border-radius: 8px;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+.message-view>.right .chatHistory {
+    flex: 1;
+    width: 100%;
+    box-shadow: 0px 0px 4px #00000033;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    display: block;
+    overflow: hidden auto;
+    padding: 8px;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+/* =====[ 用户空间 SpaceView ]===== */
+.space-view {
+    position: relative;
+    overflow: hidden auto;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 38px 6rem !important;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+.space-view > * {
+    z-index:2;
+}
+
+.space-view::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(var(--secondary-color), transparent);
+    opacity: 0.95;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+    border-top-left-radius: 7px;
+}
+
+.space-view .user-info {
+    width: 100%;
+    height: fit-content;
+    display: block;
+    margin-bottom: 3rem;
+}
+
+.space-view .user-info .detail {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    height: 100px;
+    min-width: 380px;
+}
+
+.space-view .user-info .detail .left-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 1rem;
+}
+
+.space-view .user-info .detail .right-info {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    overflow: hidden;
+}
+.space-view .user-info .detail .right-info>* {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.space-view .user-info .detail .right-info .name {
+    font-size: 32px;
+    font-weight: bold;
+    user-select: text;
+}
+
+.space-view .user-info .detail .right-info .attestation {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.space-view .user-info .detail .right-info .more {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.space-view .user-info .sign {
+    color: var(--text-color);
+    width: max(300px, 36%);
+    font-size: 14px;
+    font-weight: normal;
+
+    text-overflow: ellipsis;
+    display: flow-root;
+    -webkit-line-clamp: 2;
+    white-space-collapse: collapse;
+    overflow: hidden;
+    white-space: normal !important;
+    word-break: break-all;
+    user-select: text;
+}
+
+.space-view .subscribe-btn-group {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: fit-content;
+}
+
+.space-view .subscribe-btn-group .follow-btn {
+    color: var(--background-color);
+    background: var(--primary-color);
+    cursor: pointer;
+
+    height: 46px;
+    min-height: auto;
+    min-width: 180px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    border-radius: 0.25rem;
+
+    vertical-align: middle;
+    padding: 0px;
+
+    border: 1px solid var(--primary-color);
+}
+
+.space-view .subscribe-btn-group .follow-btn:hover {
+    filter: brightness(1.1);
+}
+
+.space-view .subscribe-btn-group .gotoweb-btn {
+    color: var(--text-color);
+    background: rgba(127, 127, 127, 0.15);
+    cursor: pointer;
+
+    min-width: 180px;
+    flex-shrink: 0;
+    flex-basis: content;
+    height: 46px;
+    min-height: 0px;
+    line-height: 24px;
+
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    border-radius: 0.25rem;
+
+    vertical-align: middle;
+    padding: 0 1rem;
+
+    border: 1px solid rgba(127, 127, 127, 0.25);
+}
+
+.space-view .subscribe-btn-group .gotoweb-btn:hover {
+    backdrop-filter: brightness(1.1);
+    filter: brightness(1.1);
+}
+
+.space-view>.details-section {
+    border-radius: 8px;
+    border: 1px solid #88888833;
+    background-color: var(--background-color);
+    width: calc(100% - max(300px, 20%) - 2 * 3rem);
+    min-width: 385px;
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
+}
+.space-view>.details-section .details-section {
+    border-radius: 8px;
+    border: 1px solid #88888833;
+    background-color: var(--secondary-color);
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+}
+.space-view .details-section .header {
+    font-size: 1.125rem;
+    font-weight: bold;
+    padding:0;
+}
+
+.space-view .details-section hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #88888833;
+    margin: 1rem 0;
+    padding: 0;
+    height: 1px;
+    background: transparent;
+    color: #88888833;
+}
+
+.space-view .details-section .content {
+    padding: 0;
+    font-size: normal;
+    font-weight: normal;
+    height: fit-content;
+    overflow: auto hidden;
+    user-select: text;
+}
+
+.space-view .details-section .content .topic {
+    display: block;
+    width: fit-content;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+.space-view .details-section .content .topic::before {
+    content:'# ';
+    display: inline-block;
+    color: var(--primary-color);
+}
+.space-view .details-section .content .video-card {
+    width: 220px;
+}
+
+.space-view .details-section .content>.pic {
+    width: 132px;
+    height: 132px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    cursor: pointer;
+}

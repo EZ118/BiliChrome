@@ -1,0 +1,388 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	-webkit-appearance: none !important;
+	overscroll-behavior: none;
+	touch-action: pan-x pan-y;
+	font-family: "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+
+	background-color: var(--background-color);
+	color: var(--text-color);
+	font-size: medium;
+}
+
+::selection {
+	color: var(--text-color);
+	background: var(--primary-color);
+}
+
+* {
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+img {
+	-webkit-user-drag: none;
+	user-select: none;
+}
+
+a {
+	text-decoration: none;
+	-webkit-user-drag: none;
+	color: inherit;
+}
+
+/* ==========[ 滚动条 ]========= */
+:root {
+	--sb-thumb-color: rgba(0, 0, 0, 0.4);
+	--sb-thumb-hover: rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--sb-thumb-color: rgba(255, 255, 255, 0.4);
+		--sb-thumb-hover: rgba(255, 255, 255, 0.6);
+	}
+}
+
+* {
+	/* --- Firefox --- */
+	scrollbar-width: thin;
+	scrollbar-color: var(--sb-thumb-color) transparent;
+}
+
+*::-webkit-scrollbar {
+	/* 3. Chrome / Edge / Safari (Webkit) 专属属性 */
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+	/* 轨道透明 */
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--sb-thumb-color);
+	border-radius: 10px;
+	border: 3px solid transparent;
+	background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background-color: var(--sb-thumb-hover);
+}
+
+
+/* ==========[ 开屏界面 ]========= */
+#SplashScreen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	align-items: center;
+	justify-content: center;
+	background: inherit;
+
+	transition: 0.2s opacity;
+}
+
+#SplashScreen .logo {
+	width: 400px;
+	height: 180px;
+	max-width: 90%;
+}
+
+#SplashScreen .loader {
+	stroke: currentColor;
+	color: currentColor;
+	fill: currentColor;
+}
+
+
+/* ==========[ 渲染区域 ]========= */
+#app {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background: var(--wallpaper) no-repeat center center;
+	background-size: cover;
+	box-shadow: inset 15px 15px 50px -10px var(--background-color);
+	user-select: none;
+}
+
+
+/* ==========[ 左侧导航栏 ]========= */
+nav {
+	position: fixed;
+	top: 50px;
+	left: 0;
+	width: 50px;
+	height: calc(100vh - 50px);
+	background: transparent;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	border: none;
+	padding: 4px;
+}
+
+nav .item {
+	color: currentColor;
+	background: transparent;
+	width: 42px;
+	height: 42px;
+	padding: 9px;
+	border-radius: 6px;
+	opacity: 0.8;
+	transition: all 0.1s;
+}
+
+nav .item:hover,
+nav .item.selected:hover {
+	background: var(--background-color);
+	color: var(--primary-color);
+}
+
+nav .item:active,
+nav .item.selected:active {
+	background: var(--background-color);
+	color: var(--primary-color);
+	opacity: 1;
+}
+
+nav .item.selected {
+	background: transparent;
+	color: var(--primary-color);
+}
+
+nav .item.selected::after {
+	display: block;
+	position: relative;
+	top: -32px;
+	left: -11px;
+	background: var(--primary-color);
+	width: 3px;
+	height: 32px;
+	content: ' ';
+	border-radius: 3px;
+}
+
+nav .item svg {
+	color: currentColor;
+	fill: currentColor;
+	stroke: currentColor;
+	stroke-width: 0.1;
+	width: 24px;
+	height: 24px;
+}
+
+/* ==========[ 顶部工具栏 ]========= */
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 50px;
+	background: transparent;
+	color: currentColor;
+	display: flex;
+	flex-direction: row;
+	overflow: hidden;
+	user-select: none;
+}
+
+header .left {
+	width: 280px;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 0px;
+}
+
+header .AppIcon {
+	width: 24px;
+	height: 24px;
+	margin: 13px;
+}
+
+header .AppTitle {
+	margin: 3px;
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+header .center {
+	width: 360px;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 8px;
+
+	@media screen and (max-width:800px) {
+		display: none;
+	}
+}
+
+header .SearchBox {
+	height: 100%;
+	width: 100%;
+	font-size: 1rem;
+	font-weight: bold;
+	border: 1px solid var(--secondary-color);
+	border-radius: 6px;
+	outline: none;
+	padding: 6px;
+	font-weight: normal;
+	font-size: 0.9rem;
+	color: var(--text-color);
+	background: var(--background-color);
+}
+
+header .SearchBox:focus {
+	outline: 2px solid var(--secondary-color);
+}
+
+header .right {
+	width: auto;
+	flex: 1;
+	flex-grow: 1;
+	height: 100%;
+	display: block;
+	flex-direction: row;
+	align-items: center;
+	justify-content: right;
+	text-align: right;
+}
+
+header .right button {
+	width: 50px;
+	height: 50px;
+	background: transparent;
+	margin: 0;
+	color: currentColor;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: all 0.125s;
+}
+
+header .right button:hover {
+	background: var(--primary-color);
+	opacity: 0.8;
+}
+
+header .right button:active {
+	background: var(--secondary-color);
+	opacity: 0.8;
+}
+
+header .right button svg {
+	width: 24px;
+	height: 24px;
+	color: currentColor;
+	fill: currentColor;
+	stroke: currentColor;
+	stroke-width: 0.1;
+}
+
+
+/* ==========[ 页面渲染主体 ]========= */
+
+main {
+	position: relative;
+	top: 50px;
+	left: 50px;
+	width: calc(100vw - 50px);
+	height: calc(100vh - 50px);
+	border-radius: 8px 0 0 0;
+	overflow: visible;
+}
+
+main>.container {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	animation: fadeIn 0.15s ease;
+	border-top-left-radius: 8px;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(50px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+
+/* ==========[ 加载球 ]========= */
+#loader {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 999;
+	transform: translate(-50%, -50%);
+	height: 48px;
+	width: 48px;
+	border-radius: 6px;
+}
+
+/* ===========[ 返回按钮 ]========== */
+.nav-back {
+	width: 42px;
+	height: 42px;
+	background: transparent;
+	margin: 4px;
+	border-radius: 6px;
+	color: currentColor;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: all 0.125s;
+	text-indent: 1px;
+}
+
+.nav-back:hover {
+	background: var(--secondary-color);
+	opacity: 0.8;
+}
+
+.nav-back:active {
+	text-indent: 6px;
+}
+
+.nav-back svg {
+	margin-top: 2px;
+	width: 18px;
+	height: 18px;
+	color: currentColor;
+	fill: currentColor;
+	stroke: currentColor;
+	stroke-width: 0.1;
+}
+
+/*
+	z-index层级：
+	104:滚动弹幕，自定义对话框（isTop=true）
+	103:播放器
+	102:自定义对话框（isTop=false）
+	101:刷新按钮
+	
+	999:加载球
+	1000: 开屏
+*/

@@ -1,0 +1,17 @@
+{
+  "name": "biliscape",
+  "version": "4.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:chromium && npm run build:firefox",
+    "build:chromium": "vite build --mode chromium",
+    "build:firefox": "vite build --mode firefox",
+    "clean": "rimraf dist *.zip"
+  },
+  "devDependencies": {
+    "vite": "^7.3.0",
+    "archiver": "^7.0.1",
+    "rimraf": "^6.1.2",
+    "terser": "^5.44.1"
+  }
+}
