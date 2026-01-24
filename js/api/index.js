@@ -492,21 +492,25 @@ export function getUserRecentDynamics(uid) {
 }
 
 /* 个人页面 */
-export function getMyInfo(uid) {
+export function getMyInfo() {
     return native.requestGet(`${baseUrl}x/space/v2/myinfo?`)
         .then((data) => {
             if (data.code == -101) {
-                return { "name": null, "uid": null, "face": null, "sign": "未登录" };
+                throw new Error("The user is not logged in.")
             }
             return {
                 "name": data.data.profile.name,
                 "uid": data.data.profile.mid,
                 "face": data.data.profile.face,
                 "sex": data.data.profile.sex,
-                "fans": data.data.follower,
                 "sign": data.data.profile.sign,
                 "level": data.data.profile.level,
-                "coins": data.data.coins
+                "vip": (data.data.profile.vip.status != 0) ? data.data.profile.vip.label.text : null,
+                "liveroom": null,
+                "birthday": timestampToDate(data.data.profile.birthday * 1000),
+                "attestation": data.data.profile.official.desc,
+                "follower": data.data.follower,
+                "following": null
             };
         })
         .catch(error => {

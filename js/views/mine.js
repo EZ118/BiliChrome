@@ -1,4 +1,4 @@
-import { getUserCard, getUserRecentDynamics, getUserSubscription } from "../api/index.js";
+import { getMyInfo, getUserSubscription } from "../api/index.js";
 import { toggleLoader } from "../components/loader.js";
 import { toast, openInNewTab } from "../util.js"
 import { UserCard, VideoCard } from "../components/card.js";
@@ -24,15 +24,16 @@ var userInfo = {
     "following": 0
 };
 var isInited = false;
-var userUid = 1018969624; // uid
+var userUid = 0;    // uid
 var dynamicList = [];
 
 function loadUserInfo() {
     toggleLoader(true);
-    getUserCard(userUid)
+    getMyInfo()
         .then((data) => {
             toggleLoader(false);
             userInfo = data;
+            userUid = data.uid;
         })
         .catch((error) => {
             toggleLoader(false);
@@ -70,7 +71,7 @@ const MineView = {
                         m("div.right-info", [
                             m(".name", userInfo.name),
                             m(".attestation", userInfo.attestation || "UID: " + userInfo.uid),
-                            m(".more", `LV${userInfo.level} - 性别${userInfo.sex} ${userInfo.vip ? "- " + userInfo.vip : ""}`)
+                            m(".more", `LV${userInfo.level} - 性别${userInfo.sex} - ${userInfo.follower}粉丝 ${userInfo.vip ? "- " + userInfo.vip : ""}`)
                         ]),
                     ]),
                     m(".sign", userInfo.sign),
