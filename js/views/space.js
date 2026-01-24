@@ -1,4 +1,4 @@
-import { getUserInfo, getUserRecentDynamics, getUpDynamics } from "../api/index.js";
+import { getUserCard, getUserRecentDynamics, getUpDynamics } from "../api/index.js";
 import { toggleLoader } from "../components/loader.js";
 import { toast, openInNewTab } from "../util.js"
 import { LiveCard, VideoCard } from "../components/card.js";
@@ -16,7 +16,9 @@ var userInfo = {
     "birthday": null,
     "top_photo": "",
     "attestation": null,
-    "is_followed": false
+    "is_followed": false,
+    "follower": 0,
+    "following": 0
 };
 var dynamicList = [];
 var videoList = [];
@@ -46,10 +48,10 @@ function loadUserInfo() {
 
 
     toggleLoader(true);
-    getUserInfo(lastParamStore)
+    getUserCard(lastParamStore)
         .then((data) => {
             toggleLoader(false);
-            if(!data) return;
+            if (!data) return;
             console.log(data)
             userInfo = data;
         })
@@ -93,22 +95,25 @@ const DynamicCard = {
 }; // 不将该组件放在card.js中是因为其样式是space-view独有的，也无法复用
 
 const SpaceView = {
-    oninit() {
+    oninit(vnode) {
         if (lastParamStore != m.route.param("uid")) {
             lastParamStore = m.route.param("uid");
+            loadUserInfo();
+        }
+        if (vnode.attrs?.uid && lastParamStore != vnode.attrs?.uid) {
+            lastParamStore = vnode.attrs.uid;
             loadUserInfo();
         }
     },
     view(vnode) {
         return m(".container.space-view", [
-            m(
-                ".user-info", [
-                m("h3.detail", [
+            m(".user-info", [
+                m(".detail", [
                     m("img.left-avatar", { src: userInfo.face }),
                     m("div.right-info", [
                         m(".name", userInfo.name),
                         m(".attestation", userInfo.attestation || "UID: " + userInfo.uid),
-                        m(".more", `LV${userInfo.level} - 性别${userInfo.sex} ${userInfo.vip ? "- " + userInfo.vip : ""}`)
+                        m(".more", `LV${userInfo.level} - 性别${userInfo.sex} - ${userInfo.follower}粉丝 - ${userInfo.following}关注 ${userInfo.vip ? "- " + userInfo.vip : ""}`)
                     ]),
                 ]),
                 m(".sign", userInfo.sign),

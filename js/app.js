@@ -6,7 +6,6 @@ import MessageView from "./views/message.js";
 import MineView from "./views/mine.js";
 
 // 次页面
-import SubscriptionView from "./views/subscription.js";
 import SpaceView from "./views/space.js";
 import VideoPlayerView from "./views/video_player.js";
 import ImageViewerView from "./views/image_viewer.js";
@@ -16,6 +15,7 @@ import { Loader } from "./components/loader.js";
 import Toolbar from "./components/toolbar.js";
 import Navbar from "./components/navbar.js";
 import { ThemeStyleSheet } from "./components/theme.js";
+import { Dialog } from "./components/dialog.js";
 
 
 export const App = () => {
@@ -32,7 +32,6 @@ export const App = () => {
 
                 "/video/:id": VideoPlayerView,
                 "/image/:url": ImageViewerView,
-                "/subscription": SubscriptionView,
                 "/space/:uid": SpaceView
             });
         },
@@ -42,6 +41,7 @@ export const App = () => {
                 m(Toolbar),
                 m(Navbar),
                 m("main"),
+                m(Dialog),
                 m(ThemeStyleSheet)
             ];
         },

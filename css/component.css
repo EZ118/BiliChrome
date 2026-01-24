@@ -236,6 +236,7 @@
     background: transparent;
     cursor: pointer;
     user-select: none;
+    margin: 2px 0;
 }
 
 .user-card:hover {
@@ -264,6 +265,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    opacity: 0.9;
 }
 
 
@@ -322,4 +324,82 @@
 .chat-bubble>*,
 .chat-bubble .bubble>* {
     display: block;
+}
+
+
+
+/* =====[ 对话框 Dialog ]===== */
+dialog {
+    background: var(--background-color);
+    border: 1px solid #88888833;
+    border-radius: 8px;
+    box-shadow: 8px 8px 25px #00000033;
+    color: var(--text-color);
+    padding: 0;
+    margin:auto;
+    overflow: hidden;
+    font-size: medium;
+    font-weight: normal;
+    user-select: none;
+    max-width: 600px;
+}
+dialog .dialog-content {
+    max-height: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    user-select: text;
+}
+dialog .dialog-title {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 16px 12px;
+    border-bottom: 1px solid #88888833;
+    background: var(--secondary-color);
+    margin: 0;
+    user-select: none;
+}
+dialog .dialog-body {
+    padding: 12px;
+    overflow: hidden auto;
+    max-height: calc(100vh - 12px * 2 - 16px * 4 - 2rem - 2 * 55px);
+    outline:none;
+}
+
+dialog .dialog-footer {
+    padding: 16px 12px;
+    border-top: 1px solid #88888833;
+    background: var(--secondary-color);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+dialog .text-btn {
+    width: fit-content;
+    min-width: 120px;
+    margin: 0 4px;
+    padding: 6px 8px;
+    border-radius: 0.25rem;
+    border: none;
+    border-bottom: 1px solid #88888833;
+    cursor: pointer;
+    transition: 0.125s filter;
+}
+
+dialog .text-btn:hover {
+    filter: brightness(0.85);
+}
+dialog .text-btn:active {
+    filter: brightness(0.70);
+}
+
+dialog .text-btn.confirm {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+dialog .text-btn.cancel {
+    background: var(--background-color);
+    color: var(--text-color);
 }

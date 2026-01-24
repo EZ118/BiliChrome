@@ -107,7 +107,10 @@ export const UserCard = {
         return m(
             ".user-card",
             {
-                onclick: () => m.route.set("/space/" + vnode.attrs.data?.uid),
+                onclick: () => {
+                    m.route.set("/space/" + vnode.attrs.data?.uid);
+                    vnode.attrs.onclick?.();
+                },
                 title: "点击查看该用户的空间"
             },
             [

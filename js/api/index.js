@@ -329,17 +329,23 @@ export function getUserCard(uid) {
                 "uid": data.data.card.mid,
                 "face": data.data.card.face,
                 "sex": data.data.card.sex,
-                "fans": data.data.card.fans,
                 "sign": data.data.card.sign,
                 "level": data.data.card.level_info.current_level,
-                "coins": null
+                "vip": (data.data.card.vip.status != 0) ? data.data.card.vip.label.text : null,
+                "liveroom": null,
+                "birthday": null,
+                "attestation": data.data.card.official_verify.desc,
+                "is_followed": data.data.following,
+                "follower": data.data.follower,
+                "following": data.data.card.attention
             };
         })
         .catch(error => {
-            console.error("Error fetching user profile: ", error);
+            console.error("Error fetching user card: ", error);
         });
 }
 export function getUserInfo(uid) {
+    // 注意，该API易拦截，因此项目中弃用
     return native.requestGet(`${baseUrl}x/space/acc/info?mid=${uid}`)
         .then((data) => {
             return {
@@ -352,7 +358,6 @@ export function getUserInfo(uid) {
                 "vip": (data.data.vip.status != 0) ? data.data.vip.label.text : null,
                 "liveroom": (data.data.live_room && data.data.live_room?.liveStatus != 0) ? data.data.live_room.roomid : null,
                 "birthday": data.data.birthday || null,
-                "top_photo": data.data.top_photo_v2.l_img,
                 "attestation": (data.data.attestation.type != 0) ? data.data.attestation.common_info.title : null,
                 "is_followed": data.data.is_followed
             };
@@ -507,6 +512,46 @@ export function getMyInfo(uid) {
         .catch(error => {
             console.error("Error fetching user profile: ", error);
         });
+}
+
+export function getUserSubscription(uid) {
+    const requests = [];
+    // 最多请求6页，每页50个关注
+    for (let i = 1; i <= 6; i++) {
+        const url = `https://api.bilibili.com/x/relation/followings?vmid=${uid}&pn=${i}&ps=50&order=desc&order_type=attention`;
+        requests.push(
+            native.requestGet(url)
+                .then(tjlist => {
+                    if (!tjlist.data?.list || tjlist.data.list.length === 0) {
+                        return []; // 没有数据时返回空数组
+                    }
+                    return tjlist.data.list.map(item => ({
+                        uid: item.mid,
+                        name: item.uname,
+                        face: item.face.includes('://') ? item.face : 'https:' + item.face,
+                        desc: item.sign,
+                        sign: item.sign
+                    }));
+                })
+                .catch(error => {
+                    console.error(`Error fetching followings page  $ {i}:`, error);
+                    return []; // 出错也返回空数组，避免中断 Promise.all
+                })
+        );
+    }
+    return Promise.all(requests).then(pages => {
+        const seen = new Set();
+        const uniqueList = [];
+        for (const page of pages) {
+            for (const user of page) {
+                if (!seen.has(user.uid)) {
+                    seen.add(user.uid);
+                    uniqueList.push(user);
+                }
+            }
+        }
+        return uniqueList;
+    });
 }
 
 

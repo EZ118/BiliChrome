@@ -1,0 +1,40 @@
+{
+    "name": "BiliScape",
+    "version": "4.0.0",
+    "description": "基于浏览器扩展的哔哩哔哩第三方客户端，对接B站接口实现，类 WinUI 样式，所有在线内容来自哔哩哔哩官方。",
+    "manifest_version": 3,
+    "icons": {
+        "64": "./img/icon_64x64.png",
+        "128": "./img/icon_128x128.png"
+    },
+    "permissions": [
+        "notifications",
+        "webRequest",
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback",
+        "cookies",
+        "contextMenus",
+        "tabs",
+        "scripting",
+        "storage"
+    ],
+    "host_permissions": [
+        "*://*.bilibili.com/*",
+        "*://gitee.com/*/*/raw/*"
+    ],
+    "action": {
+        "default_title": "BiliScape"
+    },
+    "background": {
+        "service_worker": "./js/background.js"
+    },
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "ruleset_1",
+                "enabled": true,
+                "path": "rules.json"
+            }
+        ]
+    }
+}

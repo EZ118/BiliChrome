@@ -614,6 +614,7 @@
     width: max(300px, 36%);
     font-size: 14px;
     font-weight: normal;
+    margin: 12px 0;
 
     text-overflow: ellipsis;
     display: flow-root;
@@ -626,7 +627,7 @@
 }
 
 .space-view .subscribe-btn-group {
-    margin-top: 1.5rem;
+    margin-top: 6px;
     display: flex;
     flex-direction: row;
     gap: 12px;
@@ -753,4 +754,217 @@
     margin-bottom: 2px;
     margin-top: 2px;
     cursor: pointer;
+}
+
+
+/* =====[ 我的 MineView ]===== */
+.mine-view {
+    position: relative;
+    overflow: hidden auto;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 38px 6rem !important;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+.mine-view > * {
+    z-index:2;
+}
+
+.mine-view::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(var(--secondary-color), transparent);
+    opacity: 0.95;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+    border-top-left-radius: 7px;
+}
+
+.mine-view .user-info {
+    width: 100%;
+    height: fit-content;
+    display: block;
+    margin-bottom: 3rem;
+}
+
+.mine-view .user-info .detail {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    height: 100px;
+    min-width: 380px;
+}
+
+.mine-view .user-info .detail .left-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 1rem;
+}
+
+.mine-view .user-info .detail .right-info {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    overflow: hidden;
+}
+.mine-view .user-info .detail .right-info>* {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.mine-view .user-info .detail .right-info .name {
+    font-size: 32px;
+    font-weight: bold;
+    user-select: text;
+}
+
+.mine-view .user-info .detail .right-info .attestation {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.mine-view .user-info .detail .right-info .more {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.mine-view .user-info .sign {
+    color: var(--text-color);
+    width: max(300px, 36%);
+    font-size: 14px;
+    font-weight: normal;
+    margin: 12px 0;
+
+    text-overflow: ellipsis;
+    display: flow-root;
+    -webkit-line-clamp: 2;
+    white-space-collapse: collapse;
+    overflow: hidden;
+    white-space: normal !important;
+    word-break: break-all;
+    user-select: text;
+}
+
+.mine-view .subscribe-btn-group {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: fit-content;
+}
+
+.mine-view .subscribe-btn-group .follow-btn {
+    color: var(--background-color);
+    background: var(--primary-color);
+    cursor: pointer;
+
+    height: 46px;
+    min-height: auto;
+    min-width: 180px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    border-radius: 0.25rem;
+
+    vertical-align: middle;
+    padding: 0px;
+
+    border: 1px solid var(--primary-color);
+}
+
+.mine-view .subscribe-btn-group .follow-btn:hover {
+    filter: brightness(1.1);
+}
+
+.mine-view .subscribe-btn-group .gotoweb-btn {
+    color: var(--text-color);
+    background: rgba(127, 127, 127, 0.15);
+    cursor: pointer;
+
+    min-width: 180px;
+    flex-shrink: 0;
+    flex-basis: content;
+    height: 46px;
+    min-height: 0px;
+    line-height: 24px;
+
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    border-radius: 0.25rem;
+
+    vertical-align: middle;
+    padding: 0 1rem;
+
+    border: 1px solid rgba(127, 127, 127, 0.25);
+}
+
+.mine-view .subscribe-btn-group .gotoweb-btn:hover {
+    backdrop-filter: brightness(1.1);
+    filter: brightness(1.1);
+}
+
+.mine-view>.details-section {
+    border-radius: 8px;
+    border: 1px solid #88888833;
+    background-color: var(--background-color);
+    width: calc(100% - max(300px, 20%) - 2 * 3rem);
+    min-width: 385px;
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
+}
+.mine-view>.details-section .details-section {
+    border-radius: 8px;
+    border: 1px solid #88888833;
+    background-color: var(--secondary-color);
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+}
+.mine-view .details-section .header {
+    font-size: 1.125rem;
+    font-weight: bold;
+    padding:0;
+}
+
+.mine-view .details-section hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #88888833;
+    margin: 1rem 0;
+    padding: 0;
+    height: 1px;
+    background: transparent;
+    color: #88888833;
+}
+
+.mine-view .details-section .content {
+    padding: 0;
+    font-size: normal;
+    font-weight: normal;
+    height: fit-content;
+    overflow: auto hidden;
+    user-select: text;
 }

@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
         },
         external: [
           /^\.\/js\/vendor\/.*/,
-          /^\.\/js\/util\.js$/,
+          /^\.\/js\/native\.js$/,
         ],
       },
     },
