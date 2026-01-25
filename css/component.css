@@ -7,11 +7,11 @@
     z-index: 2400;
     align-items: center;
     flex-wrap: wrap;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     min-width: 20rem;
     max-width: 36rem;
     padding: 8px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     display: block;
     box-shadow: 0 1.25px 5px 0 rgba(0, 0, 0, 19%), 0 .3333px 1.5px 0 rgba(0, 0, 0, 3.9%);
     background-color: var(--text-color);

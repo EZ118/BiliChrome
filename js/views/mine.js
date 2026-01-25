@@ -1,7 +1,7 @@
-import { getMyInfo, getUserSubscription } from "../api/index.js";
+import { getMyInfo, getUserSubscription, getCollectionList, getCollectionById, getToView, getHistory } from "../api/index.js";
 import { toggleLoader } from "../components/loader.js";
 import { toast, openInNewTab } from "../util.js"
-import { UserCard, VideoCard } from "../components/card.js";
+import { UserCard, VideoCardSlim, CollectionCard } from "../components/card.js";
 import { showDialog } from "../components/dialog.js";
 import { Icon } from "../components/icon.js";
 
@@ -25,15 +25,65 @@ var isInited = false;
 var userUid = 0;    // uid
 
 function showUserCollection() {
-    toast("收藏夹")
+    // 收藏夹
+    toggleLoader(true);
+    getCollectionList(userUid)
+        .then((data_list) => {
+            toggleLoader(false);
+            showDialog({
+                title: `收藏夹列表`,
+                content: data_list.map(collection => m(CollectionCard, {
+                    data: collection,
+                    onclick: () => {
+                        toggleLoader(true);
+                        getCollectionById(collection.fid, collection.size)
+                            .then((data_fav) => {
+                                toggleLoader(false);
+                                showDialog({
+                                    title: "收藏夹：" + collection.title,
+                                    content: data_fav.map(item => m(VideoCardSlim, { data: item }))
+                                })
+                            })
+                            .catch((error) => {
+                                toggleLoader(false);
+                            });
+                    }
+                }))
+            })
+        })
+        .catch((error) => {
+            toggleLoader(false);
+        });
 }
 
 function showUserWatchLater() {
-    toast("稍后再看")
+    toggleLoader(true);
+    getToView()
+        .then((data) => {
+            toggleLoader(false);
+            showDialog({
+                title: "稍后再看",
+                content: data.map(item => m(VideoCardSlim, { data: item }))
+            })
+        })
+        .catch((error) => {
+            toggleLoader(false);
+        });
 }
 
 function showUserWatchHistory() {
-    toast("观看历史")
+    toggleLoader(true);
+    getHistory()
+        .then((data) => {
+            toggleLoader(false);
+            showDialog({
+                title: "观看历史（近30条）",
+                content: data.map(item => m(VideoCardSlim, { data: item }))
+            })
+        })
+        .catch((error) => {
+            toggleLoader(false);
+        });
 }
 
 function showUserSubscription() {
@@ -43,7 +93,7 @@ function showUserSubscription() {
         .then((data) => {
             toggleLoader(false);
             showDialog({
-                title: "全部订阅",
+                title: `全部订阅（${data.length}）`,
                 content: data.map(item => m(UserCard, { data: item }))
             })
         })

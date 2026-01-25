@@ -33,7 +33,7 @@ export const VideoCardSlim = {
                         m.route.set("/video/av" + vnode.attrs.data.aid);
                     }
 
-                    vnode.attrs?.onclick();
+                    vnode.attrs.onclick?.();
                 },
                 title: vnode.attrs.data?.desc
             },
@@ -154,5 +154,28 @@ export const ChatBubble = {
                 )
             )
         ]
+    }
+}
+
+export const CollectionCard = {
+    view(vnode) {
+        return m(
+            ".video-card-slim",
+            {
+                onclick: () => {
+                    vnode.attrs.onclick?.();
+                },
+                title: vnode.attrs.data?.desc,
+                style: {
+                    borderBottom: "1px solid #88888833"
+                }
+            },
+            [
+                m(".info", [
+                    m("p.title", { style: {fontSize: "1rem"} }, vnode.attrs.data.title),
+                    m("p.subtitle", vnode.attrs.data?.desc || "无简介")
+                ])
+            ]
+        )
     }
 }

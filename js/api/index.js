@@ -477,7 +477,7 @@ export function getMyInfo() {
             if (result) {
                 resolve(result);
             } else {
-                native.requestGet(` $ {baseUrl}x/space/v2/myinfo?`)
+                native.requestGet(`${baseUrl}x/space/v2/myinfo?`)
                     .then((data) => {
                         if (data.code == -101) {
                             reject("The user is not logged in.");
@@ -503,7 +503,7 @@ export function getMyInfo() {
                     })
                     .catch(error => {
                         console.error("Error fetching user profile: ", error);
-                        reject(error); 
+                        reject(error);
                     });
             }
         });
@@ -514,7 +514,7 @@ export function getUserSubscription(uid) {
     const requests = [];
     // 最多请求6页，每页50个关注
     for (let i = 1; i <= 6; i++) {
-        const url = `https://api.bilibili.com/x/relation/followings?vmid=${uid}&pn=${i}&ps=50&order=desc&order_type=attention`;
+        const url = `${baseUrl}x/relation/followings?vmid=${uid}&pn=${i}&ps=50&order=desc&order_type=attention`;
         requests.push(
             native.requestGet(url)
                 .then(tjlist => {
@@ -550,6 +550,70 @@ export function getUserSubscription(uid) {
     });
 }
 
+export function getCollectionList(uid) {
+    // 获取收藏夹列表
+    return native.requestGet(`${baseUrl}x/v3/fav/folder/created/list-all?up_mid=${uid}&ps=999&pn=1`)
+        .then((data) => {
+            if (data.code != 0 || !data.data || data.data.list.length <= 0) {
+                throw new Error("The collection list was hidden");
+            }
+            return data.data.list.map((item) => ({
+                fid: item.id,
+                size: item.media_count,
+                title: item.title,
+                desc: item.title,
+                author: { uid: item.mid },
+            }));
+        })
+        .catch(error => console.error('Error fetching the collection list:', error));
+}
+
+export function getCollectionById(fid, mediaCount) {
+    return native.requestGet(`${baseUrl}x/v3/fav/resource/list?media_id=${fid}&ps=${mediaCount}&pn=1`)
+        .then((data) => {
+            if (data.code == -400) { throw new Error("The collection was private"); }
+            return data.data.medias.map((item) => ({
+                bvid: item.bvid,
+                aid: item.id,
+                pic: item.cover,
+                title: item.title,
+                desc: item.intro,
+                author: { uid: item.upper.mid, name: item.upper.name }
+            }));
+        })
+        .catch(error => console.error('Error fetching the collection:', error));
+}
+
+export function getToView() {
+    return native.requestGet(`${baseUrl}x/v2/history/toview`)
+        .then((data) => {
+            if (data.code == -400) { throw new Error("Unable to view"); }
+            return data.data.list.map((item) => ({
+                bvid: item.bvid,
+                aid: item.aid,
+                pic: item.pic,
+                title: item.title,
+                desc: item.desc,
+                author: { uid: item.owner.mid, name: item.owner.name }
+            }));
+        })
+        .catch(error => console.error('Error fetching to-view list:', error));
+}
+
+export function getHistory() {
+    return native.requestGet(`${baseUrl}x/web-interface/history/cursor?ps=30&type=archive`)
+        .then((data) => {
+            return data.data.list.map((item) => ({
+                bvid: item.history.bvid,
+                aid: item.oid,
+                pic: item.cover,
+                title: item.title,
+                desc: item.title,
+                author: { uid: item.author_mid, name: item.author_name }
+            }));
+        })
+        .catch(error => console.error('Error fetching history:', error));
+}
 
 /* 视频播放部分 */
 export function getVideoDetail(bvid, aid) {
