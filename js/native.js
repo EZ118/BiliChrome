@@ -1,3 +1,4 @@
+
 /*
     native.js
     对接原生的API接口
@@ -52,3 +53,5 @@ const native = {
         });
     }
 }
+
+export default native;

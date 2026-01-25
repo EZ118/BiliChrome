@@ -1,4 +1,5 @@
 import { timestampToDate } from "../util.js";
+import native from "../native.js";
 
 const baseUrl = 'https://api.bilibili.com/';
 const baseLiveUrl = 'https://api.live.bilibili.com/';
@@ -761,4 +762,35 @@ export function getVideoReplyReplies(aid, rpid, pageNum = 1) {
             }));
         })
         .catch(error => console.error('Error fetching video reply replies:', error));
+}
+
+/* 直播间 */
+export function getLiveroomDetail(roomid) {
+    // 获取直播间详情
+    return native.requestGet(`${baseLiveUrl}room/v1/Room/get_info?room_id=${roomid}`)
+        .then((data) => {
+            if (data.code != 0) {
+                return ;
+            }
+            return {
+                "title": data.data.title,
+                "pic": data.data.user_cover,
+                "desc": (data.data.description || "-").replace(/\n/g, "<br>"),
+                "catagory": data.data.parent_area_name + "/" + data.data.parent_area_name,
+                "tags": data.data.tags,
+                "time": data.data.live_time,
+                "roomid": data.data.room_id,
+                "author": {
+                    "name": null,
+                    "uid": data.data.uid,
+                    "face": null
+                },
+                "stat": {
+                    "online": data.data.online
+                }
+            };
+        })
+        .catch(error => {
+            console.error("Error fetching video detail: ", error);
+        });
 }
