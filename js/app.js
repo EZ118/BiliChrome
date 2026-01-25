@@ -27,6 +27,7 @@ export const App = () => {
                 "/home": HomeView,
                 "/dynamic": DynamicView,
                 "/search": SearchView,
+                "/search/:kw": SearchView,
                 "/message": MessageView,
                 "/mine": MineView,
 

@@ -50,6 +50,15 @@ const SearchView = {
         page = 1;
     },
 
+    onupdate() {
+        if (m.route.param("kw") && m.route.param("kw") != keyword) {
+            page = 1;
+            keyword = decodeURIComponent(m.route.param("kw"));
+            document.querySelector("header .SearchBox").value = keyword;
+            loadSearchResult();
+        }
+    },
+
     view(vnode) {
         if (cardList.length == 0) {
             return m(".container.search-view", [
