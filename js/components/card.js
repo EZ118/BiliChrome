@@ -1,3 +1,7 @@
+import { showDialog } from "./dialog.js";
+import { toggleLoader } from "../components/loader.js";
+import { getVideoReplyReplies } from "../api/index.js";
+
 export const VideoCard = {
     view(vnode) {
         return m(
@@ -84,7 +88,21 @@ export const ReplyCard = {
 
                 vnode.attrs.data.replies ? m(".more-replies",
                     {
-                        onclick: () => { }
+                        onclick: () => {
+                            // 展开更多评论回复
+                            toggleLoader(true);
+                            getVideoReplyReplies(vnode.attrs.data.aid, vnode.attrs.data.rpid)
+                                .then(data => {
+                                    toggleLoader(false)
+                                    showDialog({
+                                        title: "评论回复",
+                                        content: data.map(item => m(ReplyCard, { data: item }))
+                                    })
+                                })
+                                .catch(error => {
+                                    toggleLoader(false)
+                                })
+                        }
                     },
                     vnode.attrs.data.replies.map((item) => {
                         return m(
