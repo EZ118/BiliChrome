@@ -5,8 +5,6 @@ import { UserCard, VideoCard } from "../components/card.js";
 import { showDialog } from "../components/dialog.js";
 import { Icon } from "../components/icon.js";
 
-import SpaceView from "./space.js";
-
 var userInfo = {
     "name": "",
     "uid": 0,
@@ -25,22 +23,22 @@ var userInfo = {
 };
 var isInited = false;
 var userUid = 0;    // uid
-var dynamicList = [];
 
-function loadUserInfo() {
-    toggleLoader(true);
-    getMyInfo()
-        .then((data) => {
-            toggleLoader(false);
-            userInfo = data;
-            userUid = data.uid;
-        })
-        .catch((error) => {
-            toggleLoader(false);
-        });
+function showUserCollection() {
+    toast("收藏夹")
+}
+
+function showUserWatchLater() {
+    toast("稍后再看")
+}
+
+function showUserWatchHistory() {
+    toast("观看历史")
 }
 
 function showUserSubscription() {
+    // 我的关注
+    toggleLoader(true);
     getUserSubscription(userUid)
         .then((data) => {
             toggleLoader(false);
@@ -54,12 +52,34 @@ function showUserSubscription() {
         });
 }
 
+function showExtentionSettings() {
+    toast("设置")
+}
+
+function showPluginManager() {
+    toast("插件管理")
+}
+
+function showBackupRestore() {
+    toast("备份与恢复")
+}
+
 const MineView = {
     oninit() {
         //showUserSubscription();
         if (!isInited) {
             isInited = true;
-            loadUserInfo();
+
+            toggleLoader(true);
+            getMyInfo()
+                .then((data) => {
+                    toggleLoader(false);
+                    userInfo = data;
+                    userUid = data.uid;
+                })
+                .catch((error) => {
+                    toggleLoader(false);
+                });
         }
     },
     view(vnode) {
@@ -92,20 +112,20 @@ const MineView = {
                 m(".details-section", [
                     m(".header", " 📌 我的口袋"), m("hr"),
                     m(".content", [
-                        m(".functionItem", [
+                        m(".functionItem", { onclick: () => showUserCollection() }, [
                             m(Icon, { name: "star" }),
                             m("span", "收藏夹")
                         ]),
-                        m(".functionItem", [
-                            m(Icon, { name: "star" }),
+                        m(".functionItem", { onclick: () => showUserWatchLater() }, [
+                            m(Icon, { name: "max_video" }),
                             m("span", "稍后再看")
                         ]),
-                        m(".functionItem", [
-                            m(Icon, { name: "star" }),
+                        m(".functionItem", { onclick: () => showUserWatchHistory() }, [
+                            m(Icon, { name: "clock" }),
                             m("span", "历史记录")
                         ]),
                         m(".functionItem", { onclick: () => showUserSubscription() }, [
-                            m(Icon, { name: "" }),
+                            m(Icon, { name: "grouplist" }),
                             m("span", "我的关注")
                         ]),
                     ])
@@ -113,17 +133,17 @@ const MineView = {
                 m(".details-section", [
                     m(".header", " 📌 更多功能 "), m("hr"),
                     m(".content", [
-                        m(".functionItem", [
-                            m(Icon, { name: "star" }),
+                        m(".functionItem", { onclick: () => showExtentionSettings() }, [
+                            m(Icon, { name: "settings" }),
                             m("span", "扩展设置")
                         ]),
-                        m(".functionItem", [
-                            m(Icon, { name: "star" }),
+                        m(".functionItem", { onclick: () => showPluginManager() }, [
+                            m(Icon, { name: "extension" }),
                             m("span", "插件管理")
                         ]),
-                        m(".functionItem", [
-                            m(Icon, { name: "star" }),
-                            m("span", "备份与恢复")
+                        m(".functionItem", { onclick: () => showBackupRestore() }, [
+                            m(Icon, { name: "database" }),
+                            m("span", "备份/恢复")
                         ]),
                     ])
                 ]),

@@ -52,7 +52,6 @@ function loadUserInfo() {
         .then((data) => {
             toggleLoader(false);
             if (!data) return;
-            console.log(data)
             userInfo = data;
         })
         .catch((error) => {

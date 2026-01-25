@@ -178,8 +178,6 @@ nav .item.selected::after {
 nav .item svg {
 	color: currentColor;
 	fill: currentColor;
-	stroke: currentColor;
-	stroke-width: 0.1;
 	width: 24px;
 	height: 24px;
 }
@@ -291,8 +289,6 @@ header .right button svg {
 	height: 24px;
 	color: currentColor;
 	fill: currentColor;
-	stroke: currentColor;
-	stroke-width: 0.1;
 }
 
 
@@ -372,8 +368,6 @@ main>.container {
 	height: 18px;
 	color: currentColor;
 	fill: currentColor;
-	stroke: currentColor;
-	stroke-width: 0.1;
 }
 
 /*

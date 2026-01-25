@@ -465,57 +465,49 @@ export function getUserRecentDynamics(uid) {
 
     return native.requestGet(`${baseUrl}x/polymer/web-dynamic/v1/feed/space?host_mid=${uid}&features=itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,decorationCard,onlyfansAssetsV2,forwardListHidden,ugcDelete`)
         .then((data) => {
-            console.log(data)
-            /* 
-            返回格式：
-            {
-                type: "video/text/forward",
-                text: "文本",
-                quote: {
-                    video: {
-                        // 视频
-                    },
-                    article: {
-                        // 专栏
-                    },
-                    image: [
-                        "https://url", "https://url"
-                    ],
-                    dynamic: {
-                        // 转发动态
-                    }
-                }
-            }
-            */
             return data.data.items.map((item) => parseCard(item));
         }).catch(error => console.error('Error fetching recent dynamics:', error));
 }
 
 /* 个人页面 */
 export function getMyInfo() {
-    return native.requestGet(`${baseUrl}x/space/v2/myinfo?`)
-        .then((data) => {
-            if (data.code == -101) {
-                throw new Error("The user is not logged in.")
+    // 检查缓存再决定是否请求，减少无用请求
+    return new Promise((resolve, reject) => {
+        native.storageGet("user-info", (result) => {
+            if (result) {
+                resolve(result);
+            } else {
+                native.requestGet(` $ {baseUrl}x/space/v2/myinfo?`)
+                    .then((data) => {
+                        if (data.code == -101) {
+                            reject("The user is not logged in.");
+                        }
+
+                        const userinfo = {
+                            "name": data.data.profile.name,
+                            "uid": data.data.profile.mid,
+                            "face": data.data.profile.face,
+                            "sex": data.data.profile.sex,
+                            "sign": data.data.profile.sign,
+                            "level": data.data.profile.level,
+                            "vip": (data.data.profile.vip.status != 0) ? data.data.profile.vip.label.text : null,
+                            "liveroom": null,
+                            "birthday": timestampToDate(data.data.profile.birthday * 1000),
+                            "attestation": data.data.profile.official.desc,
+                            "follower": data.data.follower,
+                            "following": null
+                        };
+
+                        native.storageSet("user-info", userinfo);
+                        resolve(userinfo);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching user profile: ", error);
+                        reject(error); 
+                    });
             }
-            return {
-                "name": data.data.profile.name,
-                "uid": data.data.profile.mid,
-                "face": data.data.profile.face,
-                "sex": data.data.profile.sex,
-                "sign": data.data.profile.sign,
-                "level": data.data.profile.level,
-                "vip": (data.data.profile.vip.status != 0) ? data.data.profile.vip.label.text : null,
-                "liveroom": null,
-                "birthday": timestampToDate(data.data.profile.birthday * 1000),
-                "attestation": data.data.profile.official.desc,
-                "follower": data.data.follower,
-                "following": null
-            };
-        })
-        .catch(error => {
-            console.error("Error fetching user profile: ", error);
         });
+    });
 }
 
 export function getUserSubscription(uid) {
