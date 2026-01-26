@@ -794,3 +794,43 @@ export function getLiveroomDetail(roomid) {
             console.error("Error fetching video detail: ", error);
         });
 }
+
+export function getLiveStreamSource(roomid, quality = 2) {
+    // 获取直播HLS链接
+    if (!roomid && !quality) return;
+
+    // quality: 画质 2-流畅 3-高清 4-原画
+    return native.requestGet(`${baseLiveUrl}/room/v1/Room/playUrl?cid=${roomid}&platform=h5&quality=${quality}`)
+        .then((data) => {
+            if (data.data?.v_voucher) {
+                data = {
+                    code: 412,
+                    data: { durl: [{ "url": "", "length": 0 }] }
+                };
+            }
+            return {
+                code: data.code,
+                url: data.data?.durl[0]?.url,
+                length: data.data?.durl[0]?.length,
+                backup_url: `https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=${roomid}&quality=${quality}`,
+                roomid: roomid
+            };
+        })
+        .catch(error => {
+            console.error("Error fetching video source: ", error);
+        });
+}
+
+export function getLiveChatHistory(roomid) {
+    return native.requestGet(`${baseLiveUrl}xlive/web-room/v1/dM/gethistory?roomid=${roomid}&room_type=0`)
+        .then((msgInfo) => {
+            return msgInfo.data.room.map(item => {
+                return {
+                    content: item.text,
+                    desc: null,
+                    quote: {},
+                    sender: { uid: item.user.uid, face: item.user.base.face, name: item.user.base.name }
+                };
+            }).reverse();
+        }).catch(error => console.error('Error fetching message session detail:', error));
+}

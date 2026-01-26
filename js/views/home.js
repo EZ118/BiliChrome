@@ -1,6 +1,6 @@
 import { toggleLoader, isLoading } from "../components/loader.js";
 import { getHomeRecommend, getHomePopular, getHomeLiveRooms } from '../api/index.js';
-import { VideoCard } from "../components/card.js";
+import { VideoCard, LiveCard } from "../components/card.js";
 
 var currentTab = "recommand"; // 默认选中的标签页
 var currentPage = 1; // 默认初始页码
@@ -16,6 +16,7 @@ function showRecommendedVideos(scrollRefresh) {
                 cardList = cardList.concat(data);
             } else {
                 cardList = data;
+                currentPage = 1;
             }
             toggleLoader(false);
 
@@ -40,6 +41,7 @@ function showPopularVideos(scrollRefresh) {
                 cardList = cardList.concat(data);
             } else {
                 cardList = data;
+                currentPage = 1;
             }
             toggleLoader(false);
 
@@ -88,10 +90,9 @@ function switchTab(tabData) {
 
 const HomeView = {
     oninit() {
-        currentPage = 1;
-
         // 首次加载时刷新
         if (!hasInited) {
+            currentPage = 1;
             hasInited = true;
             switchTab("recommand");
         }
@@ -111,7 +112,7 @@ const HomeView = {
                         const { scrollTop, clientHeight, scrollHeight } = e.target;
                         if (scrollTop + clientHeight >= scrollHeight - 10) {
                             // 如果列表内容太多，则清空列表
-                            if (currentPage >= 10) {
+                            if (currentPage >= 8) {
                                 currentPage = 1;
                                 if (currentTab == "recommand") {
                                     showRecommendedVideos();
@@ -121,6 +122,7 @@ const HomeView = {
                                 return;
                             }
 
+                            // 不覆盖原先内容，并添加后一页的内容
                             currentPage++;
                             if (currentTab == "recommand") {
                                 showRecommendedVideos(true);
@@ -130,9 +132,16 @@ const HomeView = {
                         }
                     }
                 },
-                cardList.map((item) => {
-                    return m(VideoCard, { data: item })
-                })
+                (currentTab != "live") ? [
+                    cardList.map((item) => {
+                        return m(VideoCard, { data: item })
+                    })
+                ] : [
+                    // 如果是直播间，则显示直播卡片
+                    cardList.map((item) => {
+                        return m(LiveCard, { data: item })
+                    })
+                ]
             )
         ])
     }

@@ -1,4 +1,4 @@
-/* =====[ 播放器 PlayerView ]===== */
+/* =====[ 视频播放器 VideoPlayerView ]===== */
 .player-view {
     width: 100%;
     height: 100%;
@@ -127,6 +127,80 @@
 }
 
 .player-view .row-video .video-body {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+    outline: none;
+}
+
+
+
+/* =====[ 直播播放器 LivePlayerView ]===== */
+.liveplayer-view {
+    width: 100%;
+    height: 100%;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.liveplayer-view .col {
+    width: auto;
+    height: 100%;
+    background: var(--background-color);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px #00000033;
+    border-left: 1px solid #88888833;
+    border-top: 1px solid #88888833;
+}
+
+.liveplayer-view .row-titlebar {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    align-items: center;
+    border-bottom: 1px solid #88888833;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0 12px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: text;
+}
+
+.liveplayer-view .row-detail {
+    height: 100%;
+    width: 100%;
+    padding: 8px;
+    overflow: hidden auto;
+}
+
+.liveplayer-view .row-detail .stat {
+    font-size: 0.8rem;
+    margin: 5px 0;
+    color: var(--text-color);
+    opacity: 0.75;
+}
+
+.liveplayer-view .row-detail .desc {
+    font-size: 0.8rem;
+    margin: 5px 0;
+    color: var(--text-color);
+    opacity: 0.8;
+    user-select: text;
+}
+
+.liveplayer-view .row-video {
+    width: 100%;
+    height: calc(100% - 44px);
+}
+
+.liveplayer-view .row-video .video-body {
     width: 100%;
     height: 100%;
     border: none;

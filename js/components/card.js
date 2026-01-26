@@ -166,7 +166,7 @@ export const ChatBubble = {
                     },
                     [
                         vnode.attrs.data.content,
-                        vnode.attrs.data.quote.video.aid ? m(VideoCard, { data: vnode.attrs.data.quote.video }) : "",
+                        vnode.attrs.data.quote?.video?.aid ? m(VideoCard, { data: vnode.attrs.data.quote?.video }) : "",
                         m("span.desc", vnode.attrs.data?.desc)
                     ]
                 )
