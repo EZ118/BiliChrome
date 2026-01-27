@@ -3,6 +3,7 @@ import { getLiveroomDetail, getLiveStreamSource, getLiveChatHistory } from "../a
 import { Icon } from "../components/icon.js";
 import { toast } from "../util.js";
 import { ChatBubble } from "../components/card.js";
+import { emit } from "../plugin.js";
 
 var liveInfo = {
     "title": "",
@@ -38,6 +39,14 @@ function loadLiveStreamSource(roomid) {
         .then((data_source) => {
             liveStreamInfo = data_source;
             toggleLoader(false);
+
+            // 触发插件事件
+            emit("liveLoaded", {
+                info: liveInfo,
+                source: liveStreamInfo,
+                reply: chatHistory,
+                dom: document.querySelector(".video-body")
+            });
         })
         .catch((error) => {
             toggleLoader(false);

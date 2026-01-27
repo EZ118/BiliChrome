@@ -1,3 +1,5 @@
+import { emit } from "../plugin.js";
+
 let isVisible = false;
 let currentOptions = {};
 let dialogElement = null; // <dialog> 元素的DOM
@@ -15,6 +17,12 @@ export const Dialog = {
                     // 保存 dialog 元素
                     dialogElement = vnode.dom;
                     dialogElement.showModal();
+
+                    // 触发插件事件
+                    emit("dialogShow", {
+                        options: currentOptions,
+                        dom: dialogElement
+                    });
                 },
                 onremove: () => {
                     // 组件被移除时清理引用

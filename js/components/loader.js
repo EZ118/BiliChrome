@@ -1,9 +1,13 @@
+import { emit } from "../plugin.js";
+
 export var isLoading = false;
 
 export function toggleLoader(isVisible) {
     if (isVisible) {
         isLoading = isVisible;
         m.redraw();
+
+        emit("loading", null);
     } else {
         setTimeout(() => {
             isLoading = isVisible;

@@ -291,6 +291,77 @@ header .right button svg {
 	fill: currentColor;
 }
 
+header .NavBack {
+	width: 42px;
+	height: 42px;
+	background: transparent;
+	margin: 4px;
+	border-radius: 6px;
+	color: currentColor;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: all 0.125s;
+	text-indent: 1px;
+}
+
+header .NavBack:hover {
+	background: var(--secondary-color);
+	opacity: 0.8;
+}
+
+header .NavBack:active {
+	text-indent: 6px;
+}
+
+header .NavBack svg {
+	margin-top: 2px;
+	width: 18px;
+	height: 18px;
+	color: currentColor;
+	fill: currentColor;
+}
+
+.AppMenu {
+	position: fixed;
+	top: 54px;
+	right: 4px;
+	background: var(--background-color);
+	border: 1px solid #88888833;
+	color: var(--text-color);
+	border-radius: 6px;
+	z-index: 998;
+	padding: 4px;
+	width: 300px;
+	box-shadow: 0px 1px 4px #00000033;
+	animation: slideIn 0.1s ease;
+}
+
+.AppMenu .item {
+	padding: 4px 8px;
+	margin: 2px;
+	border-radius: 4px;
+	cursor: pointer;
+	background: transparent;
+}
+.AppMenu .item:hover {
+	background: var(--primary-color);
+}
+.AppMenu .item:active {
+	background: var(--secondary-color);
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-15px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
 
 /* ==========[ 页面渲染主体 ]========= */
 
@@ -338,45 +409,9 @@ main>.container {
 	border-radius: 6px;
 }
 
-/* ===========[ 返回按钮 ]========== */
-.nav-back {
-	width: 42px;
-	height: 42px;
-	background: transparent;
-	margin: 4px;
-	border-radius: 6px;
-	color: currentColor;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	transition: all 0.125s;
-	text-indent: 1px;
-}
-
-.nav-back:hover {
-	background: var(--secondary-color);
-	opacity: 0.8;
-}
-
-.nav-back:active {
-	text-indent: 6px;
-}
-
-.nav-back svg {
-	margin-top: 2px;
-	width: 18px;
-	height: 18px;
-	color: currentColor;
-	fill: currentColor;
-}
-
 /*
 	z-index层级：
-	104:滚动弹幕，自定义对话框（isTop=true）
-	103:播放器
-	102:自定义对话框（isTop=false）
-	101:刷新按钮
-	
-	999:加载球
-	1000: 开屏
+	998:    右上角菜单
+	999:	加载球
+	1000: 	开屏
 */

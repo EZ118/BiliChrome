@@ -58,6 +58,15 @@ function loadVideoSource(bvid, cid) {
         .then((data_source) => {
             videoSourceInfo = data_source;
             toggleLoader(false);
+
+            // 触发插件事件
+            emit("videoLoaded", {
+                info: videoInfo,
+                source: videoSourceInfo,
+                reply: replyList,
+                tab: currentTab,
+                dom: document.querySelector(".video-body")
+            });
         })
         .catch((error) => {
             toggleLoader(false);
@@ -113,7 +122,7 @@ const VideoPlayerView = {
                     .catch((error) => {
                         toggleLoader(false);
                     });
-                
+
                 getVideoReplies(videoInfo.aid)
                     .then((data_reply) => {
                         toggleLoader(false);
