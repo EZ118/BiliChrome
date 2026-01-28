@@ -332,7 +332,7 @@ header .NavBack svg {
 	border-radius: 6px;
 	z-index: 998;
 	padding: 4px;
-	width: 300px;
+	width: 250px;
 	box-shadow: 0px 1px 4px #00000033;
 	animation: slideIn 0.1s ease;
 }

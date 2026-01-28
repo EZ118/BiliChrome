@@ -1,3 +1,26 @@
+/* =====[ 插件管理器 Plugin ]===== */
+.plugin-manager {
+    width: fit-content;
+    height: fit-content;
+    min-height: 500px;
+}
+.del-btn {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    padding: none;
+    margin: 0 5px;
+}
+
+.del-btn:hover {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--secondary-color);
+}
+
 /* =====[ 视频播放器 VideoPlayerView ]===== */
 .player-view {
     width: 100%;

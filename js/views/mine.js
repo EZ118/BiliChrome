@@ -4,6 +4,7 @@ import { toast, openInNewTab } from "../util.js"
 import { UserCard, VideoCardSlim, CollectionCard } from "../components/card.js";
 import { showDialog } from "../components/dialog.js";
 import { Icon } from "../components/icon.js";
+import { managePlugin } from "../plugin.js";
 
 var userInfo = {
     "name": "",
@@ -107,7 +108,7 @@ function showExtentionSettings() {
 }
 
 function showPluginManager() {
-    toast("插件管理")
+    managePlugin();
 }
 
 function showBackupRestore() {
