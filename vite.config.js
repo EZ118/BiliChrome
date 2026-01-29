@@ -35,8 +35,7 @@ export default defineConfig(({ mode }) => {
           },
         },
         external: [
-          /^\.\/js\/vendor\/.*/,
-          /^\.\/js\/native\.js$/,
+          /^\.\/js\/vendor\/.*/
         ],
       },
     },
@@ -52,8 +51,9 @@ export default defineConfig(({ mode }) => {
           cpSync(manifestSrc, `${distDir}/manifest.json`);
           
           // 复制 HTML 文件
-          cpSync('home.html', `${distDir}/home.html`);
+          cpSync('index.html', `${distDir}/index.html`);
           cpSync('installed.html', `${distDir}/installed.html`);
+          cpSync('rules.json', `${distDir}/rules.json`);
           
           // 复制 LICENSE
           cpSync('LICENSE', `${distDir}/LICENSE`);
@@ -67,7 +67,6 @@ export default defineConfig(({ mode }) => {
           // 复制 vendor 和 util
           mkdirSync(`${distDir}/js/vendor`, { recursive: true });
           cpSync('js/vendor', `${distDir}/js/vendor`, { recursive: true });
-          cpSync('js/util.js', `${distDir}/js/util.js`);
           
           console.log(`✓ Copied extension files for ${target}`);
         },
