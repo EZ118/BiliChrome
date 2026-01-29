@@ -7,8 +7,7 @@
 import { showDialog } from './components/dialog.js';
 import native from './native.js';
 import { parsePluginMetadata, pickFile, toast } from './util.js';
-// import eval5 from './vendor/eval5.min.js';
-// const { Interpreter } = eval5;
+import { toggleLoader } from './components/loader.js';
 import Sval from './vendor/sval.min.js';
 
 // 存储所有插件
@@ -73,6 +72,8 @@ export function initPlugin() {
                 registerMenuCommand,
                 toast,
                 native,
+                showDialog,
+                toggleLoader,
                 m,
                 currentScriptInfo: item
             });
@@ -105,7 +106,7 @@ export function importPlugin() {
             m.redraw();
 
             toast("已添加，即将刷新页面");
-            setTimeout(() => location.reload(), 1000);
+            setTimeout(() => location.reload(), 600);
         }
     });
 }
@@ -131,7 +132,7 @@ export function managePlugin() {
                                         native.storageSet("plugin", pluginList);
 
                                         toast("已删除，即将刷新页面");
-                                        setTimeout(() => location.reload(), 1000);
+                                        setTimeout(() => location.reload(), 600);
                                     }
                                 }
                             }, "删除")
