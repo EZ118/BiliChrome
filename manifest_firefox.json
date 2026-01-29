@@ -15,11 +15,11 @@
         "cookies",
         "contextMenus",
         "tabs",
+        "scripting",
         "storage"
     ],
     "host_permissions": [
-        "*://*.bilibili.com/*",
-        "*://gitee.com/*/*/raw/*"
+        "*://*/*"
     ],
     "action": {
         "default_title": "BiliScape"
