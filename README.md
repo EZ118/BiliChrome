@@ -1,3 +1,8 @@
+# ⭕️ 项目停止更新
+由于“bilibili-API-collect”项目收到B站官方律师函，而 BiliScape 作为基于该项目的个人开发的第三方客户端，为防止后续风险，本人决定**停止对 BiliScape 的维护**，同时浏览器扩展商店版也停止更新。   
+该项目原名BiliChrome，因其名称未过审而更名为 BiliScape ，目的是让老旧上网本也能流畅观看B站视频。BiliScape自首个发行版发布至今一年零一月。   
+
+----
 <br />
 <div align="center">
     <img src="./img/icon.svg" width="100" height="100" />
@@ -19,7 +24,6 @@
 <img src="https://ez118.github.io/biliweb/shot4.png" width="32%" alt="空间" />
 <img src="https://ez118.github.io/biliweb/shot5.png" width="32%" alt="动态" />
 <img src="https://ez118.github.io/biliweb/shot6.png" width="32%" alt="播放" /><br/><br/>
-QQ群：1023133212
 <br/>
 </div>
 
